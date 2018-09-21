@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="tko0fbxn" jpegQuality="80" compressPNG="true">
+  <resources>
+    <component id="oxm00" name="loader_panel.xml" path="/panel/" exported="true"/>
+  </resources>
+  <publish name="loader_panel" path="..\Client\Assets\Resources\UI\loader_panel"/>
+</packageDescription>

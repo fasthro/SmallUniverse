@@ -1,0 +1,26 @@
+//Generate By @ExportPanelCode
+namespace SU.UI
+{
+    public class PanelMap
+    {
+        public static PanelBase GetPanel(PanelName pname)
+        {
+            switch (pname)
+            {
+[CASE_PANEL_CODE]
+                default:
+                    return null;
+            }
+        }
+
+        public static PanelViewBase GetView(PanelName pname)
+        {
+            switch (pname)
+            {
+[CASE_VIEW_CODE]
+                default:
+                    return null;
+            }
+        }
+    }
+}

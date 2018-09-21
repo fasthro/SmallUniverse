@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="1136,640" overflow="hidden">
+  <displayList>
+    <image id="n0_kahw" name="n0" src="kahwh" fileName="component/larger_bg/image/start_bg.jpg" xy="0,-108" size="1136,857" aspect="true"/>
+  </displayList>
+</component>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="64,56">
+  <displayList>
+    <image id="n0_yjm4" name="black_barriew" src="yjm45" fileName="component/image/barrier/black_barrier.png" xy="0,0">
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+  </displayList>
+</component>

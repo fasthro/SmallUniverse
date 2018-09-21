@@ -1,0 +1,35 @@
+// Generate By @ExportPanelCode
+using SU.UI;
+using SU.Manager;
+
+public class [CLASS_NAME] : PanelBase
+{
+    private [VIEW_NAME] view;
+
+    public [CONSTRUCTOR_NAME](params string[] _parameters) : base()
+    {
+        pname = PanelName.[PANEL_NAME];
+        view = PanelMap.GetView(pname) as [VIEW_NAME];
+        mainPackage = [MAIN_PACKAGE];
+        packages = new string[] {};
+        pcname = [PANEL_COMPONENT_NAME];
+        parameters = _parameters;
+        layer = PanelLayer.WINDOW;
+    }
+
+    protected override void OnShown()
+    {
+        base.OnShown();
+
+        view.SetRoot(contentPane);
+        view.Get();
+        view.Init();
+    }
+
+    protected override void OnHide()
+    {
+        base.OnHide();
+
+        view.Dispose();
+    }
+}

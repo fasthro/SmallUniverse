@@ -1,0 +1,8 @@
+//Generate By @ExportUIMapCode
+namespace SU.UI
+{
+    public enum PanelName
+    {
+[PANEL_NAME_CODE]
+    }
+}

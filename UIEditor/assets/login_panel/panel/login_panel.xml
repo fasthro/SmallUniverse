@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="1136,640">
+  <displayList>
+    <component id="n8_kahw" name="start_bg" src="kahwi" fileName="component/larger_bg/start_bg.xml" pkg="tqc2b6mi" xy="0,0"/>
+    <component id="n9_kahw" name="@begin_game_btn" src="kahwk" fileName="button/begin_game_button.xml" pkg="tqc2b6mi" xy="419,505"/>
+  </displayList>
+</component>

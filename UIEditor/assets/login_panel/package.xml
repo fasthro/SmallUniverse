@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="t2p56nxm" jpegQuality="80" compressPNG="true">
+  <resources>
+    <component id="api20" name="login_panel.xml" path="/panel/" exported="true"/>
+    <image id="gyl51" name="button_normal.png" path="/image/" scale="9grid" scale9grid="12,9,24,18"/>
+  </resources>
+  <publish name="login_panel" path="..\Client\Assets\Resources\UI\login_panel"/>
+</packageDescription>

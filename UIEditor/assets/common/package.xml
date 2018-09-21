@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="tqc2b6mi" jpegQuality="80" compressPNG="true">
+  <resources>
+    <image id="7oi92" name="button_normal.png" path="/button/image/default/" scale="9grid" scale9grid="12,9,24,18"/>
+    <image id="7oi93" name="button_press.png" path="/button/image/default/" scale="tile"/>
+    <component id="7oi94" name="default_button.xml" path="/button/" exported="true"/>
+    <image id="yjm45" name="black_barrier.png" path="/component/barrier/image/" scale="9grid" scale9grid="16,14,32,28"/>
+    <image id="yjm46" name="blue_barrier.png" path="/component/barrier/image/" scale="9grid" scale9grid="16,14,32,28"/>
+    <image id="yjm47" name="red_barrier.png" path="/component/barrier/image/" scale="9grid" scale9grid="16,14,32,28"/>
+    <image id="yjm48" name="yellow_barrier.png" path="/component/barrier/image/" scale="9grid" scale9grid="16,14,32,28"/>
+    <image id="yjm49" name="button_normal.png" path="/button/image/normal/"/>
+    <image id="yjm4a" name="button_select.png" path="/button/image/normal/"/>
+    <component id="yjm4b" name="normal_button.xml" path="/button/" exported="true"/>
+    <image id="yjm4c" name="slider_back.png" path="/bar/image/loader_progressbar/" scale="9grid" scale9grid="50,5,100,3"/>
+    <image id="yjm4d" name="slider_pressbar.png" path="/bar/image/loader_progressbar/" scale="9grid" scale9grid="50,5,100,3"/>
+    <component id="yjm4e" name="black_barrier.xml" path="/component/barrier/" exported="true"/>
+    <component id="yjm4f" name="loader_progressbar.xml" path="/bar/" exported="true"/>
+    <component id="kahwg" name="blue_barrier.xml" path="/component/barrier/" exported="true"/>
+    <image id="kahwh" name="start_bg.jpg" path="/component/larger_bg/image/"/>
+    <component id="kahwi" name="start_bg.xml" path="/component/larger_bg/" exported="true"/>
+    <image id="kahwj" name="begin_button.png" path="/button/image/begin_game/"/>
+    <component id="kahwk" name="begin_game_button.xml" path="/button/" exported="true"/>
+    <image id="kahwl" name="line_blue.png" path="/component/line/image/" scale="9grid" scale9grid="8,8,16,16"/>
+    <image id="kahwm" name="line_purple.png" path="/component/line/image/" scale="9grid" scale9grid="8,8,16,16"/>
+    <image id="kahwn" name="line_yellow.png" path="/component/line/image/" scale="9grid" scale9grid="8,8,16,16"/>
+    <image id="kahwo" name="line_white.png" path="/component/line/image/" scale="9grid" scale9grid="8,8,16,16"/>
+    <image id="kahwp" name="line_transparent.png" path="/component/line/image/" scale="9grid" scale9grid="8,8,16,16"/>
+    <component id="kahwq" name="line_yellow.xml" path="/component/line/" exported="true"/>
+    <component id="kahws" name="line_blue.xml" path="/component/line/" exported="true"/>
+    <component id="kahwt" name="line_purple.xml" path="/component/line/" exported="true"/>
+    <component id="kahwu" name="line_transparent.xml" path="/component/line/" exported="true"/>
+    <component id="kahwv" name="line_white.xml" path="/component/line/" exported="true"/>
+  </resources>
+  <publish name="common" path="..\Client\Assets\Resources\UI\common"/>
+</packageDescription>

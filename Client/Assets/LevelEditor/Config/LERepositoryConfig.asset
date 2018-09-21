@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdcca3b991a1ac64298ee54911552761, type: 3}
+  m_Name: LERepositoryConfig
+  m_EditorClassIdentifier: 
+  repositorys:
+  - Name: Normal
+    Path: Assets/Levels/Repository/Normal
+    models:
+    - Name: a00Block 1
+      Path: Assets/Levels/Repository/Normal\a00Block 1.prefab
+      Model: {fileID: 1888155322363522, guid: 6824f1fdc9d5b664c8f3764b8dfa729d, type: 2}
+    - Name: a00Block 2
+      Path: Assets/Levels/Repository/Normal\a00Block 2.prefab
+      Model: {fileID: 1993437930573034, guid: 9f152863ceed4134994589a68e365058, type: 2}
+    - Name: a00Block 3
+      Path: Assets/Levels/Repository/Normal\a00Block 3.prefab
+      Model: {fileID: 1624042863543616, guid: 84dd3a5c41542b14dbb6fbbba146ec51, type: 2}
+    - Name: a00Block 4
+      Path: Assets/Levels/Repository/Normal\a00Block 4.prefab
+      Model: {fileID: 1485498764000022, guid: 89a4848086240f74f9909fff4b469f66, type: 2}
+    - Name: a00Block 5
+      Path: Assets/Levels/Repository/Normal\a00Block 5.prefab
+      Model: {fileID: 1787909567358230, guid: c2106fe8e9b459c4da2b0382987758ac, type: 2}
+    - Name: a00Block 6
+      Path: Assets/Levels/Repository/Normal\a00Block 6.prefab
+      Model: {fileID: 1614041452786020, guid: 17370c7e3b7d2ae44887f94689ab82f6, type: 2}
+    - Name: a00Block 7
+      Path: Assets/Levels/Repository/Normal\a00Block 7.prefab
+      Model: {fileID: 1751630764643456, guid: 0a71d58c6eaf7284aa60f079e1cb2861, type: 2}
+    - Name: a00Block
+      Path: Assets/Levels/Repository/Normal\a00Block.prefab
+      Model: {fileID: 1349366820761662, guid: d8e6c6125a4596d41898579e12278004, type: 2}
+  - Name: Transparent
+    Path: Assets/Levels/Repository/Transparent
+    models:
+    - Name: a00Block 1
+      Path: Assets/Levels/Repository/Transparent\a00Block 1.prefab
+      Model: {fileID: 1923477621149786, guid: b02400219775b3c40ae3f29282a128f9, type: 2}
+    - Name: a00Block 2
+      Path: Assets/Levels/Repository/Transparent\a00Block 2.prefab
+      Model: {fileID: 1685300651131608, guid: 601847e8f16ed5545aa511197e0cb1b4, type: 2}
+    - Name: a00Block 3
+      Path: Assets/Levels/Repository/Transparent\a00Block 3.prefab
+      Model: {fileID: 1828784475657818, guid: 41a2ef5455af9914e9c2a34b3ce1aba2, type: 2}
+    - Name: a00Block
+      Path: Assets/Levels/Repository/Transparent\a00Block.prefab
+      Model: {fileID: 1086680408304106, guid: 748cdc5902718b54b9656db4818cdb49, type: 2}
