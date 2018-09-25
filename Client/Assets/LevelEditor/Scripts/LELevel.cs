@@ -8,6 +8,7 @@ namespace SU.Editor.LevelEditor
 {
     public class LELevel : MonoBehaviour
     {
+#if UNITY_EDITOR
         private static LELevel _inst;
         public static LELevel Inst {
             get {
@@ -21,12 +22,17 @@ namespace SU.Editor.LevelEditor
 
         // 关卡场景名称
         public string levelSceneName;
+
+        // 玩家出生点坐标
+        public Vector3 playerBornPosition;
+
         // 格子数据字典
         private Dictionary<string, LEGrid> gridMap;
         // 层数据字典
         private Dictionary<int, Transform> layerMap;
         // layer 节点
         private Transform layerTransform;
+        
 
         #region editor
         /// <summary>
@@ -38,7 +44,8 @@ namespace SU.Editor.LevelEditor
             layerMap = new Dictionary<int, Transform>();
 
             layerTransform = gameObject.transform.Find("Layers");
-            
+
+            // layer grid initialize
             var layerCount = layerTransform.childCount;
             for (int i = 0; i < layerCount; i++)
             {
@@ -71,6 +78,9 @@ namespace SU.Editor.LevelEditor
                     }
                 }
             }
+
+            // player born point initialize
+           
         }
 
         /// <summary>
@@ -195,28 +205,28 @@ namespace SU.Editor.LevelEditor
 
             // layer
             int layer;
-            content = "  <layers>\n";
             foreach (KeyValuePair<int, Transform> layerItem in layerMap)
             {
                 if (layerItem.Value.childCount == 0)
                     continue;
 
                 layer = int.Parse(layerItem.Value.gameObject.name);
-                content += string.Format("    <layer name='{0}'>\n", layer);
+                content = string.Format("  <layer name='{0}'>\n", layer);
 
                 foreach (KeyValuePair<string, LEGrid> gridItem in gridMap)
                 {
                     var grid = gridItem.Value;
                     if (grid.layer == layer)
                     {
-                        content += "      <grid path='" + grid.path + "' pos_x='" + grid.position.x + "' pos_y='" + grid.position.y + "' pos_z='" + grid.position.z + "' angle_x='" + grid.rotationAngle.x + "' angle_y='" + grid.rotationAngle.y + "' angle_z='" + grid.rotationAngle.z + "' />\n";
+                        content += "    <grid path='" + grid.path + "' pos_x='" + grid.position.x + "' pos_y='" + grid.position.y + "' pos_z='" + grid.position.z + "' angle_x='" + grid.rotationAngle.x + "' angle_y='" + grid.rotationAngle.y + "' angle_z='" + grid.rotationAngle.z + "' />\n";
                     }
                 }
-
-                content += "    </layer>\n";
+                content += "  </layer>\n";
             }
-            content += "  </layers>\n";
 
+            // player born point
+            content += "  <p_bron pos_x='" + playerBornPosition.x + "' pos_y='" + playerBornPosition.y + "' pos_z='" + playerBornPosition.z + "' />\n";
+            
             // save
             var assetObj = AssetDatabase.LoadAssetAtPath(LEConst.LevelMapTemplatePath, typeof(TextAsset));
             TextAsset template = assetObj as TextAsset;
@@ -244,5 +254,7 @@ namespace SU.Editor.LevelEditor
         {
             return string.Format("x:{0}/y:{1}/z:{2}/layer:{3}", pos.x, pos.y, pos.z, layer);
         }
+
+#endif
     }
 }

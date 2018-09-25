@@ -1,16 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="1136,640" opaque="false">
-  <displayList>
-    <component id="n2_kahw" name="line_blue" src="kahws" fileName="component/line/line_blue.xml" pkg="tqc2b6mi" xy="0,0" size="100,100"/>
-    <component id="n3_kahw" name="line_blue" src="kahws" fileName="component/line/line_blue.xml" pkg="tqc2b6mi" xy="1072,0" size="64,64"/>
-    <component id="n4_kahw" name="line_blue" src="kahws" fileName="component/line/line_blue.xml" pkg="tqc2b6mi" xy="978,0" size="64,64"/>
-    <component id="n5_kahw" name="line_blue" src="kahws" fileName="component/line/line_blue.xml" pkg="tqc2b6mi" xy="875,0" size="64,64"/>
-    <component id="n6_kahw" name="line_blue" src="kahws" fileName="component/line/line_blue.xml" pkg="tqc2b6mi" xy="783,0" size="64,64"/>
-    <component id="n8_kahw" name="line_purple" src="kahwt" fileName="component/line/line_purple.xml" pkg="tqc2b6mi" xy="782,141" size="128,128"/>
-    <component id="n9_kahw" name="line_purple" src="kahwt" fileName="component/line/line_purple.xml" pkg="tqc2b6mi" xy="966,141" size="128,128"/>
-    <component id="n10_kahw" name="line_purple" src="kahwt" fileName="component/line/line_purple.xml" pkg="tqc2b6mi" xy="782,298" size="128,128"/>
-    <component id="n11_kahw" name="line_purple" src="kahwt" fileName="component/line/line_purple.xml" pkg="tqc2b6mi" xy="966,298" size="128,128"/>
-    <component id="n12_kahw" name="line_purple" src="kahwt" fileName="component/line/line_purple.xml" pkg="tqc2b6mi" xy="782,462" size="128,128"/>
-    <component id="n13_kahw" name="line_purple" src="kahwt" fileName="component/line/line_purple.xml" pkg="tqc2b6mi" xy="966,462" size="128,128"/>
-  </displayList>
+  <displayList/>
 </component>

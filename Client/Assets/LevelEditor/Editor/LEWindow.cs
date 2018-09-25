@@ -318,7 +318,7 @@ namespace SU.Editor.LevelEditor
                 EditorGUILayout.BeginVertical("box");
                 GUILayout.Label("Grid Height: " + gridHeight.ToString());
                 EditorGUILayout.EndVertical();
-
+                
                 // 资源库预览
                 EditorGUILayout.BeginVertical("box");
                 EditorGUILayout.LabelField("Pick The Repository Set To Use", EditorStyles.boldLabel);

@@ -106,7 +106,7 @@ namespace SU.Editor.LevelEditor
             var layerGo = new GameObject();
             layerGo.name = "Layers";
             layerGo.transform.parent = levelGo.transform;
-
+            
             EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), LEUtils.GetLevelScenePath(levelSceneName));
 
             Close();

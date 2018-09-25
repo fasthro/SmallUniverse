@@ -53,6 +53,20 @@ namespace SU.Behaviour
             }
         }
 
+        // mapManager
+        private static MapManager _mapMgr = null;
+        protected static MapManager mapMgr
+        {
+            get
+            {
+                if (_mapMgr == null)
+                {
+                    _mapMgr = GetManager<MapManager>();
+                }
+                return _mapMgr;
+            }
+        }
+
         public BaseBehaviour()
         {
         }
@@ -70,6 +84,7 @@ namespace SU.Behaviour
             AddManager<PanelManager>();
             AddManager<LevelManager>();
             AddManager<ResManager>();
+            AddManager<MapManager>();
         }
 
         private static T AddManager<T>() where T : BaseManager, new()

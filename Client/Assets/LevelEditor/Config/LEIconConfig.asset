@@ -12,51 +12,27 @@ MonoBehaviour:
   m_Name: LEIconConfig
   m_EditorClassIdentifier: 
   icons:
-  - Name: iconArrowDown
-    Texture: {fileID: 2800000, guid: f4f4cda78c5e8bb48bb03c64996dff97, type: 3}
-  - Name: iconArrowUp
-    Texture: {fileID: 2800000, guid: 1b16d1a6f5c8d9e40a4a79fe07a54466, type: 3}
   - Name: iconBlockMode
     Texture: {fileID: 2800000, guid: 5571ee49f4bf97940b18b00dd67c2db1, type: 3}
   - Name: iconConfig
     Texture: {fileID: 2800000, guid: 4a60e0988c8007d46891464a16b67ed6, type: 3}
-  - Name: iconCopy
-    Texture: {fileID: 2800000, guid: 17125217120aff24f89e7dcb7c3e9181, type: 3}
-  - Name: iconCrop
-    Texture: {fileID: 2800000, guid: ddd43e49d89def34c993606cf19e1c3e, type: 3}
   - Name: iconCursor
     Texture: {fileID: 2800000, guid: 684cce25dc333a4428478feb98c6ac4b, type: 3}
-  - Name: iconCustomBrush
-    Texture: {fileID: 2800000, guid: 5537dea54416b1e48afcd2fe1e761b75, type: 3}
   - Name: iconErase
     Texture: {fileID: 2800000, guid: bf58846d6e53cfa418f7338114c7bd98, type: 3}
-  - Name: iconFlipHorizontal
-    Texture: {fileID: 2800000, guid: 24912b951285b6a4fb6e1abed93b3c73, type: 3}
-  - Name: iconFlipVertical
-    Texture: {fileID: 2800000, guid: 4fd09d3702f23fb4580d1d5913c77102, type: 3}
-  - Name: iconGrid
-    Texture: {fileID: 2800000, guid: 269c497b3b14d98428e6b2ae16af3e45, type: 3}
   - Name: iconGridDown
     Texture: {fileID: 2800000, guid: 8d4ff4b4c1949db4e841cca87fa75274, type: 3}
   - Name: iconGridUp
     Texture: {fileID: 2800000, guid: 4dad180ea71cbd44d9ddea5e1810e861, type: 3}
-  - Name: iconInfo
-    Texture: {fileID: 2800000, guid: 89320c9b873cd75419a863cd4bf07e27, type: 3}
   - Name: iconIsolate
     Texture: {fileID: 2800000, guid: a586b663fe7bff34d87a618665ba69c0, type: 3}
-  - Name: iconLayers
-    Texture: {fileID: 2800000, guid: 54044604eed9a204096e3b6423cffcd0, type: 3}
-  - Name: iconMove
-    Texture: {fileID: 2800000, guid: 90c507fe6aca992499d2ee1fd4c5f760, type: 3}
   - Name: iconPicker
     Texture: {fileID: 2800000, guid: addf3a086f7f24a439db2ac6f4033d5e, type: 3}
-  - Name: iconRefresh
-    Texture: {fileID: 2800000, guid: 64a7bdfbeaa0fab4cba403cbd9ebe480, type: 3}
-  - Name: iconRotate
-    Texture: {fileID: 2800000, guid: 0d26d5b5826fed247af1ea895c771d0d, type: 3}
   - Name: iconRotateX
     Texture: {fileID: 2800000, guid: 11bf39fea4877e04bb091506980af546, type: 3}
-  - Name: iconSelectTool
-    Texture: {fileID: 2800000, guid: 082e793cc276cbd49bc3158b6902c7a8, type: 3}
-  - Name: iconTrash
-    Texture: {fileID: 2800000, guid: d488aee017fcf4a4db7f9a52f625e968, type: 3}
+  - Name: iconRotateY
+    Texture: {fileID: 2800000, guid: acb3558f43c76f04f8e705c79a8eb6c7, type: 3}
+  - Name: iconRotateZ
+    Texture: {fileID: 2800000, guid: 7a11029a153a17143a2d76a7935b6c03, type: 3}
+  - Name: iconSetPlayer
+    Texture: {fileID: 2800000, guid: 1bda4f78cb83a6e42b39108aa4365ec7, type: 3}

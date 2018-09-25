@@ -12,14 +12,16 @@ namespace SU.Scene
         {
             base.OnEnterScene(level, action);
 
-            panelMgr.CreatePanel(UI.PanelName.LoginPanel);
+            //panelMgr.CreatePanel(UI.PanelName.LoginPanel);
+
+            mapMgr.CreattLevelMap("Test");
         }
 
         public override void OnLeaveScenel(LevelType level, Action action = null)
         {
             base.OnLeaveScenel(level, action);
 
-            panelMgr.ClosePanel(UI.PanelName.LoginPanel);
+            //panelMgr.ClosePanel(UI.PanelName.LoginPanel);
         }
     }
 }

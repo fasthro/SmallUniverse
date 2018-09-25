@@ -113,6 +113,8 @@ namespace SU.Manager
             }
             op.allowSceneActivation = true;
 
+            yield return new WaitForEndOfFrame();
+
             loaderScene.OnLeaveScenel(levelType, delegate ()
             {
                 panelMgr.ClosePanel(UI.PanelName.LoaderPanel);

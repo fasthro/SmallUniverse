@@ -59,17 +59,24 @@ namespace SU.Editor.LevelEditor
             }
 
             // RotateY
-            content = new GUIContent(LEWindow.IconConfig.GetIconTexture("iconRotateX"));
+            content = new GUIContent(LEWindow.IconConfig.GetIconTexture("iconRotateY"));
             if (GUI.Toggle(new Rect(beginX + LESetting.SceneToolSize + LESetting.SceneTooIInterval, LESetting.SceneTooIY, LESetting.SceneToolSize, LESetting.SceneToolSize), false, content, GUI.skin.button))
             {
                 grid.RotateY();
             }
 
             // RotateZ
-            content = new GUIContent(LEWindow.IconConfig.GetIconTexture("iconRotateX"));
+            content = new GUIContent(LEWindow.IconConfig.GetIconTexture("iconRotateZ"));
             if (GUI.Toggle(new Rect(beginX + (LESetting.SceneToolSize + LESetting.SceneTooIInterval) * 2, LESetting.SceneTooIY, LESetting.SceneToolSize, LESetting.SceneToolSize), false, content, GUI.skin.button))
             {
                 grid.RotateZ();
+            }
+
+            // set player born position
+            content = new GUIContent(LEWindow.IconConfig.GetIconTexture("iconSetPlayer"));
+            if (GUI.Toggle(new Rect(beginX + (LESetting.SceneToolSize + LESetting.SceneTooIInterval) * 3, LESetting.SceneTooIY, LESetting.SceneToolSize, LESetting.SceneToolSize), false, content, GUI.skin.button))
+            {
+                
             }
 
             Handles.EndGUI();

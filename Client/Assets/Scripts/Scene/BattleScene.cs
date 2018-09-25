@@ -13,7 +13,6 @@ namespace SU.Scene
             base.OnEnterScene(level, action);
 
             Game.mainGame.OnEnterBattleScene();
-
         }
 
         public override void OnLeaveScenel(LevelType level, Action action = null)

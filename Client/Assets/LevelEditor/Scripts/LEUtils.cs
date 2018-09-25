@@ -8,6 +8,7 @@ namespace SU.Editor.LevelEditor
 {
     public class LEUtils
     {
+#if UNITY_EDITOR
         public static T CreateScriptable<T>() where T : ScriptableObject
         {
             T newScriptable = ScriptableObject.CreateInstance<T>();
@@ -92,6 +93,6 @@ namespace SU.Editor.LevelEditor
         {
             return Path.Combine(GetLevelSceneDirectory(levelSceneName, absolute), levelSceneName + ".xml");
         }
-        
+#endif
     }
 }

@@ -17,6 +17,6 @@ namespace SU.Editor.LevelEditor
         // 场景工具 间隔
         public static int SceneTooIInterval = 5;
         // 场景工具尺寸
-        public static int SceneToolSize = 32;
+        public static int SceneToolSize = 40;
     }
 }
