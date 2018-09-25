@@ -1,0 +1,41 @@
+ManifestFileVersion: 0
+CRC: 1733787077
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: dd3a13be3ed34ade99e6780fb0eecc2b
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9b4f1593cdf7a1ab33da9444111cb398
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Levels/Repository/Normal/Cube4.prefab
+- Assets/Levels/Repository/Normal/Cube6.prefab
+- Assets/Levels/Repository/Normal/Cube2.prefab
+- Assets/Levels/Repository/Normal/Cube11.prefab
+- Assets/Levels/Repository/Normal/Cube12.prefab
+- Assets/Levels/Repository/Normal/Cube8.prefab
+- Assets/Levels/Repository/Normal/Cube7.prefab
+- Assets/Levels/Repository/Normal/Cube10.prefab
+- Assets/Levels/Repository/Normal/Cube1.prefab
+- Assets/Levels/Repository/Normal/Cube5.prefab
+- Assets/Levels/Repository/Normal/Cube3.prefab
+- Assets/Levels/Repository/Normal/Cube9.prefab
+Dependencies: []

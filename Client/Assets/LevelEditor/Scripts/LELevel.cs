@@ -109,18 +109,18 @@ namespace SU.Editor.LevelEditor
         /// 画格子
         /// </summary>
         /// <param name="repositoryName">资源库名称</param>
-        /// <param name="ink">笔芯</param>
-        /// <param name="inkPath">笔芯路径</param>
+        /// <param name="asset">资源</param>
+        /// <param name="assetPath">资源路径</param>
         /// <param name="pos">位置</param>
         /// <param name="layer">层</param>
-        public void Draw(string repositoryName, GameObject ink, string inkPath, Vector3 pos, int layer)
+        public void Draw(string repositoryName, GameObject asset, string assetPath, string assetName, string assetBundleName, Vector3 pos, int layer)
         {
             string key = GetKey(pos, layer);
 
             if (GetGrid(key))
                 return;
 
-            var go = GameObject.Instantiate(ink) as GameObject;
+            var go = GameObject.Instantiate(asset) as GameObject;
             go.name = key;
             go.transform.parent = GetLayerTransform(layer);
             go.transform.position = pos;
@@ -128,7 +128,9 @@ namespace SU.Editor.LevelEditor
             var grid = go.AddComponent<LEGrid>();
             grid.key = key;
             grid.repositoryName = repositoryName;
-            grid.path = inkPath;
+            grid.assetPath = assetPath;
+            grid.assetName = assetName;
+            grid.bundleName = assetBundleName;
             grid.layer = layer;
             grid.position = pos;
             grid.rotationAngle = Vector3.zero;
@@ -203,6 +205,19 @@ namespace SU.Editor.LevelEditor
         {
             string content = string.Empty;
 
+            // bundle 资源列表
+            Dictionary<string, Dictionary<string, string>> bundles = new Dictionary<string, Dictionary<string, string>>();
+
+            // layer 层
+            int layerMin = 0;
+            int layerMax = 0;
+            
+            // 关卡尺寸
+            int widthMin = 0;
+            int widthMax = 0;
+            int lengthMin = 0;
+            int lengthMax = 0;
+
             // layer
             int layer;
             foreach (KeyValuePair<int, Transform> layerItem in layerMap)
@@ -211,17 +226,59 @@ namespace SU.Editor.LevelEditor
                     continue;
 
                 layer = int.Parse(layerItem.Value.gameObject.name);
-                content = string.Format("  <layer name='{0}'>\n", layer);
 
+                if (layer < layerMin)
+                    layerMin = layer;
+                if (layer > layerMax)
+                    layerMax = layer;
+
+                content = string.Format("  <layer name='{0}'>\n", layer);
                 foreach (KeyValuePair<string, LEGrid> gridItem in gridMap)
                 {
                     var grid = gridItem.Value;
                     if (grid.layer == layer)
                     {
-                        content += "    <grid path='" + grid.path + "' pos_x='" + grid.position.x + "' pos_y='" + grid.position.y + "' pos_z='" + grid.position.z + "' angle_x='" + grid.rotationAngle.x + "' angle_y='" + grid.rotationAngle.y + "' angle_z='" + grid.rotationAngle.z + "' />\n";
+                        content += "    <grid asset_name='" + grid.assetName + "' bundle_name='" + grid.bundleName + "' pos_x='" + grid.position.x + "' pos_y='" + grid.position.y + "' pos_z='" + grid.position.z + "' angle_x='" + grid.rotationAngle.x + "' angle_y='" + grid.rotationAngle.y + "' angle_z='" + grid.rotationAngle.z + "' />\n";
+
+                        // 资源记录
+                        if (!bundles.ContainsKey(grid.bundleName))
+                        {
+                            Dictionary<string, string> assets = new Dictionary<string, string>();
+                            assets.Add(grid.assetName, grid.assetName);
+
+                            bundles.Add(grid.bundleName, assets);
+                        }
+                        else {
+                            var assets = bundles[grid.bundleName];
+                            if (!assets.ContainsKey(grid.assetName))
+                            {
+                                assets.Add(grid.assetName, grid.assetName);
+                            }
+                        }
                     }
+
+                    if (grid.position.x < widthMin)
+                        widthMin = (int)grid.position.x;
+                    if (grid.position.x > widthMax)
+                        widthMax = (int)grid.position.x;
+
+                    if (grid.position.z < lengthMin)
+                        lengthMin = (int)grid.position.z;
+                    if (grid.position.z > lengthMax)
+                        lengthMax = (int)grid.position.z;
                 }
                 content += "  </layer>\n";
+            }
+
+            // bundles
+            foreach (KeyValuePair<string, Dictionary<string, string>> bundle in bundles)
+            {
+                content += string.Format("  <bundle name='{0}'>\n", bundle.Key);
+                foreach (KeyValuePair<string, string> asset in bundle.Value)
+                {
+                    content += "    <asset name='" + asset.Key + "' />\n";
+                }
+                content += "  </bundle>\n";
             }
 
             // player born point
@@ -231,6 +288,12 @@ namespace SU.Editor.LevelEditor
             var assetObj = AssetDatabase.LoadAssetAtPath(LEConst.LevelMapTemplatePath, typeof(TextAsset));
             TextAsset template = assetObj as TextAsset;
             string text = template.text.Replace("{#levelMapName}", levelSceneName);
+            text = text.Replace("{#layerMin}", layerMin.ToString());
+            text = text.Replace("{#layerMax}", layerMax.ToString());
+            text = text.Replace("{#widthMin}", widthMin.ToString());
+            text = text.Replace("{#widthMax}", widthMax.ToString());
+            text = text.Replace("{#lengthMin}", lengthMin.ToString());
+            text = text.Replace("{#lengthMax}", lengthMax.ToString());
             text = text.Replace("{#content}", content);
 
             string file = LEUtils.GetLevelDataPath(levelSceneName);

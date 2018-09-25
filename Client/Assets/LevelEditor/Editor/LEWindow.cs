@@ -56,7 +56,7 @@ namespace SU.Editor.LevelEditor
         private int modelViewColumn;
 
         // 当前选中的仓库模型
-        private LERepositoryPrefab currentModel;
+        private LERepositoryAsset currentModel;
         // 当前选择的工具
         private SceneTool currentSelectTool;
         // 当前鼠标所在GizmoGrid上的位置
@@ -382,18 +382,18 @@ namespace SU.Editor.LevelEditor
 
             EditorGUILayout.BeginHorizontal();
 
-            for (int i = 0; i < repository.prefabs.Length; i++)
+            for (int i = 0; i < repository.assets.Length; i++)
             {
                 EditorGUILayout.BeginVertical();
 
                 // 模型预览
-                Texture2D previewImage = AssetPreview.GetAssetPreview(repository.prefabs[i].prefab);
+                Texture2D previewImage = AssetPreview.GetAssetPreview(repository.assets[i].asset);
                 content = new GUIContent(previewImage);
                 // 选中状态
                 bool selected = false;
                 if (currentModel != null)
                 {
-                    if (currentModel.name == repository.prefabs[i].name)
+                    if (currentModel.assetName == repository.assets[i].assetName)
                     {
                         selected = true;
                     }
@@ -402,14 +402,14 @@ namespace SU.Editor.LevelEditor
                 bool isSelected = GUILayout.Toggle(selected, content, GUI.skin.button);
                 if (isSelected)
                 {
-                    currentModel = repository.prefabs[i];
+                    currentModel = repository.assets[i];
                     // 选中，设置笔刷
                     brush.SetModel(currentModel);
                     ChangeSceneTool(SceneTool.Brush);
                 }
 
                 EditorGUILayout.BeginHorizontal("Box");
-                EditorGUILayout.LabelField(repository.prefabs[i].name);
+                EditorGUILayout.LabelField(repository.assets[i].assetName);
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.EndVertical();
 

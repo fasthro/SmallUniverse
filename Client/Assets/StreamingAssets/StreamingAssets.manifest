@@ -1,10 +1,13 @@
 ManifestFileVersion: 0
-CRC: 3132784821
+CRC: 1908350233
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: test
+      Name: level/repository/normal
       Dependencies: {}
     Info_1:
-      Name: normal
+      Name: level/repository/transparent
+      Dependencies: {}
+    Info_2:
+      Name: level/scene/test
       Dependencies: {}

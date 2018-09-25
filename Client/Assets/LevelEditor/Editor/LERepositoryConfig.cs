@@ -7,16 +7,18 @@ using UnityEngine;
 namespace SU.Editor.LevelEditor
 {
     [System.Serializable]
-    public class LERepositoryPrefab
+    public class LERepositoryAsset
     {
-        // 资源库名称
+        // 资源所在仓库名称
         public string repositoryName;
-        // prefab
-        public string name;
+        // prefab name
+        public string assetName;
         // prefab path
-        public string path;
-        // prefab
-        public GameObject prefab;
+        public string assetPath;
+        // prefab 资源
+        public GameObject asset;
+        // bundle name
+        public string bundleName;
     }
 
     [System.Serializable]
@@ -26,8 +28,8 @@ namespace SU.Editor.LevelEditor
         public string name;
         // 资源库路径
         public string path;
-        // 资源库中prefab资源
-        public LERepositoryPrefab[] prefabs;
+        // 资源库中 prefab 资源
+        public LERepositoryAsset[] assets;
 
         /// <summary>
         /// 初始化资源库
@@ -35,19 +37,20 @@ namespace SU.Editor.LevelEditor
         public void Initialize()
         {
             string[] fps = Directory.GetFiles(path, "*.prefab", SearchOption.TopDirectoryOnly);
-            prefabs = new LERepositoryPrefab[fps.Length];
+            assets = new LERepositoryAsset[fps.Length];
 
             for (int i = 0; i < fps.Length; i++)
             {
                 string fp = fps[i];
-                LERepositoryPrefab rp = new LERepositoryPrefab();
+                LERepositoryAsset rp = new LERepositoryAsset();
                 string ns = fp.Substring(path.Length + 1, fp.Length - path.Length - 1);
                 rp.repositoryName = name;
-                rp.name = ns.Substring(0, ns.Length - ".prefab".Length);
-                rp.path = fp;
-                rp.prefab = AssetDatabase.LoadAssetAtPath(fp, typeof(GameObject)) as GameObject;
+                rp.assetName = ns.Substring(0, ns.Length - ".prefab".Length);
+                rp.assetPath = fp;
+                rp.asset = AssetDatabase.LoadAssetAtPath(fp, typeof(GameObject)) as GameObject;
+                rp.bundleName = "level/repository/" + name.ToLower();
 
-                prefabs[i] = rp;
+                assets[i] = rp;
             }
         }
 
@@ -123,17 +126,17 @@ namespace SU.Editor.LevelEditor
         /// <param name="repositoryName"></param>
         /// <param name="prefabPath"></param>
         /// <returns></returns>
-        public LERepositoryPrefab GetRepositoryPrefab(string repositoryName, string prefabPath)
+        public LERepositoryAsset GetRepositoryPrefab(string repositoryName, string prefabPath)
         {
             for (int i = 0; i < repositorys.Count; i++)
             {
                 if (repositorys[i].name == repositoryName)
                 {
-                    for (int k = 0; k < repositorys[i].prefabs.Length; k++)
+                    for (int k = 0; k < repositorys[i].assets.Length; k++)
                     {
-                        if (repositorys[i].prefabs[k].path == prefabPath)
+                        if (repositorys[i].assets[k].assetPath == prefabPath)
                         {
-                            return repositorys[i].prefabs[k];
+                            return repositorys[i].assets[k];
                         }
                     }
                 }

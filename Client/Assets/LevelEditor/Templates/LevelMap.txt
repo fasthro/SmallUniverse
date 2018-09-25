@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<map name='{#levelMapName}' layerMin='' layerMax='' sizeX='' sizeY=''>
+<map name='{#levelMapName}' layerMin='{#layerMin}' layerMax='{#layerMax}' widthMin='{#widthMin}' widthMax='{#widthMax}' lengthMin='{#lengthMin}' lengthMax='{#lengthMax}'>
 {#content}
 </map>

@@ -22,14 +22,14 @@ namespace SU.Editor.LevelEditor
                 var grid = LELevel.Inst.GetGrid(LELevel.GetKey(mousePosition, LEWindow.Inst.Layer));
                 if (grid != null)
                 {
-                    var rp = LEWindow.RepositoryConfig.GetRepositoryPrefab(grid.repositoryName, grid.path);
+                    var rp = LEWindow.RepositoryConfig.GetRepositoryPrefab(grid.repositoryName, grid.assetPath);
                     if (rp != null)
                     {
                         LEWindow.Inst.brush.SetModel(rp);
                         LEWindow.Inst.ChangeSceneTool(SceneTool.Brush);
                     }
                     else {
-                        Debug.LogError("There is no " + grid.path + " in the " + grid.repositoryName);
+                        Debug.LogError("There is no " + grid.assetPath + " in the " + grid.repositoryName);
                     }
                 }
             }

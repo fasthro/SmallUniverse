@@ -11,7 +11,7 @@ namespace SU.Editor.LevelEditor
     public class LEBrush : LEToolBase
     {
         // 笔刷模型配置
-        private LERepositoryPrefab repositroyPrefab;
+        private LERepositoryAsset repositroyPrefab;
         // 笔芯
         private GameObject ink;
         // 笔刷当前位置
@@ -23,7 +23,7 @@ namespace SU.Editor.LevelEditor
         /// 设置笔刷模型
         /// </summary>
         /// <param name="_mc"></param>
-        public void SetModel(LERepositoryPrefab _mc)
+        public void SetModel(LERepositoryAsset _mc)
         {
             repositroyPrefab = _mc;
 
@@ -31,7 +31,7 @@ namespace SU.Editor.LevelEditor
             {
                 bool isActive = ink.activeSelf;
                 GameObject.DestroyImmediate(ink);
-                ink = GameObject.Instantiate(repositroyPrefab.prefab) as GameObject;
+                ink = GameObject.Instantiate(repositroyPrefab.asset) as GameObject;
                 ink.name = "ink";
                 ink.isStatic = true;
                 ink.hideFlags = HideFlags.HideAndDontSave;
@@ -50,7 +50,7 @@ namespace SU.Editor.LevelEditor
             {
                 if (ink == null)
                 {
-                    ink = GameObject.Instantiate(repositroyPrefab.prefab) as GameObject;
+                    ink = GameObject.Instantiate(repositroyPrefab.asset) as GameObject;
                     ink.name = "ink";
                 }
 
@@ -81,7 +81,7 @@ namespace SU.Editor.LevelEditor
                 && Event.current.button == 0 && Event.current.alt == false &&Event.current.shift == false && Event.current.control == false
                 && enabledInput)
             {
-                LELevel.Inst.Draw(repositroyPrefab.repositoryName, repositroyPrefab.prefab, repositroyPrefab.path, position, LEWindow.Inst.Layer);
+                LELevel.Inst.Draw(repositroyPrefab.repositoryName, repositroyPrefab.asset, repositroyPrefab.assetPath, repositroyPrefab.assetName, repositroyPrefab.bundleName, position, LEWindow.Inst.Layer);
             }
         }
 

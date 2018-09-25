@@ -11,7 +11,11 @@ namespace SU.Editor.LevelEditor
         // 资源库名称
         public string repositoryName;
         // 资源路径
-        public string path;
+        public string assetPath;
+        // 资源名称
+        public string assetName;
+        // 所在bundle 名称
+        public string bundleName;
         // 所在层
         public int layer;
         // 位置

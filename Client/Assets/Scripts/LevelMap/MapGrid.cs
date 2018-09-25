@@ -6,8 +6,10 @@ namespace SU.Level
 {
     public class MapGrid
     {
-        // 资源路径
-        public string path;
+        // 资源名称
+        public string assetName;
+        // bundle 名称
+        public string buneldName;
         // 所在层
         public int layer;
         // 位置

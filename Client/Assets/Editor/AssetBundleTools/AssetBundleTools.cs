@@ -22,7 +22,7 @@ namespace SU.Editor
             SetAssetBundleNameToLevelRepository();
             SetAssetBundleNameToLevelScene();
 
-            Debug.Log("set assets bundle name finished!");
+            Debug.Log("设置资源 assetBundleName 完成!");
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace SU.Editor
         {
             if (!File.Exists(filePath))
             {
-                Debug.LogError("file to set assets bundle name path not exist! " + filePath);
+                Debug.LogError("设置资源 assetBundleName 时，资源路径不存在!" + filePath);
                 return;
             }
 
