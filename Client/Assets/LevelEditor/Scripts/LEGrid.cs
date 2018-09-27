@@ -4,6 +4,13 @@ using UnityEngine;
 
 namespace SU.Editor.LevelEditor
 {
+    public enum GridFunction
+    {
+       None,
+       CharacterPoint, // 角色出生点
+       MonsterPoint, // 怪物出生点
+    }
+
     public class LEGrid : MonoBehaviour
     {
         // 对应的key
@@ -22,6 +29,8 @@ namespace SU.Editor.LevelEditor
         public Vector3 position;
         // 旋转
         public Vector3 rotationAngle;
+        // 格子功能
+        public GridFunction function;
 
         #region rotate
         public void RotateX()

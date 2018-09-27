@@ -55,6 +55,10 @@ namespace SU.Editor.LevelEditor
         // 是否以网格中心点为原点
         [HideInInspector]
         public bool CentreGrid = true;
+        // 是否显示背景
+        [HideInInspector]
+        public bool BaseEnabled = true;
+
 
         /// <summary>
         /// 设置网格Height
@@ -143,6 +147,9 @@ namespace SU.Editor.LevelEditor
         // 画背板
         private void DrawBase()
         {
+            if (!BaseEnabled)
+                return;
+
             if (CentreGrid)
             {
                 Gizmos.DrawCube(new Vector3(gameObject.transform.position.x - tileOffset, gameObject.transform.position.y + gridHeight - tileOffset - gridOffset, gameObject.transform.position.z - tileOffset),

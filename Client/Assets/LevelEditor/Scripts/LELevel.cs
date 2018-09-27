@@ -23,9 +23,6 @@ namespace SU.Editor.LevelEditor
         // 关卡场景名称
         public string levelSceneName;
 
-        // 玩家出生点坐标
-        public Vector3 playerBornPosition;
-
         // 格子数据字典
         private Dictionary<string, LEGrid> gridMap;
         // 层数据字典
@@ -78,9 +75,6 @@ namespace SU.Editor.LevelEditor
                     }
                 }
             }
-
-            // player born point initialize
-           
         }
 
         /// <summary>
@@ -134,6 +128,7 @@ namespace SU.Editor.LevelEditor
             grid.layer = layer;
             grid.position = pos;
             grid.rotationAngle = Vector3.zero;
+            grid.function = GridFunction.None;
 
             SetGrid(key, grid);
         }
@@ -151,6 +146,24 @@ namespace SU.Editor.LevelEditor
             GameObject.DestroyImmediate(grid.gameObject);
 
             RemoveGrid(key);
+        }
+
+        /// <summary>
+        /// 设置角色出生点
+        /// </summary>
+        /// <param name="grid"></param>
+        public void SetCharacterPointGrid(LEGrid grid)
+        {
+            foreach (KeyValuePair<string, LEGrid> item in gridMap)
+            {
+                if (item.Value.function == GridFunction.CharacterPoint)
+                {
+                    item.Value.function = GridFunction.None;
+                    break;
+                }
+            }
+
+            grid.function = GridFunction.CharacterPoint;
         }
         #endregion
 
@@ -211,12 +224,18 @@ namespace SU.Editor.LevelEditor
             // layer 层
             int layerMin = 0;
             int layerMax = 0;
-            
+
             // 关卡尺寸
             int widthMin = 0;
             int widthMax = 0;
             int lengthMin = 0;
             int lengthMax = 0;
+
+            // 角色出生点格子
+            LEGrid characterPoint = null;
+
+            // 距离出生点的最大半径
+            int radius = 0;
 
             // layer
             int layer;
@@ -225,18 +244,18 @@ namespace SU.Editor.LevelEditor
                 if (layerItem.Value.childCount == 0)
                     continue;
 
+                // layer
                 layer = int.Parse(layerItem.Value.gameObject.name);
-
                 if (layer < layerMin)
                     layerMin = layer;
                 if (layer > layerMax)
                     layerMax = layer;
 
-                content = string.Format("  <layer name='{0}'>\n", layer);
+                content += string.Format("  <layer name='{0}'>\n", layer);
                 foreach (KeyValuePair<string, LEGrid> gridItem in gridMap)
                 {
                     var grid = gridItem.Value;
-                    if (grid.layer == layer)
+                    if (grid.layer == layer && grid.function == GridFunction.None)
                     {
                         content += "    <grid asset_name='" + grid.assetName + "' bundle_name='" + grid.bundleName + "' pos_x='" + grid.position.x + "' pos_y='" + grid.position.y + "' pos_z='" + grid.position.z + "' angle_x='" + grid.rotationAngle.x + "' angle_y='" + grid.rotationAngle.y + "' angle_z='" + grid.rotationAngle.z + "' />\n";
 
@@ -257,6 +276,13 @@ namespace SU.Editor.LevelEditor
                         }
                     }
 
+                    // character point
+                    if (grid.function == GridFunction.CharacterPoint)
+                    {
+                        characterPoint = grid;
+                    }
+
+                    // size
                     if (grid.position.x < widthMin)
                         widthMin = (int)grid.position.x;
                     if (grid.position.x > widthMax)
@@ -281,10 +307,31 @@ namespace SU.Editor.LevelEditor
                 content += "  </bundle>\n";
             }
 
-            // player born point
-            content += "  <p_bron pos_x='" + playerBornPosition.x + "' pos_y='" + playerBornPosition.y + "' pos_z='" + playerBornPosition.z + "' />\n";
-            
-            // save
+            // character point
+            if (characterPoint != null)
+            {
+                content += "  <character_point pos_x='" + characterPoint.position.x + "' pos_y='" + characterPoint.position.y + "' pos_z='" + characterPoint.position.z + "' angle_x='" + characterPoint.rotationAngle.x + "' angle_y='" + characterPoint.rotationAngle.y + "' angle_z='" + characterPoint.rotationAngle.z + "' layer='" + characterPoint.layer + "' />\n";
+            }
+            else {
+                Debug.LogError("此关卡角色出生点未设置");
+                return;
+            }
+
+            // radius
+            var w1 = Mathf.Abs(widthMin) - (int)Mathf.Abs(characterPoint.position.x);
+            var w2 = Mathf.Abs(widthMax) - (int)Mathf.Abs(characterPoint.position.x);
+            var w = w1 > w2 ? w1 : w2;
+            w += 1;
+
+            var len1 = Mathf.Abs(lengthMin) - (int)Mathf.Abs(characterPoint.position.z);
+            var len2 = Mathf.Abs(lengthMax) - (int)Mathf.Abs(characterPoint.position.z);
+            var len = len1 > len2 ? len1 : len2;
+            len += 1;
+
+           radius = w > len ? w : len;
+            radius += 1;
+
+            // save xml
             var assetObj = AssetDatabase.LoadAssetAtPath(LEConst.LevelMapTemplatePath, typeof(TextAsset));
             TextAsset template = assetObj as TextAsset;
             string text = template.text.Replace("{#levelMapName}", levelSceneName);
@@ -294,6 +341,7 @@ namespace SU.Editor.LevelEditor
             text = text.Replace("{#widthMax}", widthMax.ToString());
             text = text.Replace("{#lengthMin}", lengthMin.ToString());
             text = text.Replace("{#lengthMax}", lengthMax.ToString());
+            text = text.Replace("{#radius}", radius.ToString());
             text = text.Replace("{#content}", content);
 
             string file = LEUtils.GetLevelDataPath(levelSceneName);

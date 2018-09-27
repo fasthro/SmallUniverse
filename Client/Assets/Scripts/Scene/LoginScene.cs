@@ -8,16 +8,16 @@ namespace SU.Scene
 {
     public class LoginScene : BaseScene
     {
-        public override void OnEnterScene(LevelType level, Action action = null)
+        public override void OnEnterScene(SceneType level, Action action = null)
         {
             base.OnEnterScene(level, action);
 
             //panelMgr.CreatePanel(UI.PanelName.LoginPanel);
 
-            mapMgr.CreattLevelMap("Test");
+            levelMgr.CreateMap("Test");
         }
 
-        public override void OnLeaveScenel(LevelType level, Action action = null)
+        public override void OnLeaveScenel(SceneType level, Action action = null)
         {
             base.OnLeaveScenel(level, action);
 

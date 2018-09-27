@@ -10,12 +10,12 @@ namespace SU.Scene
     {
        
 
-        public override void OnEnterScene(LevelType level, Action action = null)
+        public override void OnEnterScene(SceneType level, Action action = null)
         {
             base.OnEnterScene(level, action);
         }
 
-        public override void OnLeaveScenel(LevelType level, Action action = null)
+        public override void OnLeaveScenel(SceneType level, Action action = null)
         {
             base.OnLeaveScenel(level, action);
 

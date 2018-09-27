@@ -9,14 +9,14 @@ namespace SU.Scene
 {
     public abstract class BaseScene : BaseBehaviour, IScene
     {
-        public virtual void OnEnterScene(LevelType level, Action action = null)
+        public virtual void OnEnterScene(SceneType level, Action action = null)
         {
             if (action != null)
             {
                 action();
             }
         }
-        public virtual void OnLeaveScenel(LevelType level, Action action = null) {
+        public virtual void OnLeaveScenel(SceneType level, Action action = null) {
             if (action != null)
             {
                 action();

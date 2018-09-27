@@ -24,9 +24,9 @@ namespace SU.UI
         protected bool isLoaded = false;
 
         // 资源管理器
-        protected ResManager resMgr = null;
+        protected GResManager resMgr = null;
         // 面板管理器
-        protected PanelManager panelMgr = null;
+        protected GPanelManager panelMgr = null;
 
         // 面板显示
         private bool isShow = false;
@@ -38,8 +38,8 @@ namespace SU.UI
 
         public PanelBase() : base()
         {
-            resMgr = Game.GetManager<ResManager>();
-            panelMgr = Game.GetManager<PanelManager>();
+            resMgr = Game.GetManager<GResManager>();
+            panelMgr = Game.GetManager<GPanelManager>();
         }
 
         /// <summary>

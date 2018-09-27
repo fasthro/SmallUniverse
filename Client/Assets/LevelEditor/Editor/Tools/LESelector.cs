@@ -72,11 +72,11 @@ namespace SU.Editor.LevelEditor
                 grid.RotateZ();
             }
 
-            // set player born position
+            // set character point
             content = new GUIContent(LEWindow.IconConfig.GetIconTexture("iconSetPlayer"));
             if (GUI.Toggle(new Rect(beginX + (LESetting.SceneToolSize + LESetting.SceneTooIInterval) * 3, LESetting.SceneTooIY, LESetting.SceneToolSize, LESetting.SceneToolSize), false, content, GUI.skin.button))
             {
-                
+                LELevel.Inst.SetCharacterPointGrid(grid);
             }
 
             Handles.EndGUI();

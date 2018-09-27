@@ -38,6 +38,6 @@ public class LoginPanel : PanelBase
 
     private void OckBeginGame()
     {
-        Game.GetManager<LevelManager>().LoadLevel(LevelType.MainScene);
+        Game.GetManager<GSceneManager>().LoadLevel(SceneType.MainScene);
     }
 }

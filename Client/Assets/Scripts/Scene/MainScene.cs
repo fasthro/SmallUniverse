@@ -8,7 +8,7 @@ namespace SU.Scene
 {
     public class MainScene : BaseScene
     {
-        public override void OnEnterScene(LevelType level, Action action = null)
+        public override void OnEnterScene(SceneType level, Action action = null)
         {
             base.OnEnterScene(level, action);
 
@@ -17,7 +17,7 @@ namespace SU.Scene
             panelMgr.CreatePanel(UI.PanelName.MainPanel);
         }
 
-        public override void OnLeaveScenel(LevelType level, Action action = null)
+        public override void OnLeaveScenel(SceneType level, Action action = null)
         {
             base.OnLeaveScenel(level, action);
 

@@ -13,57 +13,57 @@ namespace SU.Behaviour
         // scene 字典
         protected static Dictionary<string, BaseScene> Scenes = new Dictionary<string, BaseScene>();
 
-        // levelManager
-        private static LevelManager _levelMgr = null;
-        protected static LevelManager levelMgr {
+        // scene manager
+        private static GSceneManager _sceneMgr = null;
+        protected static GSceneManager sceneMgr {
             get {
-                if (_levelMgr == null)
+                if (_sceneMgr == null)
                 {
-                    _levelMgr = GetManager<LevelManager>();
+                    _sceneMgr = GetManager<GSceneManager>();
                 }
-                return _levelMgr;
+                return _sceneMgr;
             }
         }
 
-        // panelManager
-        private static PanelManager _panelMgr = null;
-        protected static PanelManager panelMgr
+        // panel manager
+        private static GPanelManager _panelMgr = null;
+        protected static GPanelManager panelMgr
         {
             get
             {
                 if (_panelMgr == null)
                 {
-                    _panelMgr = GetManager<PanelManager>();
+                    _panelMgr = GetManager<GPanelManager>();
                 }
                 return _panelMgr;
             }
         }
 
-        // resManager
-        private static ResManager _resMgr = null;
-        protected static ResManager resMgr
+        // res manager
+        private static GResManager _resMgr = null;
+        protected static GResManager resMgr
         {
             get
             {
                 if (_resMgr == null)
                 {
-                    _resMgr = GetManager<ResManager>();
+                    _resMgr = GetManager<GResManager>();
                 }
                 return _resMgr;
             }
         }
 
-        // mapManager
-        private static MapManager _mapMgr = null;
-        protected static MapManager mapMgr
+        // level manager
+        private static GLevelManager _levelMgr = null;
+        protected static GLevelManager levelMgr
         {
             get
             {
-                if (_mapMgr == null)
+                if (_levelMgr == null)
                 {
-                    _mapMgr = GetManager<MapManager>();
+                    _levelMgr = GetManager<GLevelManager>();
                 }
-                return _mapMgr;
+                return _levelMgr;
             }
         }
 
@@ -81,10 +81,10 @@ namespace SU.Behaviour
         //  初始化Manager
         private static void InitManager()
         {
-            AddManager<PanelManager>();
-            AddManager<LevelManager>();
-            AddManager<ResManager>();
-            AddManager<MapManager>();
+            AddManager<GPanelManager>();
+            AddManager<GSceneManager>();
+            AddManager<GResManager>();
+            AddManager<GLevelManager>();
         }
 
         private static T AddManager<T>() where T : BaseManager, new()

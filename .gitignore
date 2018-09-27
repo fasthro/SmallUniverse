@@ -34,3 +34,8 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+Client/Assets/CinemachineExamples/*
+Client/Assets/CinemachineExamples.meta
+Client/Assets/Gizmos/*
+Client/Assets/Gizmos.meta

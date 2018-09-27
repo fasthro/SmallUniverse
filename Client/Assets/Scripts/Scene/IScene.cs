@@ -8,7 +8,7 @@ namespace SU.Scene
 {
     public interface IScene
     {
-        void OnEnterScene(LevelType level, Action action);
-        void OnLeaveScenel(LevelType level, Action action);
+        void OnEnterScene(SceneType level, Action action);
+        void OnLeaveScenel(SceneType level, Action action);
     }
 }

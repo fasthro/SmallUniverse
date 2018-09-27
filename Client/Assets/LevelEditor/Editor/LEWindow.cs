@@ -555,6 +555,10 @@ namespace SU.Editor.LevelEditor
                 Repaint();
             }
 
+            // Show Gizmo Panel Base
+            content = new GUIContent(IconConfig.GetIconTexture("iconIsolate"));
+            gizmoPanel.BaseEnabled = GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY + (LESetting.SceneToolSize + LESetting.SceneTooIInterval) * 6, LESetting.SceneToolSize, LESetting.SceneToolSize), gizmoPanel.BaseEnabled, content, GUI.skin.button);
+           
             Handles.EndGUI();
         }
 

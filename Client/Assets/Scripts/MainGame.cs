@@ -36,7 +36,7 @@ public class MainGame : GameBehaviour {
         BaseBehaviour.InitBaseBehaviour();
 
         // 设置初始场景
-        Game.GetManager<LevelManager>().InitializeScene();
+        Game.GetManager<GSceneManager>().InitializeScene();
     }
 
     /// <summary>
