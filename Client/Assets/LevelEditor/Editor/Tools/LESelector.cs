@@ -89,7 +89,7 @@ namespace SU.Editor.LevelEditor
             {
                 if (state == SelectorState.None && state != SelectorState.Selected)
                 {
-                   grid = LELevel.Inst.GetGrid(LELevel.GetKey(mousePosition, LEWindow.Inst.Layer));
+                   grid = LELevel.Inst.GetGrid(LELevel.GetKey(mousePosition, LEWindow.Inst.GridHeight));
                     if (grid != null)
                     {
                         state = SelectorState.Selected;

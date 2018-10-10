@@ -81,7 +81,7 @@ namespace SU.Editor.LevelEditor
                 && Event.current.button == 0 && Event.current.alt == false &&Event.current.shift == false && Event.current.control == false
                 && enabledInput)
             {
-                LELevel.Inst.Draw(repositroyPrefab.repositoryName, repositroyPrefab.asset, repositroyPrefab.assetPath, repositroyPrefab.assetName, repositroyPrefab.bundleName, position, LEWindow.Inst.Layer);
+                LELevel.Inst.Draw(repositroyPrefab.repositoryName, repositroyPrefab.asset, repositroyPrefab.assetPath, repositroyPrefab.assetName, repositroyPrefab.bundleName, position, LEWindow.Inst.GridHeight);
             }
         }
 

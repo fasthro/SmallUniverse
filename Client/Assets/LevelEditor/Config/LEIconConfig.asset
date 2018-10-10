@@ -36,3 +36,7 @@ MonoBehaviour:
     Texture: {fileID: 2800000, guid: 7a11029a153a17143a2d76a7935b6c03, type: 3}
   - Name: iconSetPlayer
     Texture: {fileID: 2800000, guid: 1bda4f78cb83a6e42b39108aa4365ec7, type: 3}
+  - Name: iconArrowDown
+    Texture: {fileID: 2800000, guid: 24ab02ec413a94547b0dcbef727dcbd9, type: 3}
+  - Name: iconArrowUp
+    Texture: {fileID: 2800000, guid: e02c947528571254c986524433882248, type: 3}

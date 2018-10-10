@@ -13,6 +13,7 @@ namespace SU.Manager
         // 角色
 
         // 相机
+        public CameraControler cameraController;
 
         public override void Initialize()
         {
@@ -55,7 +56,8 @@ namespace SU.Manager
         /// </summary>
         public void CreateCamera()
         {
-
+            cameraController = new CameraControler();
+            cameraController.Initialize();
         }
     }
 }

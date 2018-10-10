@@ -121,6 +121,23 @@ namespace SU.Editor.LevelEditor
         }
 
         /// <summary>
+        /// 获取资源库
+        /// </summary>
+        /// <param name="repositoryName"> 资源库名称 </param>
+        /// <returns></returns>
+        public LERepository GetRepository(string repositoryName)
+        {
+            for (int i = 0; i < repositorys.Count; i++)
+            {
+                if (repositoryName == repositorys[i].name)
+                {
+                    return repositorys[i];
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// 获取资源库内的资源
         /// </summary>
         /// <param name="repositoryName"></param>
