@@ -23,26 +23,22 @@ namespace SU.Editor.LevelEditor
         Brush,                     // 笔刷
         Sucker,                   // 吸管
         Erase,                     // 擦除
-        LayerUp,                // 调节层
-        LayerDown,           // 调节层
+        GPHeightUp,                // 调节层
+        GPHeightDown,           // 调节层
         RotateX,                // 旋转 X 轴
         RotateY,                // 旋转 Y 轴
         RotateZ,                // 旋转 Z 轴
     }
-
-    /// <summary>
-    /// 功能类型
-    /// </summary>
-    public enum GridFunctions
-    {
-        Ground,              // 地面
-        Player,                // 玩家
-        Monster,            // 怪
-        Door,                 // 门
-        Trap,                 // 陷阱
-        Transfer,           // 传送门
-    }
     
+    /// <summary>
+    /// 鼠标在 GizmoPanel 上的状态
+    /// </summary>
+    public enum GizmoPanelState
+    {
+        Exit,
+        Enter,
+    }
+
     public class LEWindow : EditorWindow
     {
         // window
@@ -57,7 +53,7 @@ namespace SU.Editor.LevelEditor
         private Vector2Int gridDimensions;
         private Vector2Int _gridDimensions;
         private int gridHeight;
-        private int gridGroup = 1;
+        private int gridGroud = 1;
 
         // 当前网格的高度
         public int GridHeight {
@@ -66,12 +62,12 @@ namespace SU.Editor.LevelEditor
             }
         }
 
-        // 当前画格子所在分组
-        public int GridGroup
+        // 当前画格子所在地
+        public int GridGroud
         {
             get
             {
-                return gridGroup;
+                return gridGroud;
             }
         }
 
@@ -91,7 +87,7 @@ namespace SU.Editor.LevelEditor
         // 当前选择的工具
         private SceneTools currentSelectTool;
         // 当前选择的功能
-        private GridFunctions currentSelectFunction = GridFunctions.Ground;
+        public GridFunctions currentSelectFunction = GridFunctions.Ground;
         // 当前选中的仓库模型
         private LERepositoryAsset currentModel;
         // 当前鼠标所在GizmoGrid上的位置
@@ -99,6 +95,9 @@ namespace SU.Editor.LevelEditor
 
         // 编辑器编辑的关卡场景名称
         private string levelSceneName;
+
+        // GizmoPanelState
+        private GizmoPanelState gizmoPanelState = GizmoPanelState.Exit;
 
         // 选择器工具
         private LESelector _selector;
@@ -180,7 +179,7 @@ namespace SU.Editor.LevelEditor
                 Initialize();
             }
 
-            levelSceneName = LELevel.Inst.levelSceneName;
+            levelSceneName = LELevel.Inst.levelName;
 
             // 网格实例获取
             if (gizmoPanel == null)
@@ -325,6 +324,12 @@ namespace SU.Editor.LevelEditor
                 if (gridDimensions.y < 2)
                     gridDimensions.y = 2;
 
+                // 网格规模必须是 2 的整数倍
+                if (gridDimensions.x % 2 != 0)
+                    gridDimensions.x += 1;
+                if (gridDimensions.y % 2 != 0)
+                    gridDimensions.y += 1;
+
                 if (gridDimensions.x != _gridDimensions.x || gridDimensions.y != _gridDimensions.y)
                 {
                     _gridDimensions.x = gridDimensions.x;
@@ -369,13 +374,13 @@ namespace SU.Editor.LevelEditor
                 EditorGUILayout.BeginVertical("box");
                 if (GUILayout.Button("Save Level", GUILayout.Height(30)))
                 {
-                    EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), LEUtils.GetLevelScenePath(LELevel.Inst.levelSceneName));
+                    EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), LEUtils.GetLevelScenePath(LELevel.Inst.levelName));
                 }
 
                 // 生成场景配置
                 if (GUILayout.Button("Generate Level Data", GUILayout.Height(30)))
                 {
-                    EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), LEUtils.GetLevelScenePath(LELevel.Inst.levelSceneName));
+                    EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), LEUtils.GetLevelScenePath(LELevel.Inst.levelName));
                     
                     LELevel.Inst.GenerateLevelData();
                 }
@@ -396,6 +401,10 @@ namespace SU.Editor.LevelEditor
             {
                 currentSelectFunction = GridFunctions.Ground;
                 repository = RepositoryConfig.GetRepository(currentSelectFunction.ToString());
+                if (currentSelectTool == SceneTools.Brush)
+                {
+                    brush.SetModel(null);
+                }
             }
 
             // Door
@@ -403,6 +412,10 @@ namespace SU.Editor.LevelEditor
             {
                 currentSelectFunction = GridFunctions.Door;
                 repository = RepositoryConfig.GetRepository(currentSelectFunction.ToString());
+                if (currentSelectTool == SceneTools.Brush)
+                {
+                    brush.SetModel(null);
+                }
             }
 
             // Transfer
@@ -410,6 +423,10 @@ namespace SU.Editor.LevelEditor
             {
                 currentSelectFunction = GridFunctions.Transfer;
                 repository = RepositoryConfig.GetRepository(currentSelectFunction.ToString());
+                if (currentSelectTool == SceneTools.Brush)
+                {
+                    brush.SetModel(null);
+                }
             }
 
             // Trap
@@ -417,6 +434,10 @@ namespace SU.Editor.LevelEditor
             {
                 currentSelectFunction = GridFunctions.Trap;
                 repository = RepositoryConfig.GetRepository(currentSelectFunction.ToString());
+                if (currentSelectTool == SceneTools.Brush)
+                {
+                    brush.SetModel(null);
+                }
             }
 
             // Player
@@ -424,6 +445,10 @@ namespace SU.Editor.LevelEditor
             {
                 currentSelectFunction = GridFunctions.Player;
                 repository = RepositoryConfig.GetRepository(currentSelectFunction.ToString());
+                if (currentSelectTool == SceneTools.Brush)
+                {
+                    brush.SetModel(null);
+                }
             }
 
             // Monster
@@ -431,6 +456,10 @@ namespace SU.Editor.LevelEditor
             {
                 currentSelectFunction = GridFunctions.Monster;
                 repository = RepositoryConfig.GetRepository(currentSelectFunction.ToString());
+                if (currentSelectTool == SceneTools.Brush)
+                {
+                    brush.SetModel(null);
+                }
             }
             EditorGUILayout.EndHorizontal();
 
@@ -614,30 +643,30 @@ namespace SU.Editor.LevelEditor
 
             #region 左下角
            
-            // 上一组
+            // 上一地块
             content = new GUIContent(IconConfig.GetIconTexture("iconArrowUp"));
             if (GUI.Button(new Rect(LESetting.SceneTooIX, downY, LESetting.SceneToolSize, LESetting.SceneToolSize / 2), content))
             {
-                gridGroup++;
+                gridGroud++;
             }
 
-            // 下一组
+            // 下一地块
             content = new GUIContent(IconConfig.GetIconTexture("iconArrowDown"));
             if (GUI.Button(new Rect(LESetting.SceneTooIX, downY + LESetting.SceneToolSize / 2, LESetting.SceneToolSize, LESetting.SceneToolSize / 2), content))
             {
-                gridGroup--;
+                gridGroud--;
 
-                if (gridGroup <= 0)
+                if (gridGroud <= 0)
                 {
-                    gridGroup = 1;
+                    gridGroud = 1;
                 }
             }
 
             GUILayout.BeginArea(new Rect(LESetting.SceneTooIX + nextInterval, downY, 50, LESetting.SceneToolSize), EditorStyles.textArea);
             {
                 GUILayout.BeginVertical();
-                GUILayout.Label("Group", EditorStyles.label, GUILayout.Width(50));
-                GUILayout.Label(gridGroup.ToString(), EditorStyles.label, GUILayout.Width(50));
+                GUILayout.Label("Groud", EditorStyles.label, GUILayout.Width(50));
+                GUILayout.Label(gridGroud.ToString(), EditorStyles.label, GUILayout.Width(50));
                 GUILayout.EndVertical();
             }
             GUILayout.EndArea();
@@ -651,7 +680,7 @@ namespace SU.Editor.LevelEditor
             gizmoPanel.BaseEnabled = GUI.Toggle(new Rect(rightX, downY, LESetting.SceneToolSize, LESetting.SceneToolSize), gizmoPanel.BaseEnabled, content, GUI.skin.button);
 
 
-            // LayerUp
+            // GizmoPanelUp
             content = new GUIContent(IconConfig.GetIconTexture("iconGridUp"));
             if (GUI.Toggle(new Rect(rightX - nextInterval, downY, LESetting.SceneToolSize, LESetting.SceneToolSize), false, content, GUI.skin.button))
             {
@@ -663,7 +692,7 @@ namespace SU.Editor.LevelEditor
                 Repaint();
             }
 
-            // LayerDown
+            // GizmoPanelDown
             content = new GUIContent(IconConfig.GetIconTexture("iconGridDown"));
             if (GUI.Toggle(new Rect(rightX - nextInterval * 2, downY, LESetting.SceneToolSize, LESetting.SceneToolSize), false, content, GUI.skin.button))
             {
@@ -704,6 +733,41 @@ namespace SU.Editor.LevelEditor
                 mousePosition.x = Mathf.Round(((hit.point.x + shiftOffset.x) - hit.normal.x * 0.001f) / 1) * 1 - shiftOffset.x;
                 mousePosition.z = Mathf.Round(((hit.point.z + shiftOffset.z) - hit.normal.z * 0.001f) / 1) * 1 - shiftOffset.z;
                 mousePosition.y = gridHeight + gizmoPanel.transform.position.y;
+
+                if (gizmoPanelState == GizmoPanelState.Exit)
+                {
+                    gizmoPanelState = GizmoPanelState.Enter;
+                    OnGizmoPanelState();
+                }
+            }
+            else {
+                if (gizmoPanelState == GizmoPanelState.Enter)
+                {
+                    gizmoPanelState = GizmoPanelState.Exit;
+                    OnGizmoPanelState();
+                }
+            }
+        }
+
+        /// <summary>
+        /// GizmoPanel State
+        /// </summary>
+        private void OnGizmoPanelState()
+        {
+            switch (currentSelectTool)
+            {
+                case SceneTools.Selector:
+                    selector.HaneleGizmoPanelState(gizmoPanelState);
+                    break;
+                case SceneTools.Brush:
+                    brush.HaneleGizmoPanelState(gizmoPanelState);
+                    break;
+                case SceneTools.Sucker:
+                    sucker.HaneleGizmoPanelState(gizmoPanelState);
+                    break;
+                case SceneTools.Erase:
+                    erase.HaneleGizmoPanelState(gizmoPanelState);
+                    break;
             }
         }
 

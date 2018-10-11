@@ -19,7 +19,7 @@ namespace SU.Editor.LevelEditor
             if ((Event.current.type == EventType.MouseDown)
                && Event.current.button == 0 && Event.current.alt == false && Event.current.shift == false && Event.current.control == false)
             {
-                var grid = LELevel.Inst.GetGrid(LELevel.GetKey(mousePosition, LEWindow.Inst.GridHeight));
+                var grid = LELevel.Inst.GetGrid(LELevel.GetKey(mousePosition, LEWindow.Inst.GridGroud));
                 if (grid != null)
                 {
                     var rp = LEWindow.RepositoryConfig.GetRepositoryPrefab(grid.repositoryName, grid.assetPath);

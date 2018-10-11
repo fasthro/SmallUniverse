@@ -24,6 +24,13 @@ namespace SU.Editor.LevelEditor
         }
 
         /// <summary>
+        /// GizmoPanelState
+        /// </summary>
+        public virtual void HaneleGizmoPanelState(GizmoPanelState state)
+        {
+        }
+
+        /// <summary>
         /// 关闭
         /// </summary>
         public virtual void Close()

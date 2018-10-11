@@ -27,7 +27,7 @@ namespace SU.Editor.LevelEditor
         {
             repositroyPrefab = _mc;
 
-            if (ink != null)
+            if (ink != null && repositroyPrefab != null)
             {
                 bool isActive = ink.activeSelf;
                 GameObject.DestroyImmediate(ink);
@@ -36,6 +36,9 @@ namespace SU.Editor.LevelEditor
                 ink.isStatic = true;
                 ink.hideFlags = HideFlags.HideAndDontSave;
                 ink.SetActive(isActive);
+            }
+            else {
+                Close();
             }
         }
         
@@ -48,16 +51,10 @@ namespace SU.Editor.LevelEditor
             
             if (repositroyPrefab != null)
             {
-                if (ink == null)
+                if (ink != null)
                 {
-                    ink = GameObject.Instantiate(repositroyPrefab.asset) as GameObject;
-                    ink.name = "ink";
+                    ink.transform.position = mousePosition;
                 }
-
-                if (!ink.activeSelf)
-                    ink.SetActive(true);
-
-                ink.transform.position = mousePosition;
 
                 enabledInput = true;
 
@@ -81,7 +78,32 @@ namespace SU.Editor.LevelEditor
                 && Event.current.button == 0 && Event.current.alt == false &&Event.current.shift == false && Event.current.control == false
                 && enabledInput)
             {
-                LELevel.Inst.Draw(repositroyPrefab.repositoryName, repositroyPrefab.asset, repositroyPrefab.assetPath, repositroyPrefab.assetName, repositroyPrefab.bundleName, position, LEWindow.Inst.GridHeight);
+                LELevel.Inst.Draw(repositroyPrefab.repositoryName, repositroyPrefab.asset, repositroyPrefab.assetPath, repositroyPrefab.assetName, repositroyPrefab.bundleName, position, LEWindow.Inst.currentSelectFunction, LEWindow.Inst.GridGroud);
+            }
+        }
+
+        public override void HaneleGizmoPanelState(GizmoPanelState state)
+        {
+            if (state == GizmoPanelState.Exit)
+            {
+                if (ink != null)
+                {
+                    GameObject.DestroyImmediate(ink);
+                    ink = null;
+                }
+            }
+            else {
+                if (repositroyPrefab != null)
+                {
+                    if (ink == null)
+                    {
+                        ink = GameObject.Instantiate(repositroyPrefab.asset) as GameObject;
+                        ink.name = "ink";
+                    }
+
+                    if (!ink.activeSelf)
+                        ink.SetActive(true);
+                }
             }
         }
 
@@ -89,7 +111,8 @@ namespace SU.Editor.LevelEditor
         {
             if (ink != null)
             {
-                ink.SetActive(false);
+                GameObject.DestroyImmediate(ink);
+                ink = null;
             }
         }
 

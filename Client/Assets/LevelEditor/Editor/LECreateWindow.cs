@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -100,13 +101,21 @@ namespace SU.Editor.LevelEditor
             levelGo = new GameObject();
             levelGo.name = LEConst.EditorLevelName;
             var leLevel = levelGo.AddComponent<LELevel>();
-            leLevel.levelSceneName = LEUtils.ToUpperFirstChar(levelSceneName);
+            leLevel.levelName = LEUtils.ToUpperFirstChar(levelSceneName);
 
-            // layer
-            var layerGo = new GameObject();
-            layerGo.name = "Layers";
-            layerGo.transform.parent = levelGo.transform;
-            
+            // 创建功能节点
+            FieldInfo[] fields = typeof(GridFunctions).GetFields();
+            for (int i = 0; i < fields.Length; i++)
+            {
+                var name = fields[i].Name;
+                if (!name.Equals("value__"))
+                {
+                    var go = new GameObject();
+                    go.name = name;
+                    go.transform.parent = levelGo.transform;
+                }
+            }
+
             EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), LEUtils.GetLevelScenePath(levelSceneName));
 
             Close();

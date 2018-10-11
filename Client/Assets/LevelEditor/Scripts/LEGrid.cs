@@ -4,11 +4,17 @@ using UnityEngine;
 
 namespace SU.Editor.LevelEditor
 {
-    public enum GridFunction
+    /// <summary>
+    /// 功能类型
+    /// </summary>
+    public enum GridFunctions
     {
-       None,
-       CharacterPoint, // 角色出生点
-       MonsterPoint, // 怪物出生点
+        Ground,              // 地面
+        Player,                // 玩家
+        Monster,            // 怪
+        Door,                 // 门
+        Trap,                 // 陷阱
+        Transfer,           // 传送门
     }
 
     public class LEGrid : MonoBehaviour
@@ -23,14 +29,14 @@ namespace SU.Editor.LevelEditor
         public string assetName;
         // 所在bundle 名称
         public string bundleName;
-        // 所在层
-        public int layer;
+        // 所在地块
+        public int groud;
         // 位置
         public Vector3 position;
         // 旋转
         public Vector3 rotationAngle;
         // 格子功能
-        public GridFunction function;
+        public GridFunctions function;
 
         #region rotate
         public void RotateX()

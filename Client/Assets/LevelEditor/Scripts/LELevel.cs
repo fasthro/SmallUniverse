@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace SU.Editor.LevelEditor
     public class LELevel : MonoBehaviour
     {
 #if UNITY_EDITOR
+        // 单例模式引用
         private static LELevel _inst;
         public static LELevel Inst {
             get {
@@ -20,85 +22,90 @@ namespace SU.Editor.LevelEditor
             }
         }
 
-        // 关卡场景名称
-        public string levelSceneName;
+        // 关卡名称
+        public string levelName;
 
-        // 格子数据字典
-        private Dictionary<string, LEGrid> gridMap;
-        // 层数据字典
-        private Dictionary<int, Transform> layerMap;
-        // layer 节点
-        private Transform layerTransform;
+        // 格子
+        private Dictionary<string, LEGrid> grids;
+
+        // 关卡宽
+        public int width
+        {
+            get {
+                return 0;
+            }
+        }
+
+        // 关卡长
+        public int length
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
+        // 玩家格子
+        private LEGrid playerGrid;
         
-
         #region editor
         /// <summary>
         /// 初始化
         /// </summary>
         public void Initialize()
         {
-            gridMap = new Dictionary<string, LEGrid>();
-            layerMap = new Dictionary<int, Transform>();
+            grids = new Dictionary<string, LEGrid>();
 
-            layerTransform = gameObject.transform.Find("Layers");
+            var trans = gameObject.transform.Find(GridFunctions.Ground.ToString());
 
-            // layer grid initialize
-            var layerCount = layerTransform.childCount;
-            for (int i = 0; i < layerCount; i++)
+            // groud
+            var transCount = trans.childCount;
+            for (int i = 0; i < transCount; i++)
             {
-                var lt = layerTransform.GetChild(i);
-                var layer = int.Parse(lt.gameObject.name);
+                var gt = trans.GetChild(i);
+                var gtc = gt.childCount;
 
-                if (!layerMap.ContainsKey(layer))
+                // grid
+                for (int k = 0; k < gtc; k++)
                 {
-                    layerMap.Add(layer, lt);
-                }
-                else {
-                    Debug.LogError("The layer already exists. layer : " + layer);
-                }
-            }
+                    var gridRoot = gt.GetChild(k);
 
-            foreach (KeyValuePair<int, Transform> layer in layerMap)
-            {
-                var count = layer.Value.childCount;
-                for (int i = 0; i < count; i++)
-                {
-                    var gt = layer.Value.GetChild(i);
-                    var key = gt.gameObject.name;
-                    var grid = gt.GetComponent<LEGrid>();
+                    var key = gridRoot.gameObject.name;
+                    var grid = gridRoot.GetComponent<LEGrid>();
                     if (grid != null)
+                        grids.Add(key, grid);
+                }
+            }
+            
+            // other
+            FieldInfo[] fields = typeof(GridFunctions).GetFields();
+            for (int i = 0; i < fields.Length; i++)
+            {
+                var name = fields[i].Name;
+                if (!name.Equals("value__") && !name.Equals(GridFunctions.Ground.ToString()))
+                {
+                    trans = gameObject.transform.Find(name);
+                    transCount = trans.childCount;
+                    for (int k = 0; k < transCount; k++)
                     {
-                        gridMap.Add(key, grid);
-                    }
-                    else {
-                        Debug.LogError("grid is null. layer" + layer.Key + " : " + key);
+                        var gridRoot = trans.GetChild(k);
+                        var key = gridRoot.gameObject.name;
+                        var grid = gridRoot.GetComponent<LEGrid>();
+                        if (grid != null)
+                        {
+                            grids.Add(key, grid);
+
+                            // player grid
+                            if (grid.function == GridFunctions.Player)
+                            {
+                                playerGrid = grid;
+                            }
+                        }
                     }
                 }
             }
         }
-
-        /// <summary>
-        /// 获取layer节点
-        /// </summary>
-        /// <param name="layer"></param>
-        /// <returns></returns>
-        public Transform GetLayerTransform(int layer)
-        {
-            if (layerMap.ContainsKey(layer))
-            {
-                return layerMap[layer];
-            }
-
-            GameObject layerGo = new GameObject();
-            layerGo.name = layer.ToString();
-            layerGo.transform.parent = layerTransform;
-
-            layerMap.Add(layer, layerGo.transform);
-
-            return layerGo.transform;
-        }
-
-
+        
         /// <summary>
         /// 画格子
         /// </summary>
@@ -106,17 +113,17 @@ namespace SU.Editor.LevelEditor
         /// <param name="asset">资源</param>
         /// <param name="assetPath">资源路径</param>
         /// <param name="pos">位置</param>
-        /// <param name="layer">层</param>
-        public void Draw(string repositoryName, GameObject asset, string assetPath, string assetName, string assetBundleName, Vector3 pos, int layer)
+        /// <param name="groud">所在地</param>
+        public void Draw(string repositoryName, GameObject asset, string assetPath, string assetName, string assetBundleName, Vector3 pos, GridFunctions function, int groud)
         {
-            string key = GetKey(pos, layer);
+            string key = GetKey(pos, groud);
 
             if (GetGrid(key))
                 return;
 
             var go = GameObject.Instantiate(asset) as GameObject;
             go.name = key;
-            go.transform.parent = GetLayerTransform(layer);
+            go.transform.parent = GetGridRoot(function, groud);
             go.transform.position = pos;
 
             var grid = go.AddComponent<LEGrid>();
@@ -125,12 +132,22 @@ namespace SU.Editor.LevelEditor
             grid.assetPath = assetPath;
             grid.assetName = assetName;
             grid.bundleName = assetBundleName;
-            grid.layer = layer;
+            grid.groud = groud;
             grid.position = pos;
             grid.rotationAngle = Vector3.zero;
-            grid.function = GridFunction.None;
+            grid.function = function;
 
             SetGrid(key, grid);
+
+            // 只允许有一个 Player Grid
+            if (function == GridFunctions.Player)
+            {
+                if (playerGrid != null)
+                {
+                    Erase(playerGrid.key);
+                }
+                playerGrid = grid;
+            }
         }
 
         /// <summary>
@@ -148,23 +165,6 @@ namespace SU.Editor.LevelEditor
             RemoveGrid(key);
         }
 
-        /// <summary>
-        /// 设置角色出生点
-        /// </summary>
-        /// <param name="grid"></param>
-        public void SetCharacterPointGrid(LEGrid grid)
-        {
-            foreach (KeyValuePair<string, LEGrid> item in gridMap)
-            {
-                if (item.Value.function == GridFunction.CharacterPoint)
-                {
-                    item.Value.function = GridFunction.None;
-                    break;
-                }
-            }
-
-            grid.function = GridFunction.CharacterPoint;
-        }
         #endregion
 
         #region grid map
@@ -176,7 +176,7 @@ namespace SU.Editor.LevelEditor
         public LEGrid GetGrid(string key)
         {
             LEGrid grid = null;
-            if (gridMap.TryGetValue(key, out grid))
+            if (grids.TryGetValue(key, out grid))
             {
                 return grid;
             }
@@ -190,11 +190,11 @@ namespace SU.Editor.LevelEditor
         /// <param name="grid"></param>
         public void SetGrid(string key, LEGrid grid)
         {
-            if (gridMap.ContainsKey(key))
+            if (grids.ContainsKey(key))
             {
                 Erase(key);
             }
-            gridMap.Add(key, grid);
+            grids.Add(key, grid);
         }
 
         /// <summary>
@@ -203,9 +203,9 @@ namespace SU.Editor.LevelEditor
         /// <param name="key"></param>
         public void RemoveGrid(string key)
         {
-            if (gridMap.ContainsKey(key))
+            if (grids.ContainsKey(key))
             {
-                gridMap.Remove(key);
+                grids.Remove(key);
             }
         }
         #endregion
@@ -216,6 +216,7 @@ namespace SU.Editor.LevelEditor
         /// </summary>
         public void GenerateLevelData()
         {
+            /*
             string content = string.Empty;
 
             // bundle 资源列表
@@ -239,7 +240,7 @@ namespace SU.Editor.LevelEditor
 
             // layer
             int layer;
-            foreach (KeyValuePair<int, Transform> layerItem in layerMap)
+            foreach (KeyValuePair<int, Transform> layerItem in groupRoots)
             {
                 if (layerItem.Value.childCount == 0)
                     continue;
@@ -252,10 +253,10 @@ namespace SU.Editor.LevelEditor
                     layerMax = layer;
 
                 content += string.Format("  <layer name='{0}'>\n", layer);
-                foreach (KeyValuePair<string, LEGrid> gridItem in gridMap)
+                foreach (KeyValuePair<string, LEGrid> gridItem in grids)
                 {
                     var grid = gridItem.Value;
-                    if (grid.layer == layer && grid.function == GridFunction.None)
+                    if (grid.group == layer && grid.function == GridFunction.None)
                     {
                         content += "    <grid asset_name='" + grid.assetName + "' bundle_name='" + grid.bundleName + "' pos_x='" + grid.position.x + "' pos_y='" + grid.position.y + "' pos_z='" + grid.position.z + "' angle_x='" + grid.rotationAngle.x + "' angle_y='" + grid.rotationAngle.y + "' angle_z='" + grid.rotationAngle.z + "' />\n";
 
@@ -310,7 +311,7 @@ namespace SU.Editor.LevelEditor
             // character point
             if (characterPoint != null)
             {
-                content += "  <character_point pos_x='" + characterPoint.position.x + "' pos_y='" + characterPoint.position.y + "' pos_z='" + characterPoint.position.z + "' angle_x='" + characterPoint.rotationAngle.x + "' angle_y='" + characterPoint.rotationAngle.y + "' angle_z='" + characterPoint.rotationAngle.z + "' layer='" + characterPoint.layer + "' />\n";
+                content += "  <character_point pos_x='" + characterPoint.position.x + "' pos_y='" + characterPoint.position.y + "' pos_z='" + characterPoint.position.z + "' angle_x='" + characterPoint.rotationAngle.x + "' angle_y='" + characterPoint.rotationAngle.y + "' angle_z='" + characterPoint.rotationAngle.z + "' layer='" + characterPoint.group + "' />\n";
             }
             else {
                 Debug.LogError("此关卡角色出生点未设置");
@@ -334,7 +335,7 @@ namespace SU.Editor.LevelEditor
             // save xml
             var assetObj = AssetDatabase.LoadAssetAtPath(LEConst.LevelMapTemplatePath, typeof(TextAsset));
             TextAsset template = assetObj as TextAsset;
-            string text = template.text.Replace("{#levelMapName}", levelSceneName);
+            string text = template.text.Replace("{#levelMapName}", levelName);
             text = text.Replace("{#layerMin}", layerMin.ToString());
             text = text.Replace("{#layerMax}", layerMax.ToString());
             text = text.Replace("{#widthMin}", widthMin.ToString());
@@ -344,7 +345,7 @@ namespace SU.Editor.LevelEditor
             text = text.Replace("{#radius}", radius.ToString());
             text = text.Replace("{#content}", content);
 
-            string file = LEUtils.GetLevelDataPath(levelSceneName);
+            string file = LEUtils.GetLevelDataPath(levelName);
             string dir = Path.GetDirectoryName(file);
             if (File.Exists(dir))
             {
@@ -352,18 +353,67 @@ namespace SU.Editor.LevelEditor
             }
             File.WriteAllText(file, text);
             AssetDatabase.Refresh();
+            */
         }
         #endregion
+
+        /// <summary>
+        /// 获取Grid节点
+        /// </summary>
+        /// <param name="group"></param>
+        /// <returns></returns>
+        public Transform GetGridRoot(GridFunctions function, int group)
+        {
+            Transform trans = null;
+            // Ground
+            if (function == GridFunctions.Ground)
+            {
+                trans = gameObject.transform.Find(GridFunctions.Ground.ToString());
+
+                var transCount = trans.childCount;
+                for (int i = 0; i < transCount; i++)
+                {
+                    var gt = trans.GetChild(i);
+                    if (int.Parse(gt.name) == group)
+                    {
+                        return gt;
+                    }
+                }
+
+                GameObject groupGo = new GameObject();
+                groupGo.name = group.ToString();
+                groupGo.transform.parent = trans;
+
+                return groupGo.transform;
+            }
+            else
+            {
+                // 创建功能节点
+                FieldInfo[] fields = typeof(GridFunctions).GetFields();
+                for (int i = 0; i < fields.Length; i++)
+                {
+                    var name = fields[i].Name;
+                    if (!name.Equals("value__"))
+                    {
+                        if (function.ToString().Equals(name))
+                        {
+                            return gameObject.transform.Find(name);
+                        }
+                    }
+                }
+            }
+            return null;
+        }
 
         /// <summary>
         /// 获取key
         /// </summary>
         /// <param name="pos"></param>
-        /// <param name="layer"></param>
+        /// <param name="group"></param>
         /// <returns></returns>
-        public static string GetKey(Vector3 pos, int layer)
+        public static string GetKey(Vector3 pos, int group)
         {
-            return string.Format("x:{0}/y:{1}/z:{2}/layer:{3}", pos.x, pos.y, pos.z, layer);
+            return string.Format("x:{0}/y:{1}/z:{2}/group:{3}", pos.x, pos.y, pos.z, group);
         }
 
 #endif

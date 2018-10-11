@@ -72,13 +72,6 @@ namespace SU.Editor.LevelEditor
                 grid.RotateZ();
             }
 
-            // set character point
-            content = new GUIContent(LEWindow.IconConfig.GetIconTexture("iconSetPlayer"));
-            if (GUI.Toggle(new Rect(beginX + (LESetting.SceneToolSize + LESetting.SceneTooIInterval) * 3, LESetting.SceneTooIY, LESetting.SceneToolSize, LESetting.SceneToolSize), false, content, GUI.skin.button))
-            {
-                LELevel.Inst.SetCharacterPointGrid(grid);
-            }
-
             Handles.EndGUI();
         }
 
@@ -89,7 +82,7 @@ namespace SU.Editor.LevelEditor
             {
                 if (state == SelectorState.None && state != SelectorState.Selected)
                 {
-                   grid = LELevel.Inst.GetGrid(LELevel.GetKey(mousePosition, LEWindow.Inst.GridHeight));
+                   grid = LELevel.Inst.GetGrid(LELevel.GetKey(mousePosition, LEWindow.Inst.GridGroud));
                     if (grid != null)
                     {
                         state = SelectorState.Selected;
