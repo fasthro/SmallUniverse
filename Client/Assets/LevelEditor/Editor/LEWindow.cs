@@ -1,22 +1,23 @@
 ﻿using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace SU.Editor.LevelEditor
 {
     /// <summary>
     /// 住面板页签菜单
     /// </summary>
-    public enum TabMenus
+    public enum TabMenu
     {
         Function,              // 功能模块
-        Group,                  // 分组设置模块
+        Area,                    // 区域操作
     }
 
     /// <summary>
     /// 场景工具类型
     /// </summary>
-    public enum SceneTools
+    public enum SceneTool
     {
         None,
         Selector,                 // 选择
@@ -46,55 +47,59 @@ namespace SU.Editor.LevelEditor
 
         // config
         public static LEIconConfig IconConfig;
-        public static LERepositoryConfig RepositoryConfig;
+        public static LEPrefabConfig PrefabConfig;
 
         // GizmoPanel
         private LEGizmoPanel gizmoPanel;
         private Vector2Int gridDimensions;
         private Vector2Int _gridDimensions;
-        private int gridHeight;
-        private int gridGroud = 1;
 
         // 当前网格的高度
-        public int GridHeight {
+        private int _gridHeight;
+        public int gridHeight {
             get {
-                return gridHeight;
+                return _gridHeight;
             }
         }
 
-        // 当前画格子所在地
-        public int GridGroud
+        // 当前画格子所在区域
+        private int _area = 1;
+        public int area
         {
             get
             {
-                return gridGroud;
+                return _area;
             }
         }
 
         // 是否开启编辑模式
         private bool editorEnabled = false;
         private bool _editorEnabled = true;
-
-        // 当前选择的资源库
-        private LERepository repository;
-        // 资源库资源预览列表
+        
+        // model view
         private Vector2 modelViewScrollPosition;
         private int modelViewHorizontalCounter;
         private int modelViewColumn;
 
         // 当前 Tab 菜单
-        private TabMenus currentSelectTabMenu = TabMenus.Function;
+        private TabMenu currentSelectTabMenu = TabMenu.Function;
         // 当前选择的工具
-        private SceneTools currentSelectTool;
+        private SceneTool currentSelectTool;
         // 当前选择的功能
-        public GridFunctions currentSelectFunction = GridFunctions.Ground;
-        // 当前选中的仓库模型
-        private LERepositoryAsset currentModel;
+        public GridFunction currentSelectFunction = GridFunction.Ground;
+        // 当前选择的 prefab
+        private LEPrefab currentSelectPrefab;
+        // 当前选中 prefab go
+        private LEPrefabGo currentSelectPrefabGo;
+
         // 当前鼠标所在GizmoGrid上的位置
         private Vector3 mousePosition;
 
-        // 编辑器编辑的关卡场景名称
-        private string levelSceneName;
+        // 关卡场景名称
+        private string levelName;
+        
+        // Enumerator
+        private Dictionary<string, LEPrefabGo>.Enumerator prefabGoEnumerator;
 
         // GizmoPanelState
         private GizmoPanelState gizmoPanelState = GizmoPanelState.Exit;
@@ -179,7 +184,7 @@ namespace SU.Editor.LevelEditor
                 Initialize();
             }
 
-            levelSceneName = LELevel.Inst.levelName;
+            levelName = LELevel.Inst.levelName;
 
             // 网格实例获取
             if (gizmoPanel == null)
@@ -189,13 +194,13 @@ namespace SU.Editor.LevelEditor
                 {
                     gizmoPanel = gizmoGridGo.GetComponent<LEGizmoPanel>();
 
-                    gridDimensions.x = gizmoPanel.GridWidth;
-                    gridDimensions.y = gizmoPanel.GridDepth;
+                    gridDimensions.x = gizmoPanel.width;
+                    gridDimensions.y = gizmoPanel.lenght;
 
-                    _gridDimensions.x = gizmoPanel.GridWidth;
-                    _gridDimensions.y = gizmoPanel.GridDepth;
+                    _gridDimensions.x = gizmoPanel.width;
+                    _gridDimensions.y = gizmoPanel.lenght;
 
-                    gridHeight = gizmoPanel.GridHeight;
+                    _gridHeight = gizmoPanel.height;
                 }
             }
 
@@ -204,8 +209,8 @@ namespace SU.Editor.LevelEditor
 
             // config
             IconConfig = AssetDatabase.LoadAssetAtPath(LEConst.IconConfigPath, typeof(LEIconConfig)) as LEIconConfig;
-            RepositoryConfig = AssetDatabase.LoadAssetAtPath(LEConst.RepositoryConfigPath, typeof(LERepositoryConfig)) as LERepositoryConfig;
-            RepositoryConfig.Initialize();
+            PrefabConfig = AssetDatabase.LoadAssetAtPath(LEConst.RepositoryConfigPath, typeof(LEPrefabConfig)) as LEPrefabConfig;
+            PrefabConfig.Initialize();
 
             // scene view
             SceneView.onSceneGUIDelegate -= OnSceneGUI;
@@ -335,14 +340,14 @@ namespace SU.Editor.LevelEditor
                     _gridDimensions.x = gridDimensions.x;
                     _gridDimensions.y = gridDimensions.y;
 
-                    gizmoPanel.SetGridSize(gridDimensions.x, gridDimensions.y);
+                    gizmoPanel.SetSize(gridDimensions.x, gridDimensions.y);
                 }
 
                 EditorGUILayout.EndVertical();
 
                 // 网格高度设置
                 EditorGUILayout.BeginVertical("box");
-                GUILayout.Label("Grid Height: " + gridHeight.ToString());
+                GUILayout.Label("Grid Height: " + _gridHeight.ToString());
                 EditorGUILayout.EndVertical();
 
                 #region tab menu
@@ -350,20 +355,20 @@ namespace SU.Editor.LevelEditor
                 EditorGUILayout.BeginVertical("box");
                 EditorGUILayout.BeginHorizontal();
                 // function tab menu
-                if (GUILayout.Toggle(currentSelectTabMenu == TabMenus.Function, content = new GUIContent(TabMenus.Function.ToString()), "Button", GUILayout.Height(30)))
+                if (GUILayout.Toggle(currentSelectTabMenu == TabMenu.Function, content = new GUIContent(TabMenu.Function.ToString()), "Button", GUILayout.Height(30)))
                 {
-                    currentSelectTabMenu = TabMenus.Function;
+                    currentSelectTabMenu = TabMenu.Function;
                 }
 
                 // group tab menu
-                if (GUILayout.Toggle(currentSelectTabMenu == TabMenus.Group, content = new GUIContent(TabMenus.Group.ToString()), "Button", GUILayout.Height(30)))
+                if (GUILayout.Toggle(currentSelectTabMenu == TabMenu.Area, content = new GUIContent(TabMenu.Area.ToString()), "Button", GUILayout.Height(30)))
                 {
-                    currentSelectTabMenu = TabMenus.Group;
+                    currentSelectTabMenu = TabMenu.Area;
                 }
                 EditorGUILayout.EndHorizontal();
 
                 // 画功能库预览
-                if (currentSelectTabMenu == TabMenus.Function)
+                if (currentSelectTabMenu == TabMenu.Function)
                 {
                     DrawFunctionView();
                 }
@@ -397,68 +402,68 @@ namespace SU.Editor.LevelEditor
         {
             EditorGUILayout.BeginHorizontal();
             // Ground
-            if (GUILayout.Toggle(currentSelectFunction == GridFunctions.Ground, content = new GUIContent(GridFunctions.Ground.ToString()), "Button", GUILayout.Height(20)))
+            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Ground, content = new GUIContent(GridFunction.Ground.ToString()), "Button", GUILayout.Height(20)))
             {
-                currentSelectFunction = GridFunctions.Ground;
-                repository = RepositoryConfig.GetRepository(currentSelectFunction.ToString());
-                if (currentSelectTool == SceneTools.Brush)
+                currentSelectFunction = GridFunction.Ground;
+                currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
+                if (currentSelectTool == SceneTool.Brush)
                 {
-                    brush.SetModel(null);
+                    brush.CleanPrefabGo();
                 }
             }
 
             // Door
-            if (GUILayout.Toggle(currentSelectFunction == GridFunctions.Door, content = new GUIContent(GridFunctions.Door.ToString()), "Button", GUILayout.Height(20)))
+            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Door, content = new GUIContent(GridFunction.Door.ToString()), "Button", GUILayout.Height(20)))
             {
-                currentSelectFunction = GridFunctions.Door;
-                repository = RepositoryConfig.GetRepository(currentSelectFunction.ToString());
-                if (currentSelectTool == SceneTools.Brush)
+                currentSelectFunction = GridFunction.Door;
+                currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
+                if (currentSelectTool == SceneTool.Brush)
                 {
-                    brush.SetModel(null);
+                    brush.CleanPrefabGo();
                 }
             }
 
             // Transfer
-            if (GUILayout.Toggle(currentSelectFunction == GridFunctions.Transfer, content = new GUIContent(GridFunctions.Transfer.ToString()), "Button", GUILayout.Height(20)))
+            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Transfer, content = new GUIContent(GridFunction.Transfer.ToString()), "Button", GUILayout.Height(20)))
             {
-                currentSelectFunction = GridFunctions.Transfer;
-                repository = RepositoryConfig.GetRepository(currentSelectFunction.ToString());
-                if (currentSelectTool == SceneTools.Brush)
+                currentSelectFunction = GridFunction.Transfer;
+                currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
+                if (currentSelectTool == SceneTool.Brush)
                 {
-                    brush.SetModel(null);
+                    brush.CleanPrefabGo();
                 }
             }
 
             // Trap
-            if (GUILayout.Toggle(currentSelectFunction == GridFunctions.Trap, content = new GUIContent(GridFunctions.Trap.ToString()), "Button", GUILayout.Height(20)))
+            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Trap, content = new GUIContent(GridFunction.Trap.ToString()), "Button", GUILayout.Height(20)))
             {
-                currentSelectFunction = GridFunctions.Trap;
-                repository = RepositoryConfig.GetRepository(currentSelectFunction.ToString());
-                if (currentSelectTool == SceneTools.Brush)
+                currentSelectFunction = GridFunction.Trap;
+                currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
+                if (currentSelectTool == SceneTool.Brush)
                 {
-                    brush.SetModel(null);
+                    brush.CleanPrefabGo();
                 }
             }
 
             // Player
-            if (GUILayout.Toggle(currentSelectFunction == GridFunctions.Player, content = new GUIContent(GridFunctions.Player.ToString()), "Button", GUILayout.Height(20)))
+            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Player, content = new GUIContent(GridFunction.Player.ToString()), "Button", GUILayout.Height(20)))
             {
-                currentSelectFunction = GridFunctions.Player;
-                repository = RepositoryConfig.GetRepository(currentSelectFunction.ToString());
-                if (currentSelectTool == SceneTools.Brush)
+                currentSelectFunction = GridFunction.Player;
+                currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
+                if (currentSelectTool == SceneTool.Brush)
                 {
-                    brush.SetModel(null);
+                    brush.CleanPrefabGo();
                 }
             }
 
             // Monster
-            if (GUILayout.Toggle(currentSelectFunction == GridFunctions.Monster, content = new GUIContent(GridFunctions.Monster.ToString()), "Button", GUILayout.Height(20)))
+            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Monster, content = new GUIContent(GridFunction.Monster.ToString()), "Button", GUILayout.Height(20)))
             {
-                currentSelectFunction = GridFunctions.Monster;
-                repository = RepositoryConfig.GetRepository(currentSelectFunction.ToString());
-                if (currentSelectTool == SceneTools.Brush)
+                currentSelectFunction = GridFunction.Monster;
+                currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
+                if (currentSelectTool == SceneTool.Brush)
                 {
-                    brush.SetModel(null);
+                    brush.CleanPrefabGo();
                 }
             }
             EditorGUILayout.EndHorizontal();
@@ -484,43 +489,48 @@ namespace SU.Editor.LevelEditor
 
             EditorGUILayout.BeginHorizontal();
 
-            for (int i = 0; i < repository.assets.Length; i++)
+            using (prefabGoEnumerator = currentSelectPrefab.gos.GetEnumerator())
             {
-                EditorGUILayout.BeginVertical();
-
-                // 模型预览
-                Texture2D previewImage = AssetPreview.GetAssetPreview(repository.assets[i].asset);
-                content = new GUIContent(previewImage);
-                // 选中状态
-                bool selected = false;
-                if (currentModel != null)
+                while (prefabGoEnumerator.MoveNext())
                 {
-                    if (currentModel.assetName == repository.assets[i].assetName)
+                    var prefabGo = prefabGoEnumerator.Current.Value;
+
+                    EditorGUILayout.BeginVertical();
+
+                    // 模型预览
+                    Texture2D previewImage = AssetPreview.GetAssetPreview(prefabGo.go);
+                    content = new GUIContent(previewImage);
+                    // 选中状态
+                    bool selected = false;
+                    if (currentSelectPrefabGo != null)
                     {
-                        selected = true;
+                        if (currentSelectPrefabGo.name == prefabGo.go.name)
+                        {
+                            selected = true;
+                        }
                     }
-                }
 
-                bool isSelected = GUILayout.Toggle(selected, content, GUI.skin.button);
-                if (isSelected)
-                {
-                    currentModel = repository.assets[i];
-                    // 选中，设置笔刷
-                    brush.SetModel(currentModel);
-                    ChangeSceneTool(SceneTools.Brush);
-                }
+                    bool isSelected = GUILayout.Toggle(selected, content, GUI.skin.button);
+                    if (isSelected && editorEnabled)
+                    {
+                        currentSelectPrefabGo = prefabGo;
+                        // 选中，设置笔刷
+                        ChangeSceneTool(SceneTool.Brush);
+                        brush.SetPrefabGo(currentSelectPrefabGo);
+                    }
 
-                EditorGUILayout.BeginHorizontal("Box");
-                EditorGUILayout.LabelField(repository.assets[i].assetName);
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.EndVertical();
-
-                modelViewHorizontalCounter++;
-                if (modelViewHorizontalCounter == modelViewColumn)
-                {
-                    modelViewHorizontalCounter = 0;
+                    EditorGUILayout.BeginHorizontal("Box");
+                    EditorGUILayout.LabelField(prefabGo.go.name);
                     EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.EndVertical();
+
+                    modelViewHorizontalCounter++;
+                    if (modelViewHorizontalCounter == modelViewColumn)
+                    {
+                        modelViewHorizontalCounter = 0;
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                    }
                 }
             }
 
@@ -543,16 +553,16 @@ namespace SU.Editor.LevelEditor
             
             switch (currentSelectTool)
             {
-                case SceneTools.Selector:
+                case SceneTool.Selector:
                     selector.DrawScenePreview(sceneView, mousePosition);
                     break;
-                case SceneTools.Brush:
+                case SceneTool.Brush:
                     brush.DrawScenePreview(sceneView, mousePosition);
                     break;
-                case SceneTools.Sucker:
+                case SceneTool.Sucker:
                     sucker.DrawScenePreview(sceneView, mousePosition);
                     break;
-                case SceneTools.Erase:
+                case SceneTool.Erase:
                     erase.DrawScenePreview(sceneView, mousePosition);
                     break;
             }
@@ -569,16 +579,16 @@ namespace SU.Editor.LevelEditor
         {
             switch (currentSelectTool)
             {
-                case SceneTools.Selector:
+                case SceneTool.Selector:
                     selector.HandleInput(mousePosition);
                     break;
-                case SceneTools.Brush:
+                case SceneTool.Brush:
                     brush.HandleInput(mousePosition);
                     break;
-                case SceneTools.Sucker:
+                case SceneTool.Sucker:
                     sucker.HandleInput(mousePosition);
                     break;
-                case SceneTools.Erase:
+                case SceneTool.Erase:
                     erase.HandleInput(mousePosition);
                     break;
             }
@@ -601,72 +611,72 @@ namespace SU.Editor.LevelEditor
 
             // 选择工具
             content = new GUIContent(IconConfig.GetIconTexture("iconCursor"));
-            if (GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY, LESetting.SceneToolSize, LESetting.SceneToolSize), currentSelectTool == SceneTools.Selector, content, GUI.skin.button))
+            if (GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY, LESetting.SceneToolSize, LESetting.SceneToolSize), currentSelectTool == SceneTool.Selector, content, GUI.skin.button))
             {
                 brush.Close();
                 sucker.Close();
                 erase.Close();
-                currentSelectTool = SceneTools.Selector;
+                currentSelectTool = SceneTool.Selector;
             }
             
             // 笔刷工具
             content = new GUIContent(IconConfig.GetIconTexture("iconBlockMode"));
-            if (GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY + nextInterval, LESetting.SceneToolSize, LESetting.SceneToolSize), currentSelectTool == SceneTools.Brush, content, GUI.skin.button))
+            if (GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY + nextInterval, LESetting.SceneToolSize, LESetting.SceneToolSize), currentSelectTool == SceneTool.Brush, content, GUI.skin.button))
             {
                 selector.Close();
                 sucker.Close();
                 erase.Close();
-                currentSelectTool = SceneTools.Brush;
+                currentSelectTool = SceneTool.Brush;
             }
 
             // 吸管工具
             content = new GUIContent(IconConfig.GetIconTexture("iconPicker"));
-            if (GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY + nextInterval * 2, LESetting.SceneToolSize, LESetting.SceneToolSize), currentSelectTool == SceneTools.Sucker, content, GUI.skin.button))
+            if (GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY + nextInterval * 2, LESetting.SceneToolSize, LESetting.SceneToolSize), currentSelectTool == SceneTool.Sucker, content, GUI.skin.button))
             {
                 selector.Close();
                 brush.Close();
                 erase.Close();
-                currentSelectTool = SceneTools.Sucker;
+                currentSelectTool = SceneTool.Sucker;
             }
 
             // 擦除工具
             content = new GUIContent(IconConfig.GetIconTexture("iconErase"));
-            if (GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY + nextInterval * 3, LESetting.SceneToolSize, LESetting.SceneToolSize), currentSelectTool == SceneTools.Erase, content, GUI.skin.button))
+            if (GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY + nextInterval * 3, LESetting.SceneToolSize, LESetting.SceneToolSize), currentSelectTool == SceneTool.Erase, content, GUI.skin.button))
             {
                 selector.Close();
                 brush.Close();
                 sucker.Close();
-                currentSelectTool = SceneTools.Erase;
+                currentSelectTool = SceneTool.Erase;
             }
 
             #endregion
 
             #region 左下角
            
-            // 上一地块
+            // 上一区域
             content = new GUIContent(IconConfig.GetIconTexture("iconArrowUp"));
             if (GUI.Button(new Rect(LESetting.SceneTooIX, downY, LESetting.SceneToolSize, LESetting.SceneToolSize / 2), content))
             {
-                gridGroud++;
+                _area++;
             }
 
-            // 下一地块
+            // 下一区域
             content = new GUIContent(IconConfig.GetIconTexture("iconArrowDown"));
             if (GUI.Button(new Rect(LESetting.SceneTooIX, downY + LESetting.SceneToolSize / 2, LESetting.SceneToolSize, LESetting.SceneToolSize / 2), content))
             {
-                gridGroud--;
+                _area--;
 
-                if (gridGroud <= 0)
+                if (_area <= 0)
                 {
-                    gridGroud = 1;
+                    _area = 1;
                 }
             }
 
             GUILayout.BeginArea(new Rect(LESetting.SceneTooIX + nextInterval, downY, 50, LESetting.SceneToolSize), EditorStyles.textArea);
             {
                 GUILayout.BeginVertical();
-                GUILayout.Label("Groud", EditorStyles.label, GUILayout.Width(50));
-                GUILayout.Label(gridGroud.ToString(), EditorStyles.label, GUILayout.Width(50));
+                GUILayout.Label("Area", EditorStyles.label, GUILayout.Width(50));
+                GUILayout.Label(_area.ToString(), EditorStyles.label, GUILayout.Width(50));
                 GUILayout.EndVertical();
             }
             GUILayout.EndArea();
@@ -684,10 +694,10 @@ namespace SU.Editor.LevelEditor
             content = new GUIContent(IconConfig.GetIconTexture("iconGridUp"));
             if (GUI.Toggle(new Rect(rightX - nextInterval, downY, LESetting.SceneToolSize, LESetting.SceneToolSize), false, content, GUI.skin.button))
             {
-                currentSelectTool = SceneTools.None;
-                gridHeight++;
+                currentSelectTool = SceneTool.None;
+                _gridHeight++;
 
-                gizmoPanel.SetGridHight(gridHeight);
+                gizmoPanel.SetHight(_gridHeight);
 
                 Repaint();
             }
@@ -696,10 +706,10 @@ namespace SU.Editor.LevelEditor
             content = new GUIContent(IconConfig.GetIconTexture("iconGridDown"));
             if (GUI.Toggle(new Rect(rightX - nextInterval * 2, downY, LESetting.SceneToolSize, LESetting.SceneToolSize), false, content, GUI.skin.button))
             {
-                currentSelectTool = SceneTools.None;
-                gridHeight--;
+                currentSelectTool = SceneTool.None;
+                _gridHeight--;
 
-                gizmoPanel.SetGridHight(gridHeight);
+                gizmoPanel.SetHight(_gridHeight);
 
                 Repaint();
             }
@@ -732,7 +742,7 @@ namespace SU.Editor.LevelEditor
 
                 mousePosition.x = Mathf.Round(((hit.point.x + shiftOffset.x) - hit.normal.x * 0.001f) / 1) * 1 - shiftOffset.x;
                 mousePosition.z = Mathf.Round(((hit.point.z + shiftOffset.z) - hit.normal.z * 0.001f) / 1) * 1 - shiftOffset.z;
-                mousePosition.y = gridHeight + gizmoPanel.transform.position.y;
+                mousePosition.y = _gridHeight + gizmoPanel.transform.position.y;
 
                 if (gizmoPanelState == GizmoPanelState.Exit)
                 {
@@ -756,29 +766,56 @@ namespace SU.Editor.LevelEditor
         {
             switch (currentSelectTool)
             {
-                case SceneTools.Selector:
+                case SceneTool.Selector:
                     selector.HaneleGizmoPanelState(gizmoPanelState);
                     break;
-                case SceneTools.Brush:
+                case SceneTool.Brush:
                     brush.HaneleGizmoPanelState(gizmoPanelState);
                     break;
-                case SceneTools.Sucker:
+                case SceneTool.Sucker:
                     sucker.HaneleGizmoPanelState(gizmoPanelState);
                     break;
-                case SceneTools.Erase:
+                case SceneTool.Erase:
                     erase.HaneleGizmoPanelState(gizmoPanelState);
                     break;
             }
         }
 
         /// <summary>
+        /// 吸管工具吸附
+        /// </summary>
+        /// <param name="function"></param>
+        public void OnSucker(LEGrid grid)
+        {
+            ChangeFunction(grid.function);
+            ChangeSceneTool(SceneTool.Brush);
+            currentSelectPrefabGo = grid.prefabGo;
+            brush.SetPrefabGo(currentSelectPrefabGo);
+        }
+
+        /// <summary>
         /// 切换场景工具
         /// </summary>
         /// <param name="tool"></param>
-        public void ChangeSceneTool(SceneTools tool)
+        public void ChangeSceneTool(SceneTool tool)
         {
+            selector.Close();
+            brush.Close();
+            sucker.Close();
+            erase.Close();
+
             currentSelectTool = tool;
         }
-        
+
+        /// <summary>
+        /// 切换 function
+        /// </summary>
+        /// <param name="function"></param>
+        public void ChangeFunction(GridFunction function)
+        {
+            currentSelectFunction = function;
+
+            Repaint();
+        }
     }
 }

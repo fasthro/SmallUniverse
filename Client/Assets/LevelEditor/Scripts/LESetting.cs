@@ -8,8 +8,8 @@ namespace SU.Editor.LevelEditor
     {
         // 关卡场景保存路径
         public static string LevelSceneDirectory = "Levels/Scenes/";
-        // 资源库路径
-        public static string RepositoryDirectory = "Levels/Repository/";
+        // Prefab 路径
+        public static string PrefabDirectory = "Levels/Prefabs/";
 
         // 场景工具初始 x,y 位置
         public static int SceneTooIX = 10;

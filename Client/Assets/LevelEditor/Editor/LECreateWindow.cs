@@ -89,8 +89,8 @@ namespace SU.Editor.LevelEditor
             gridPanel.layer = LayerMask.NameToLayer(LEConst.EditorGizmoGridLayerName);
             gridPanel.name = LEConst.EditorGizmoGridPanelName;
             LEGizmoPanel gizmoPanel = gridPanel.AddComponent<LEGizmoPanel>();
-            gizmoPanel.SetGridSize(dimension.x, dimension.y);
-            gizmoPanel.SetGridHight(0);
+            gizmoPanel.SetSize(dimension.x, dimension.y);
+            gizmoPanel.SetHight(0);
 
             // level
             GameObject levelGo = GameObject.Find(LEConst.EditorLevelName);
@@ -104,7 +104,7 @@ namespace SU.Editor.LevelEditor
             leLevel.levelName = LEUtils.ToUpperFirstChar(levelSceneName);
 
             // 创建功能节点
-            FieldInfo[] fields = typeof(GridFunctions).GetFields();
+            FieldInfo[] fields = typeof(GridFunction).GetFields();
             for (int i = 0; i < fields.Length; i++)
             {
                 var name = fields[i].Name;

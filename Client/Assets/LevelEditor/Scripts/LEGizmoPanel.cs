@@ -8,28 +8,32 @@ namespace SU.Editor.LevelEditor
     {
         // 地块片的尺寸
         private float tileSize = 1;
-        // 网格尺寸
-        private int gridWidth = 40;
-        public int GridWidth {
+
+        // 网格尺寸宽(X轴)
+        private int _width = 40;
+        public int width {
             get {
-                return gridWidth;
+                return _width;
             }
         }
-        private int gridDepth = 40;
-        public int GridDepth
+
+        // 网格尺寸长(Z轴)
+        private int _lenght = 40;
+        public int lenght
         {
             get
             {
-                return gridDepth;
+                return _lenght;
             }
         }
-        // 网格Y轴高度
-        private int gridHeight = 0;
-        public int GridHeight
+
+        // 网格高度(Y轴)
+        private int _height = 0;
+        public int height
         {
             get
             {
-                return gridHeight;
+                return _height;
             }
         }
 
@@ -39,7 +43,7 @@ namespace SU.Editor.LevelEditor
 
         private float tileOffset;
         private float gridWidthOffset;
-        private float gridDepthOffset;
+        private float gridLengthOffset;
         private float gridOffset;
 
         private Vector3 gridMin;
@@ -64,9 +68,9 @@ namespace SU.Editor.LevelEditor
         /// 设置网格Height
         /// </summary>
         /// <param name="h">height</param>
-        public void SetGridHight(int h)
+        public void SetHight(int h)
         {
-            gridHeight = h;
+            _height = h;
         }
 
         /// <summary>
@@ -74,18 +78,18 @@ namespace SU.Editor.LevelEditor
         /// </summary>
         /// <param name="w">size width</param>
         /// <param name="d">size depth </param>
-        public void SetGridSize(int w, int d)
+        public void SetSize(int w, int d)
         {
-            gridWidth = w;
-            gridDepth = d;
+            _width = w;
+            _lenght = d;
 
-            SetGridCollider();
+            SetCollider();
         }
 
         /// <summary>
         /// 设置碰撞框
         /// </summary>
-        private void SetGridCollider()
+        private void SetCollider()
         {
             gridCollider = gameObject.GetComponent<BoxCollider>();
             if (gridCollider == null)
@@ -95,22 +99,22 @@ namespace SU.Editor.LevelEditor
             if (CentreGrid)
             {
                 gridColliderCenter.x = 0 - tileOffset;
-                gridColliderCenter.y = 0 + gridHeight - tileOffset;
+                gridColliderCenter.y = 0 + _height - tileOffset;
                 gridColliderCenter.z = 0 - tileOffset;
             }
             else
             {
-                gridColliderCenter.x = 0 + gridWidth / 2 * tileSize - tileOffset;
-                gridColliderCenter.y = 0 + gridHeight - tileOffset;
-                gridColliderCenter.z = 0 + gridDepth / 2 * tileSize - tileOffset;
+                gridColliderCenter.x = 0 + _width / 2 * tileSize - tileOffset;
+                gridColliderCenter.y = 0 + _height - tileOffset;
+                gridColliderCenter.z = 0 + _lenght / 2 * tileSize - tileOffset;
             }
 
             gridCollider.center = gridColliderCenter;
 
             // size
-            gridColliderSize.x = gridWidth;
+            gridColliderSize.x = _width;
             gridColliderSize.y = 0.1f;
-            gridColliderSize.z = gridDepth;
+            gridColliderSize.z = _lenght;
             gridCollider.size = gridColliderSize;
         }
 
@@ -122,26 +126,26 @@ namespace SU.Editor.LevelEditor
             tileOffset = tileSize / 2.0f;
             if (CentreGrid)
             {
-                gridWidthOffset = gridWidth * tileSize / 2;
-                gridDepthOffset = gridDepth * tileSize / 2;
+                gridWidthOffset = _width * tileSize / 2;
+                gridLengthOffset = _lenght * tileSize / 2;
             }
             else {
                 gridWidthOffset = 0;
-                gridDepthOffset = 0;
+                gridLengthOffset = 0;
             }
 
             gridMin.x = gameObject.transform.position.x - gridWidthOffset - tileOffset;
-            gridMin.y = gameObject.transform.position.y + gridHeight - tileOffset - gridOffset;
-            gridMin.z = gameObject.transform.position.z - gridDepthOffset - tileOffset;
-            gridMax.x = gridMin.x + (tileSize * gridWidth);
-            gridMax.z = gridMin.z + (tileSize * gridDepth);
+            gridMin.y = gameObject.transform.position.y + _height - tileOffset - gridOffset;
+            gridMin.z = gameObject.transform.position.z - gridLengthOffset - tileOffset;
+            gridMax.x = gridMin.x + (tileSize * _width);
+            gridMax.z = gridMin.z + (tileSize * _lenght);
             gridMax.y = gridMin.y;
             
             DrawBase();
             DrawGrid();
             DrawBorder();
 
-            SetGridCollider();
+            SetCollider();
         }
 
         // 画背板
@@ -152,15 +156,15 @@ namespace SU.Editor.LevelEditor
 
             if (CentreGrid)
             {
-                Gizmos.DrawCube(new Vector3(gameObject.transform.position.x - tileOffset, gameObject.transform.position.y + gridHeight - tileOffset - gridOffset, gameObject.transform.position.z - tileOffset),
-                    new Vector3((gridWidth * tileSize), 0.01f, (gridDepth * tileSize)));
+                Gizmos.DrawCube(new Vector3(gameObject.transform.position.x - tileOffset, gameObject.transform.position.y + _height - tileOffset - gridOffset, gameObject.transform.position.z - tileOffset),
+                    new Vector3((_width * tileSize), 0.01f, (_lenght * tileSize)));
             }
             else
             {
-                Gizmos.DrawCube(new Vector3(gameObject.transform.position.x + (gridWidth / 2 * tileSize) - tileOffset,
-                    gameObject.transform.position.y + gridHeight - tileOffset - gridOffset,
-                    gameObject.transform.position.z + (gridDepth / 2 * tileSize) - tileOffset),
-                    new Vector3((gridWidth * tileSize), 0.01f, (gridDepth * tileSize)));
+                Gizmos.DrawCube(new Vector3(gameObject.transform.position.x + (_width / 2 * tileSize) - tileOffset,
+                    gameObject.transform.position.y + _height - tileOffset - gridOffset,
+                    gameObject.transform.position.z + (_lenght / 2 * tileSize) - tileOffset),
+                    new Vector3((_width * tileSize), 0.01f, (_lenght * tileSize)));
             }
         }
 
@@ -171,7 +175,7 @@ namespace SU.Editor.LevelEditor
 
             if (tileSize != 0)
             {
-                for (float i = tileSize; i < (gridWidth * tileSize); i += tileSize)
+                for (float i = tileSize; i < (_width * tileSize); i += tileSize)
                 {
                     Gizmos.DrawLine(
                         new Vector3((float)i + gridMin.x, gridMin.y, gridMin.z),
@@ -182,7 +186,7 @@ namespace SU.Editor.LevelEditor
 
             if (tileSize != 0)
             {
-                for (float j = tileSize; j < (gridDepth * tileSize); j += tileSize)
+                for (float j = tileSize; j < (_lenght * tileSize); j += tileSize)
                 {
                     Gizmos.DrawLine(
                         new Vector3(gridMin.x, gridMin.y, j + gridMin.z),

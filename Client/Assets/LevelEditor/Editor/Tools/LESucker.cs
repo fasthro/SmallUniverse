@@ -19,18 +19,10 @@ namespace SU.Editor.LevelEditor
             if ((Event.current.type == EventType.MouseDown)
                && Event.current.button == 0 && Event.current.alt == false && Event.current.shift == false && Event.current.control == false)
             {
-                var grid = LELevel.Inst.GetGrid(LELevel.GetKey(mousePosition, LEWindow.Inst.GridGroud));
+                var grid = LELevel.Inst.GetGrid(LELevel.GetKey(mousePosition, LEWindow.Inst.area));
                 if (grid != null)
                 {
-                    var rp = LEWindow.RepositoryConfig.GetRepositoryPrefab(grid.repositoryName, grid.assetPath);
-                    if (rp != null)
-                    {
-                        LEWindow.Inst.brush.SetModel(rp);
-                        LEWindow.Inst.ChangeSceneTool(SceneTools.Brush);
-                    }
-                    else {
-                        Debug.LogError("There is no " + grid.assetPath + " in the " + grid.repositoryName);
-                    }
+                    LEWindow.Inst.OnSucker(grid);
                 }
             }
         }

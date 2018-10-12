@@ -56,7 +56,7 @@ namespace SU.Editor.LevelEditor
         {
             grids = new Dictionary<string, LEGrid>();
 
-            var trans = gameObject.transform.Find(GridFunctions.Ground.ToString());
+            var trans = gameObject.transform.Find(GridFunction.Ground.ToString());
 
             // groud
             var transCount = trans.childCount;
@@ -78,11 +78,11 @@ namespace SU.Editor.LevelEditor
             }
             
             // other
-            FieldInfo[] fields = typeof(GridFunctions).GetFields();
+            FieldInfo[] fields = typeof(GridFunction).GetFields();
             for (int i = 0; i < fields.Length; i++)
             {
                 var name = fields[i].Name;
-                if (!name.Equals("value__") && !name.Equals(GridFunctions.Ground.ToString()))
+                if (!name.Equals("value__") && !name.Equals(GridFunction.Ground.ToString()))
                 {
                     trans = gameObject.transform.Find(name);
                     transCount = trans.childCount;
@@ -96,7 +96,7 @@ namespace SU.Editor.LevelEditor
                             grids.Add(key, grid);
 
                             // player grid
-                            if (grid.function == GridFunctions.Player)
+                            if (grid.function == GridFunction.Player)
                             {
                                 playerGrid = grid;
                             }
@@ -107,40 +107,37 @@ namespace SU.Editor.LevelEditor
         }
         
         /// <summary>
-        /// 画格子
+        /// 画场景功能物体
         /// </summary>
-        /// <param name="repositoryName">资源库名称</param>
-        /// <param name="asset">资源</param>
-        /// <param name="assetPath">资源路径</param>
-        /// <param name="pos">位置</param>
-        /// <param name="groud">所在地</param>
-        public void Draw(string repositoryName, GameObject asset, string assetPath, string assetName, string assetBundleName, Vector3 pos, GridFunctions function, int groud)
+        /// <param name="prefabGo"></param>
+        /// <param name="position"></param>
+        /// <param name="rotationAngle"></param>
+        /// <param name="function"></param>
+        /// <param name="groud"></param>
+        public void Draw(LEPrefabGo prefabGo, Vector3 position, Vector3 rotationAngle, GridFunction function, int groud)
         {
-            string key = GetKey(pos, groud);
+            string key = GetKey(position, groud);
 
             if (GetGrid(key))
                 return;
 
-            var go = GameObject.Instantiate(asset) as GameObject;
+            var go = GameObject.Instantiate(prefabGo.go) as GameObject;
             go.name = key;
             go.transform.parent = GetGridRoot(function, groud);
-            go.transform.position = pos;
+            go.transform.position = position;
 
             var grid = go.AddComponent<LEGrid>();
             grid.key = key;
-            grid.repositoryName = repositoryName;
-            grid.assetPath = assetPath;
-            grid.assetName = assetName;
-            grid.bundleName = assetBundleName;
+            grid.prefabGo = prefabGo;
             grid.groud = groud;
-            grid.position = pos;
-            grid.rotationAngle = Vector3.zero;
+            grid.position = position;
+            grid.rotationAngle = rotationAngle;
             grid.function = function;
 
             SetGrid(key, grid);
 
             // 只允许有一个 Player Grid
-            if (function == GridFunctions.Player)
+            if (function == GridFunction.Player)
             {
                 if (playerGrid != null)
                 {
@@ -362,13 +359,13 @@ namespace SU.Editor.LevelEditor
         /// </summary>
         /// <param name="group"></param>
         /// <returns></returns>
-        public Transform GetGridRoot(GridFunctions function, int group)
+        public Transform GetGridRoot(GridFunction function, int group)
         {
             Transform trans = null;
             // Ground
-            if (function == GridFunctions.Ground)
+            if (function == GridFunction.Ground)
             {
-                trans = gameObject.transform.Find(GridFunctions.Ground.ToString());
+                trans = gameObject.transform.Find(GridFunction.Ground.ToString());
 
                 var transCount = trans.childCount;
                 for (int i = 0; i < transCount; i++)
@@ -389,7 +386,7 @@ namespace SU.Editor.LevelEditor
             else
             {
                 // 创建功能节点
-                FieldInfo[] fields = typeof(GridFunctions).GetFields();
+                FieldInfo[] fields = typeof(GridFunction).GetFields();
                 for (int i = 0; i < fields.Length; i++)
                 {
                     var name = fields[i].Name;

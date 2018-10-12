@@ -7,7 +7,7 @@ namespace SU.Editor.LevelEditor
     /// <summary>
     /// 功能类型
     /// </summary>
-    public enum GridFunctions
+    public enum GridFunction
     {
         Ground,              // 地面
         Player,                // 玩家
@@ -19,16 +19,10 @@ namespace SU.Editor.LevelEditor
 
     public class LEGrid : MonoBehaviour
     {
-        // 对应的key
+        // key
         public string key;
-        // 资源库名称
-        public string repositoryName;
-        // 资源路径
-        public string assetPath;
-        // 资源名称
-        public string assetName;
-        // 所在bundle 名称
-        public string bundleName;
+        // prefabGo
+        public LEPrefabGo prefabGo;
         // 所在地块
         public int groud;
         // 位置
@@ -36,7 +30,7 @@ namespace SU.Editor.LevelEditor
         // 旋转
         public Vector3 rotationAngle;
         // 格子功能
-        public GridFunctions function;
+        public GridFunction function;
 
         #region rotate
         public void RotateX()
