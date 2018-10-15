@@ -20,7 +20,7 @@ namespace SU.Editor.LevelEditor
             if ((Event.current.type == EventType.MouseDrag || Event.current.type == EventType.MouseDown)
                && Event.current.button == 0 && Event.current.alt == false && Event.current.shift == false && Event.current.control == false)
             {
-                LELevel.Inst.Erase(LELevel.GetKey(mousePosition, LEWindow.Inst.area));
+                LELevel.Inst.Erase(mousePosition, LEWindow.Inst.area.ToString());
             }
         }
     }

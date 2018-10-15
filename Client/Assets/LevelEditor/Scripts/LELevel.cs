@@ -24,9 +24,8 @@ namespace SU.Editor.LevelEditor
 
         // 关卡名称
         public string levelName;
-
-        // 格子
-        private Dictionary<string, LEGrid> grids;
+        // 区域字典
+        public Dictionary<string, LEArea> areas;
 
         // 关卡宽
         public int width
@@ -44,9 +43,6 @@ namespace SU.Editor.LevelEditor
                 return 0;
             }
         }
-
-        // 玩家格子
-        private LEGrid playerGrid;
         
         #region editor
         /// <summary>
@@ -54,27 +50,21 @@ namespace SU.Editor.LevelEditor
         /// </summary>
         public void Initialize()
         {
-            grids = new Dictionary<string, LEGrid>();
+            areas = new Dictionary<string, LEArea>();
 
-            var trans = gameObject.transform.Find(GridFunction.Ground.ToString());
+            var trans = gameObject.transform.Find(GridFunction.Area.ToString());
 
-            // groud
+            // area
             var transCount = trans.childCount;
             for (int i = 0; i < transCount; i++)
             {
-                var gt = trans.GetChild(i);
-                var gtc = gt.childCount;
+                var areaTrans = trans.GetChild(i);
+                var area = areaTrans.GetComponent<LEArea>();
+                var gridCount = areaTrans.childCount;
 
-                // grid
-                for (int k = 0; k < gtc; k++)
-                {
-                    var gridRoot = gt.GetChild(k);
-
-                    var key = gridRoot.gameObject.name;
-                    var grid = gridRoot.GetComponent<LEGrid>();
-                    if (grid != null)
-                        grids.Add(key, grid);
-                }
+                //area
+                area.Initialize(areaTrans.gameObject.name);
+                areas.Add(area.gameObject.name, area);
             }
             
             // other
@@ -82,7 +72,7 @@ namespace SU.Editor.LevelEditor
             for (int i = 0; i < fields.Length; i++)
             {
                 var name = fields[i].Name;
-                if (!name.Equals("value__") && !name.Equals(GridFunction.Ground.ToString()))
+                if (!name.Equals("value__") && !name.Equals(GridFunction.Area.ToString()))
                 {
                     trans = gameObject.transform.Find(name);
                     transCount = trans.childCount;
@@ -90,16 +80,11 @@ namespace SU.Editor.LevelEditor
                     {
                         var gridRoot = trans.GetChild(k);
                         var key = gridRoot.gameObject.name;
+                        var areaName = GetAreaToKey(key);
                         var grid = gridRoot.GetComponent<LEGrid>();
                         if (grid != null)
                         {
-                            grids.Add(key, grid);
-
-                            // player grid
-                            if (grid.function == GridFunction.Player)
-                            {
-                                playerGrid = grid;
-                            }
+                            AddGrid(grid.position, areaName, grid);
                         }
                     }
                 }
@@ -113,37 +98,54 @@ namespace SU.Editor.LevelEditor
         /// <param name="position"></param>
         /// <param name="rotationAngle"></param>
         /// <param name="function"></param>
-        /// <param name="groud"></param>
-        public void Draw(LEPrefabGo prefabGo, Vector3 position, Vector3 rotationAngle, GridFunction function, int groud)
+        /// <param name="areaName"></param>
+        public void Draw(LEPrefabGo prefabGo, Vector3 position, Vector3 rotationAngle, GridFunction function, string areaName)
         {
-            string key = GetKey(position, groud);
-
-            if (GetGrid(key))
+            string key = GetKey(position, areaName);
+            if (GetGrid(position, areaName))
                 return;
 
             var go = GameObject.Instantiate(prefabGo.go) as GameObject;
             go.name = key;
-            go.transform.parent = GetGridRoot(function, groud);
+            go.transform.parent = GetGridRoot(function, areaName);
             go.transform.position = position;
 
             var grid = go.AddComponent<LEGrid>();
             grid.key = key;
             grid.prefabGo = prefabGo;
-            grid.groud = groud;
+            grid.area = int.Parse(areaName);
             grid.position = position;
             grid.rotationAngle = rotationAngle;
             grid.function = function;
-
-            SetGrid(key, grid);
-
-            // 只允许有一个 Player Grid
-            if (function == GridFunction.Player)
+            
+           var addSucceed = AddGrid(position, areaName, grid);
+            if (!addSucceed)
             {
-                if (playerGrid != null)
+                DestroyImmediate(grid.gameObject);
+            }
+            else {
+                if (function == GridFunction.Player)
                 {
-                    Erase(playerGrid.key);
+                    List<LEGrid> playerGrids;
+                    foreach (KeyValuePair<string, LEArea> areaItem in areas)
+                    {
+                        var area = areaItem.Value;
+                       playerGrids = new List<LEGrid>();
+                        foreach (KeyValuePair<string, LEGrid> gridItem in area.players)
+                        {
+                            var player = gridItem.Value;
+                            if (!player.key.Equals(grid.key))
+                            {
+                                playerGrids.Add(player);
+                            }
+                        }
+
+                        for (int i = 0; i < playerGrids.Count; i++)
+                        {
+                            Erase(playerGrids[i].position, playerGrids[i].area.ToString());
+                        }
+                    }
                 }
-                playerGrid = grid;
             }
         }
 
@@ -151,58 +153,80 @@ namespace SU.Editor.LevelEditor
         /// 擦除格子
         /// </summary>
         /// <param name="key"></param>
-        public void Erase(string key)
+        public void Erase(Vector3 position, string areaName)
         {
-            var grid = GetGrid(key);
-            if (grid == null)
-                return;
+            var grid = GetGrid(position, areaName);
+            if (grid != null)
+            {
+                RemoveGrid(position, areaName);
 
-            GameObject.DestroyImmediate(grid.gameObject);
-
-            RemoveGrid(key);
+                GameObject.DestroyImmediate(grid.gameObject);
+            }
         }
-
         #endregion
 
-        #region grid map
+        #region area and grid
         /// <summary>
-        /// 获取格子
+        /// 区域名称
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="areaName"></param>
         /// <returns></returns>
-        public LEGrid GetGrid(string key)
+        public LEArea GetArea(string areaName)
         {
-            LEGrid grid = null;
-            if (grids.TryGetValue(key, out grid))
+            LEArea area = null;
+            if (areas.TryGetValue(areaName, out area))
             {
-                return grid;
+                return area;
             }
             return null;
         }
 
         /// <summary>
-        /// 设置格子，如果已经有就擦除之前的
+        /// 获取格子
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="grid"></param>
-        public void SetGrid(string key, LEGrid grid)
+        /// <param name="position"></param>
+        /// <param name="areaName"></param>
+        /// <returns></returns>
+        public LEGrid GetGrid(Vector3 position, string areaName)
         {
-            if (grids.ContainsKey(key))
+            string key = GetKey(position, areaName);
+            LEArea area = GetArea(areaName);
+            if (area != null)
             {
-                Erase(key);
+                return area.GetGrid(key);
             }
-            grids.Add(key, grid);
+            return null;
+        }
+
+        /// <summary>
+        /// 添加格子
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="areaName"></param>
+        /// <param name="grid"></param>
+        public bool AddGrid(Vector3 position, string areaName, LEGrid grid)
+        {
+            string key = GetKey(position, areaName);
+            LEArea area = GetArea(areaName);
+            if (area != null)
+            {
+                return area.AddGrid(key, grid);
+            }
+            return false;
         }
 
         /// <summary>
         /// 移除格子
         /// </summary>
-        /// <param name="key"></param>
-        public void RemoveGrid(string key)
+        /// <param name="position"></param>
+        /// <param name="areaName"></param>
+        public void RemoveGrid(Vector3 position, string areaName)
         {
-            if (grids.ContainsKey(key))
+            string key = GetKey(position, areaName);
+            LEArea area = GetArea(areaName);
+            if (area != null)
             {
-                grids.Remove(key);
+                area.RemoveGrid(key);
             }
         }
         #endregion
@@ -357,31 +381,34 @@ namespace SU.Editor.LevelEditor
         /// <summary>
         /// 获取Grid节点
         /// </summary>
-        /// <param name="group"></param>
+        /// <param name="areaName"></param>
         /// <returns></returns>
-        public Transform GetGridRoot(GridFunction function, int group)
+        public Transform GetGridRoot(GridFunction function, string areaName)
         {
             Transform trans = null;
             // Ground
-            if (function == GridFunction.Ground)
+            if (function == GridFunction.Area)
             {
-                trans = gameObject.transform.Find(GridFunction.Ground.ToString());
+                trans = gameObject.transform.Find(GridFunction.Area.ToString());
 
                 var transCount = trans.childCount;
                 for (int i = 0; i < transCount; i++)
                 {
-                    var gt = trans.GetChild(i);
-                    if (int.Parse(gt.name) == group)
+                    var areaTrans = trans.GetChild(i);
+                    if (areaTrans.name.Equals(areaName))
                     {
-                        return gt;
+                        return areaTrans;
                     }
                 }
 
-                GameObject groupGo = new GameObject();
-                groupGo.name = group.ToString();
-                groupGo.transform.parent = trans;
+                GameObject areaGo = new GameObject();
+                areaGo.name = areaName;
+                areaGo.transform.parent = trans;
+                var area = areaGo.AddComponent<LEArea>();
+                area.Initialize(areaName);
+                areas.Add(areaName, area);
 
-                return groupGo.transform;
+                return areaGo.transform;
             }
             else
             {
@@ -405,14 +432,25 @@ namespace SU.Editor.LevelEditor
         /// <summary>
         /// 获取key
         /// </summary>
-        /// <param name="pos"></param>
-        /// <param name="group"></param>
+        /// <param name="position"></param>
+        /// <param name="areaName"></param>
         /// <returns></returns>
-        public static string GetKey(Vector3 pos, int group)
+        public static string GetKey(Vector3 position, string areaName)
         {
-            return string.Format("x:{0}/y:{1}/z:{2}/group:{3}", pos.x, pos.y, pos.z, group);
+            return string.Format("x:{0}/y:{1}/z:{2}/area:{3}", position.x, position.y, position.z, areaName);
         }
 
+        /// <summary>
+        /// 通过key获取area
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string GetAreaToKey(string key)
+        {
+            string[] strs = key.Split('/');
+            string areaStr = strs[3];
+            return areaStr.Substring(5);
+        }
 #endif
     }
 }

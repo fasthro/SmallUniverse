@@ -96,11 +96,22 @@ namespace SU.Editor.LevelEditor
         
         public override void HandleInput(Vector3 mousePosition)
         {
-            if ((Event.current.type == EventType.MouseDrag || Event.current.type == EventType.MouseDown) 
-                && Event.current.button == 0 && Event.current.alt == false &&Event.current.shift == false && Event.current.control == false
+            if (Event.current.button == 0 && Event.current.alt == false &&Event.current.shift == false && Event.current.control == false
                 && enabledInput)
             {
-                LELevel.Inst.Draw(prefabGo, position, Vector3.zero, LEWindow.Inst.currentSelectFunction, LEWindow.Inst.area);
+                if (LEWindow.Inst.currentSelectFunction == GridFunction.Area)
+                {
+                    if (Event.current.type == EventType.MouseDrag || Event.current.type == EventType.MouseDown)
+                    {
+                        LELevel.Inst.Draw(prefabGo, position, Vector3.zero, LEWindow.Inst.currentSelectFunction, LEWindow.Inst.area.ToString());
+                    }
+                }
+                else {
+                    if (Event.current.type == EventType.MouseDown)
+                    {
+                        LELevel.Inst.Draw(prefabGo, position, Vector3.zero, LEWindow.Inst.currentSelectFunction, LEWindow.Inst.area.ToString());
+                    }
+                }
             }
         } 
 

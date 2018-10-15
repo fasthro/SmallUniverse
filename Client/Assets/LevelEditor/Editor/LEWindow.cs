@@ -81,12 +81,15 @@ namespace SU.Editor.LevelEditor
         private int modelViewHorizontalCounter;
         private int modelViewColumn;
 
+        // area view
+        private Vector2 areaViewScrollPosition;
+
         // 当前 Tab 菜单
         private TabMenu currentSelectTabMenu = TabMenu.Function;
         // 当前选择的工具
         private SceneTool currentSelectTool;
         // 当前选择的功能
-        public GridFunction currentSelectFunction = GridFunction.Ground;
+        public GridFunction currentSelectFunction = GridFunction.Area;
         // 当前选择的 prefab
         private LEPrefab currentSelectPrefab;
         // 当前选中 prefab go
@@ -100,6 +103,7 @@ namespace SU.Editor.LevelEditor
         
         // Enumerator
         private Dictionary<string, LEPrefabGo>.Enumerator prefabGoEnumerator;
+        private Dictionary<string, LEArea>.Enumerator areaEnumerator;
 
         // GizmoPanelState
         private GizmoPanelState gizmoPanelState = GizmoPanelState.Exit;
@@ -209,7 +213,7 @@ namespace SU.Editor.LevelEditor
 
             // config
             IconConfig = AssetDatabase.LoadAssetAtPath(LEConst.IconConfigPath, typeof(LEIconConfig)) as LEIconConfig;
-            PrefabConfig = AssetDatabase.LoadAssetAtPath(LEConst.RepositoryConfigPath, typeof(LEPrefabConfig)) as LEPrefabConfig;
+            PrefabConfig = new LEPrefabConfig();
             PrefabConfig.Initialize();
 
             // scene view
@@ -372,6 +376,10 @@ namespace SU.Editor.LevelEditor
                 {
                     DrawFunctionView();
                 }
+                else if (currentSelectTabMenu == TabMenu.Area)
+                {
+                    DrawAreaView();
+                }
                 EditorGUILayout.EndVertical();
                 #endregion
 
@@ -402,9 +410,9 @@ namespace SU.Editor.LevelEditor
         {
             EditorGUILayout.BeginHorizontal();
             // Ground
-            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Ground, content = new GUIContent(GridFunction.Ground.ToString()), "Button", GUILayout.Height(20)))
+            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Area, content = new GUIContent(GridFunction.Area.ToString()), "Button", GUILayout.Height(20)))
             {
-                currentSelectFunction = GridFunction.Ground;
+                currentSelectFunction = GridFunction.Area;
                 currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
                 if (currentSelectTool == SceneTool.Brush)
                 {
@@ -469,7 +477,10 @@ namespace SU.Editor.LevelEditor
             EditorGUILayout.EndHorizontal();
 
             // 资源库预览界面
-            DrawModelView();
+            if (currentSelectPrefab != null)
+            {
+                DrawModelView();
+            }
         }
 
         /// <summary>
@@ -535,6 +546,27 @@ namespace SU.Editor.LevelEditor
             }
 
             EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndScrollView();
+        }
+
+        /// <summary>
+        /// 画区域管理视图
+        /// </summary>
+        private void DrawAreaView()
+        {
+            areaViewScrollPosition = EditorGUILayout.BeginScrollView(areaViewScrollPosition);
+
+            using (areaEnumerator = LELevel.Inst.areas.GetEnumerator())
+            {
+                while (areaEnumerator.MoveNext())
+                {
+                    EditorGUILayout.BeginHorizontal("box");
+                    var area = areaEnumerator.Current.Value;
+                    area.showing = GUILayout.Toggle(area.showing, "Area : " + area.areaName);
+                    EditorGUILayout.EndHorizontal();
+                }
+            }
+
             EditorGUILayout.EndScrollView();
         }
 

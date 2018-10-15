@@ -9,7 +9,7 @@ namespace SU.Editor.LevelEditor
     /// </summary>
     public enum GridFunction
     {
-        Ground,              // 地面
+        Area,              // 地面
         Player,                // 玩家
         Monster,            // 怪
         Door,                 // 门
@@ -24,7 +24,7 @@ namespace SU.Editor.LevelEditor
         // prefabGo
         public LEPrefabGo prefabGo;
         // 所在地块
-        public int groud;
+        public int area;
         // 位置
         public Vector3 position;
         // 旋转
