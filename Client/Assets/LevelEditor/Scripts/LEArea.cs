@@ -29,6 +29,12 @@ namespace SU.Editor.LevelEditor
             }
         }
 
+        // 区域坐标描述(使用区域描述之前请先调用 CalculateCoord 计算)
+        public Vector3 coordLD = Vector3.zero;
+        public Vector3 coordLU = Vector3.zero;
+        public Vector3 coordRU = Vector3.zero;
+        public Vector3 coordRD = Vector3.zero;
+
         /// <summary>
         /// 初始化
         /// </summary>
@@ -169,5 +175,60 @@ namespace SU.Editor.LevelEditor
             }
         }
         #endregion
+
+        // 计算区域描述
+        public void CalculateCoord()
+        {
+            int index = 0;
+            foreach (KeyValuePair<string, LEGrid> item in grids)
+            {
+                var grid = item.Value;
+                if (index == 0)
+                {
+                    coordLD.x = grid.position.x;
+                    coordLD.y = 0;
+                    coordLD.z = grid.position.z;
+
+                    coordLU.x = grid.position.x;
+                    coordLU.y = 0;
+                    coordLU.z = grid.position.z;
+
+                    coordRU.x = grid.position.x;
+                    coordRU.y = 0;
+                    coordRU.z = grid.position.z;
+
+                    coordRD.x = grid.position.x;
+                    coordRD.y = 0;
+                    coordRD.z = grid.position.z;
+                }
+                else {
+                    // coordLD
+                    if (grid.position.x < coordLD.x)
+                        coordLD.x = grid.position.x;
+                    if (grid.position.z < coordLD.z)
+                        coordLD.z = grid.position.z;
+
+                    // coordLU
+                    if (grid.position.x < coordLU.x)
+                        coordLU.x = grid.position.x;
+                    if (grid.position.z > coordLU.z)
+                        coordLU.z = grid.position.z;
+
+                    // coordRU
+                    if (grid.position.x > coordRU.x)
+                        coordRU.x = grid.position.x;
+                    if (grid.position.z > coordRU.z)
+                        coordRU.z = grid.position.z;
+
+                    // coordRD
+                    if (grid.position.x > coordRD.x)
+                        coordRD.x = grid.position.x;
+                    if (grid.position.z < coordRD.z)
+                        coordRD.z = grid.position.z;
+                }
+                index++;
+            }
+        }
+        
     }
 }

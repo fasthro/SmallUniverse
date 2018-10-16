@@ -190,6 +190,11 @@ namespace SU.Editor.LevelEditor
 
             levelName = LELevel.Inst.levelName;
 
+            // 关卡初始化
+            LELevel.Inst.Initialize();
+
+            // 网格尺寸
+            var dim = LELevel.Inst.GetGizmoDimension();
             // 网格实例获取
             if (gizmoPanel == null)
             {
@@ -197,19 +202,18 @@ namespace SU.Editor.LevelEditor
                 if (gizmoGridGo != null)
                 {
                     gizmoPanel = gizmoGridGo.GetComponent<LEGizmoPanel>();
-
-                    gridDimensions.x = gizmoPanel.width;
-                    gridDimensions.y = gizmoPanel.lenght;
-
-                    _gridDimensions.x = gizmoPanel.width;
-                    _gridDimensions.y = gizmoPanel.lenght;
-
-                    _gridHeight = gizmoPanel.height;
                 }
             }
+            gridDimensions.x = dim.x;
+            gridDimensions.y = dim.y;
 
-            // 关卡初始化
-            LELevel.Inst.Initialize();
+            _gridDimensions.x = dim.x;
+            _gridDimensions.y = dim.y;
+
+            _gridHeight = 0;
+
+            gizmoPanel.SetSize(dim.x, dim.y);
+            gizmoPanel.SetHight(_gridHeight);
 
             // config
             IconConfig = AssetDatabase.LoadAssetAtPath(LEConst.IconConfigPath, typeof(LEIconConfig)) as LEIconConfig;
@@ -395,7 +399,7 @@ namespace SU.Editor.LevelEditor
                 {
                     EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), LEUtils.GetLevelScenePath(LELevel.Inst.levelName));
                     
-                    LELevel.Inst.GenerateLevelData();
+                    LELevel.Inst.ExportLevelData();
                 }
                 EditorGUILayout.EndVertical();
 
@@ -488,6 +492,9 @@ namespace SU.Editor.LevelEditor
         /// </summary>
         private void DrawModelView()
         {
+            if (Inst == null)
+                return;
+
             modelViewScrollPosition = EditorGUILayout.BeginScrollView(modelViewScrollPosition);
 
             modelViewHorizontalCounter = 0;
