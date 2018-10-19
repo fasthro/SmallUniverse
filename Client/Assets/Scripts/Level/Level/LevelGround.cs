@@ -36,7 +36,7 @@ public class LevelGround : GameBehaviour {
             go.transform.parent = transform;
             var grid = go.AddComponent<LevelGrid>();
             grid.assetName = xmlChild.Attribute("asset_name");
-            grid.buneldName = xmlChild.Attribute("bundle_name");
+            grid.bundleName = xmlChild.Attribute("bundle_name");
             grid.position = new Vector3(int.Parse(xmlChild.Attribute("pos_x")), int.Parse(xmlChild.Attribute("pos_y")), int.Parse(xmlChild.Attribute("pos_z")));
             grid.rotationAngle = new Vector3(int.Parse(xmlChild.Attribute("angle_x")), int.Parse(xmlChild.Attribute("angle_y")), int.Parse(xmlChild.Attribute("angle_z")));
             grid.function = LevelFunctionType.Ground;
@@ -44,5 +44,16 @@ public class LevelGround : GameBehaviour {
             grids.Add(grid);
         }
     }
-
+    
+    /// <summary>
+    /// 初始格子
+    /// </summary>
+    /// <param name="aniType">动画类型</param>
+    public void InitGrid(LevelAnimationType aniType)
+    {
+        for (int i = 0; i < grids.Count; i++)
+        {
+            grids[i].LoadAsset();
+        }
+    }
 }

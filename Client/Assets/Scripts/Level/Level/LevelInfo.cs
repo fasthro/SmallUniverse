@@ -17,6 +17,11 @@ public enum LevelFunctionType
     Decoration,       // 装饰品
 }
 
+public enum LevelAnimationType
+{
+    None,               // 无
+}
+
 public class LevelInfo : GameBehaviour
 {
     // 关卡名称
@@ -55,6 +60,9 @@ public class LevelInfo : GameBehaviour
             area.Initialize(this, areaIndex, xmlChild);
             areas[areaIndex - 1] = area;
         }
+
+        areas[0].ground.InitGrid(LevelAnimationType.None);
+        areas[1].ground.InitGrid(LevelAnimationType.None);
     }
     
     /// <summary>

@@ -5,41 +5,32 @@ using UnityEngine;
 
 public class LevelAsset
 {
-    // bundle name
-    public string bundleName;
-    // bundle
-    private AssetBundle bundle;
-    // 资源管理
-    private GResManager resMgr;
-    // 资源字典
-    private Dictionary<string, Object> assets;
+    private static Dictionary<string, LevelAssetBundle> bundles = new Dictionary<string, LevelAssetBundle>();
 
-    public LevelAsset(GResManager _resMgr)
+    public static GameObject GetGameObject(string bundleName, string assetName)
     {
-        resMgr = _resMgr;
-        assets = new Dictionary<string, Object>();
+        LevelAssetBundle bundle = null;
+        if (bundles.TryGetValue(bundleName, out bundle))
+        {
+            return bundle.GetAsset(assetName) as GameObject;
+        }
+
+        bundle = new LevelAssetBundle();
+        bundle.Initialize(bundleName);
+
+        bundles.Add(bundleName, bundle);
+
+        return bundle.GetAsset(assetName) as GameObject;
     }
 
-    public void Load()
+    public void UnloadBundle(string bundleName)
     {
-        if (bundle == null)
+        LevelAssetBundle bundle = null;
+        if (bundles.TryGetValue(bundleName, out bundle))
         {
-            bundle = resMgr.LoadAssetBundle(bundleName);
-        }
-    }
+            bundle.Unload();
 
-    public Object GetAsset(string assetName)
-    {
-        Object obj = null;
-        if (assets.TryGetValue(assetName, out obj))
-        {
-            return obj;
+            bundles.Remove(bundleName);
         }
-        if (bundle != null)
-        {
-            obj = bundle.LoadAsset(assetName);
-            assets.Add(assetName, obj);
-        }
-        return obj;
     }
 }
