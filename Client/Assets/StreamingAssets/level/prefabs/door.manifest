@@ -1,0 +1,30 @@
+ManifestFileVersion: 0
+CRC: 3045837027
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 3125dd0e4c097cd83d8d8242ed86b9dc
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9b4f1593cdf7a1ab33da9444111cb398
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Levels/Prefabs/Door/test_063a.prefab
+Dependencies: []

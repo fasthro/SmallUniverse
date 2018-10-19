@@ -9,7 +9,6 @@ namespace SU.Editor.LevelEditor
 {
     public class LELevel : MonoBehaviour
     {
-#if UNITY_EDITOR
         // 单例模式引用
         private static LELevel _inst;
         public static LELevel Inst {
@@ -52,7 +51,7 @@ namespace SU.Editor.LevelEditor
         {
             areas = new Dictionary<string, LEArea>();
 
-            var trans = gameObject.transform.Find(GridFunction.Area.ToString());
+            var trans = gameObject.transform.Find(GridFunction.Ground.ToString());
 
             // area
             var transCount = trans.childCount;
@@ -72,7 +71,7 @@ namespace SU.Editor.LevelEditor
             for (int i = 0; i < fields.Length; i++)
             {
                 var name = fields[i].Name;
-                if (!name.Equals("value__") && !name.Equals(GridFunction.Area.ToString()))
+                if (!name.Equals("value__") && !name.Equals(GridFunction.Ground.ToString()))
                 {
                     trans = gameObject.transform.Find(name);
                     transCount = trans.childCount;
@@ -269,9 +268,31 @@ namespace SU.Editor.LevelEditor
         /// <summary>
         /// 导出关卡数据
         /// </summary>
-        public void ExportLevelData()
+        public void ExportXml()
         {
-           
+            string content = string.Empty;
+            int areaCount = 0;
+            foreach (KeyValuePair<string, LEArea> areaItem in areas)
+            {
+                content += areaItem.Value.ExportXml();
+                areaCount++;
+            }
+
+            string template = LEUtils.LoadTemplate("Level.txt");
+            template = template.Replace("{#level_name}", levelName);
+            template = template.Replace("{#area_count}", areaCount.ToString());
+            template = template.Replace("{#content}", content);
+
+            string file = LEUtils.GetLevelDataPath(levelName);
+            string dir = Path.GetDirectoryName(file);
+            if (File.Exists(dir))
+            {
+                File.Delete(dir);
+            }
+            File.WriteAllText(file, template);
+#if UNITY_EDITOR
+            AssetDatabase.Refresh();
+#endif
         }
         #endregion
 
@@ -284,9 +305,9 @@ namespace SU.Editor.LevelEditor
         {
             Transform trans = null;
             // Ground
-            if (function == GridFunction.Area)
+            if (function == GridFunction.Ground)
             {
-                trans = gameObject.transform.Find(GridFunction.Area.ToString());
+                trans = gameObject.transform.Find(GridFunction.Ground.ToString());
 
                 var transCount = trans.childCount;
                 for (int i = 0; i < transCount; i++)
@@ -348,6 +369,5 @@ namespace SU.Editor.LevelEditor
             string areaStr = strs[3];
             return areaStr.Substring(5);
         }
-#endif
     }
 }

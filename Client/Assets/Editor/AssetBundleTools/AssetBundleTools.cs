@@ -19,7 +19,7 @@ namespace SU.Editor
             AssetDatabase.RemoveUnusedAssetBundleNames();
             
             // level
-            SetAssetBundleNameToLevelRepository();
+            SetAssetBundleNameToLevelPrefab();
             SetAssetBundleNameToLevelScene();
 
             Debug.Log("设置资源 assetBundleName 完成!");
@@ -28,22 +28,22 @@ namespace SU.Editor
         /// <summary>
         /// 设置关卡资源库 bundle name
         /// </summary>
-        private static void SetAssetBundleNameToLevelRepository()
+        private static void SetAssetBundleNameToLevelPrefab()
         {
-            string rootDir = Path.Combine(Application.dataPath, "Levels/Repository");
+            string rootDir = Path.Combine(Application.dataPath, "Levels/Prefabs");
             if (!Directory.Exists(rootDir))
                 return;
 
-            string[] repositoryDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
-            for (int i = 0; i < repositoryDirs.Length; i++)
+            string[] prefabDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
+            for (int i = 0; i < prefabDirs.Length; i++)
             {
-                var repositoryDir = repositoryDirs[i];
-                var repositoryName = PathUtils.GetPathSection(repositoryDir, -1);
+                var prefabDir = prefabDirs[i];
+                var prefabName = PathUtils.GetPathSection(prefabDir, -1);
 
-                string[] filePaths = Directory.GetFiles(repositoryDir, "*.prefab", SearchOption.TopDirectoryOnly);
+                string[] filePaths = Directory.GetFiles(prefabDir, "*.prefab", SearchOption.TopDirectoryOnly);
                 for (int k = 0; k < filePaths.Length; k++)
                 {
-                    SetAssetBundleName(filePaths[k], "level/repository/" + repositoryName);
+                    SetAssetBundleName(filePaths[k], "level/prefabs/" + prefabName);
                 }
             }
         }

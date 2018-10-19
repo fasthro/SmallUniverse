@@ -40,7 +40,9 @@ namespace SU.Editor.LevelEditor
                 pgo.prefabName = name;
                 pgo.name = ns.Substring(0, ns.Length - ".prefab".Length);
                 pgo.path = p;
+#if UNITY_EDITOR
                 pgo.go = AssetDatabase.LoadAssetAtPath(p, typeof(GameObject)) as GameObject;
+#endif
                 pgo.bundleName = "level/prefabs/" + name.ToLower();
 
                 gos.Add(pgo.name, pgo);

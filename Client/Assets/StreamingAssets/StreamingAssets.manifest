@@ -1,13 +1,16 @@
 ManifestFileVersion: 0
-CRC: 2945696546
+CRC: 3471233950
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: level/repository/normal
+      Name: level/scene/level_001
       Dependencies: {}
     Info_1:
-      Name: level/repository/transparent
+      Name: level/prefabs/door
       Dependencies: {}
     Info_2:
-      Name: level/scene/test
+      Name: level/prefabs/player
+      Dependencies: {}
+    Info_3:
+      Name: level/prefabs/ground
       Dependencies: {}

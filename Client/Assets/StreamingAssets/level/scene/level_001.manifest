@@ -1,0 +1,16 @@
+ManifestFileVersion: 0
+CRC: 2244745639
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: c5c4f95a142c97c45056429bca6e096e
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5ad585dd02dfb5016c0dad519eab8f49
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+Assets:
+- Assets/Levels/Scenes/Level_001/Level_001.xml
+Dependencies: []

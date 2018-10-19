@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SU.Level
+public class CameraControler
 {
-    public class CameraControler
+    public void Initialize()
     {
-        public void Initialize()
-        {
 
-        }
     }
 }

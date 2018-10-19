@@ -99,7 +99,7 @@ namespace SU.Editor.LevelEditor
             if (Event.current.button == 0 && Event.current.alt == false &&Event.current.shift == false && Event.current.control == false
                 && enabledInput)
             {
-                if (LEWindow.Inst.currentSelectFunction == GridFunction.Area)
+                if (LEWindow.Inst.currentSelectFunction == GridFunction.Ground)
                 {
                     if (Event.current.type == EventType.MouseDrag || Event.current.type == EventType.MouseDown)
                     {

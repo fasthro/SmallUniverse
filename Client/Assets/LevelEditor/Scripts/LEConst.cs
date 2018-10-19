@@ -9,7 +9,5 @@
         public static string EditorLevelName = "LevelMap";
         // icon config path
         public static string IconConfigPath = "Assets/LevelEditor/Config/LEIconConfig.asset";
-        // level map template
-        public static string LevelMapTemplatePath = "Assets/LevelEditor/Templates/LevelMap.txt";
     }
 }

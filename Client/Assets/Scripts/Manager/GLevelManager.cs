@@ -1,19 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SU.Level;
 
 namespace SU.Manager
 {
     public class GLevelManager : BaseManager
     {
-        // 关卡地图
-        public Map map;
+        // 关卡
+        public LevelInfo levelInfo;
 
         // 角色
 
         // 相机
-        public CameraControler cameraController;
 
         public override void Initialize()
         {
@@ -32,15 +30,15 @@ namespace SU.Manager
         }
 
         /// <summary>
-        /// 创建地图
+        /// 创建关卡
         /// </summary>
-        /// <param name="mapName"></param>
-        public void CreateMap(string mapName)
+        /// <param name="levelName"></param>
+        public void CreateLevel(string levelName)
         {
             GameObject go = new GameObject();
-            go.name = "MapRoot";
-            map = go.AddComponent<Map>();
-            map.Initialize(mapName);
+            go.name = "LevelInfo";
+            levelInfo = go.AddComponent<LevelInfo>();
+            levelInfo.Initialize(levelName);
         }
 
         /// <summary>
@@ -56,8 +54,7 @@ namespace SU.Manager
         /// </summary>
         public void CreateCamera()
         {
-            cameraController = new CameraControler();
-            cameraController.Initialize();
+            
         }
     }
 }

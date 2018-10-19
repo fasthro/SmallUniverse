@@ -9,12 +9,13 @@ namespace SU.Editor.LevelEditor
     /// </summary>
     public enum GridFunction
     {
-        Area,              // 地面
+        Ground,              // 地面
         Player,                // 玩家
         Monster,            // 怪
         Door,                 // 门
-        Trap,                 // 陷阱
-        Transfer,           // 传送门
+        Trap,                  // 陷阱
+        Transfer,            // 传送门
+        Decoration,       // 装饰品
     }
 
     public class LEGrid : MonoBehaviour

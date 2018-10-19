@@ -8,10 +8,11 @@ namespace SU.Editor.LevelEditor
 {
     public class LEUtils
     {
-#if UNITY_EDITOR
+
         public static T CreateScriptable<T>() where T : ScriptableObject
         {
             T newScriptable = ScriptableObject.CreateInstance<T>();
+#if UNITY_EDITOR
             string path = AssetDatabase.GetAssetPath(Selection.activeObject);
             if (path.Length == 0)
             {
@@ -26,8 +27,28 @@ namespace SU.Editor.LevelEditor
             string className = typeof(T).Name;
             path = AssetDatabase.GenerateUniqueAssetPath(path + "/" + className + ".asset");
             AssetDatabase.CreateAsset(newScriptable, path);
+
+#endif
             return newScriptable;
         }
+
+        /// <summary>
+        ///  加载模版
+        /// </summary>
+        /// <param name="templateName"></param>
+        /// <returns></returns>
+        public static string LoadTemplate(string templateName)
+        {
+#if UNITY_EDITOR
+            string path = Path.Combine("Assets/LevelEditor/Templates/", templateName);
+            Object obj = AssetDatabase.LoadAssetAtPath(path, typeof(TextAsset));
+            TextAsset asset = obj as TextAsset;
+            return asset.text;
+#else
+            return "";
+#endif
+        }
+
 
         /// <summary>
         /// 字符串首字母大写
@@ -93,6 +114,5 @@ namespace SU.Editor.LevelEditor
         {
             return Path.Combine(GetLevelSceneDirectory(levelSceneName, absolute), levelSceneName + ".xml");
         }
-#endif
     }
 }

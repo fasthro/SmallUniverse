@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace SU.Editor.LevelEditor
@@ -15,6 +16,7 @@ namespace SU.Editor.LevelEditor
         public Dictionary<string, LEGrid> doors;
         public Dictionary<string, LEGrid> traps;
         public Dictionary<string, LEGrid> transfers;
+        public Dictionary<string, LEGrid> decorations;
 
         // 当前区域是否显示
         private bool _showing = true;
@@ -47,6 +49,7 @@ namespace SU.Editor.LevelEditor
             doors = new Dictionary<string, LEGrid>();
             traps = new Dictionary<string, LEGrid>();
             transfers = new Dictionary<string, LEGrid>();
+            decorations = new Dictionary<string, LEGrid>();
 
             int count = transform.childCount;
             for (int k = 0; k < count; k++)
@@ -91,6 +94,11 @@ namespace SU.Editor.LevelEditor
             }
 
             foreach (KeyValuePair<string, LEGrid> item in transfers)
+            {
+                item.Value.gameObject.SetActive(showing);
+            }
+
+            foreach (KeyValuePair<string, LEGrid> item in decorations)
             {
                 item.Value.gameObject.SetActive(showing);
             }
@@ -139,6 +147,10 @@ namespace SU.Editor.LevelEditor
                 {
                     transfers.Add(key, grid);
                 }
+                else if (grid.function == GridFunction.Decoration)
+                {
+                    decorations.Add(key, grid);
+                }
 
                 return true;
             }
@@ -172,11 +184,17 @@ namespace SU.Editor.LevelEditor
                 {
                     transfers.Remove(key);
                 }
+                else if (grid.function == GridFunction.Decoration)
+                {
+                    decorations.Remove(key);
+                }
             }
         }
         #endregion
 
-        // 计算区域描述
+        /// <summary>
+        ///  计算区域描述
+        /// </summary>
         public void CalculateCoord()
         {
             int index = 0;
@@ -229,6 +247,84 @@ namespace SU.Editor.LevelEditor
                 index++;
             }
         }
-        
+
+        /// <summary>
+        /// 导出xml
+        /// </summary>
+        /// <returns></returns>
+        public string ExportXml()
+        {
+            string groundContent = string.Empty;
+            string playerContent = string.Empty;
+            string monsterContent = string.Empty;
+            string doorContent = string.Empty;
+            string trapContent = string.Empty;
+            string transferContent = string.Empty;
+            string decorationContent = string.Empty;
+
+            foreach (KeyValuePair<string, LEGrid> gridItem in grids)
+            {
+                var grid = gridItem.Value;
+                if (grid.function == GridFunction.Ground)
+                {
+                    groundContent += ExporGridtXml(grid);
+                }
+                else if (grid.function == GridFunction.Player)
+                {
+                    playerContent += ExporGridtXml(grid);
+                }
+                else if (grid.function == GridFunction.Monster)
+                {
+                    monsterContent += ExporGridtXml(grid);
+                }
+                else if (grid.function == GridFunction.Door)
+                {
+                    doorContent += ExporGridtXml(grid);
+                }
+                else if (grid.function == GridFunction.Trap)
+                {
+                    trapContent += ExporGridtXml(grid);
+                }
+                else if (grid.function == GridFunction.Transfer)
+                {
+                    transferContent += ExporGridtXml(grid);
+                }
+                else if (grid.function == GridFunction.Decoration)
+                {
+                    decorationContent += ExporGridtXml(grid);
+                }
+            }
+
+            string template = LEUtils.LoadTemplate("Area.txt");
+            template = template.Replace("{#area_index}", areaName);
+            template = template.Replace("{#ground_content}", groundContent);
+            template = template.Replace("{#player_content}", playerContent);
+            template = template.Replace("{#monster_content}", monsterContent);
+            template = template.Replace("{#door_content}", doorContent);
+            template = template.Replace("{#trap_content}", trapContent);
+            template = template.Replace("{#transfer_content}", transferContent);
+            template = template.Replace("{#decoration_content}", decorationContent);
+
+            return template;
+        }
+
+        /// <summary>
+        /// 替换格子模版
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        private string ExporGridtXml(LEGrid grid)
+        {
+            string template = "<grid bundle_name='{#bundle_name}' asset_name='{#asset_name}' pos_x='{#pos_x}' pos_y='{#pos_y}' pos_z='{#pos_z}' angle_x='{#angle_x}' angle_y='{#angle_y}' angle_z='{#angle_z}'></grid>";
+            template = template.Replace("{#bundle_name}", grid.prefabGo.bundleName);
+            template = template.Replace("{#asset_name}", grid.prefabGo.name);
+            template = template.Replace("{#pos_x}", grid.position.x.ToString());
+            template = template.Replace("{#pos_y}", grid.position.y.ToString());
+            template = template.Replace("{#pos_z}", grid.position.z.ToString());
+            template = template.Replace("{#angle_x}", grid.rotationAngle.x.ToString());
+            template = template.Replace("{#angle_y}", grid.rotationAngle.y.ToString());
+            template = template.Replace("{#angle_z}", grid.rotationAngle.z.ToString());
+            return template;
+        }
     }
 }

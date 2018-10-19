@@ -89,7 +89,7 @@ namespace SU.Editor.LevelEditor
         // 当前选择的工具
         private SceneTool currentSelectTool;
         // 当前选择的功能
-        public GridFunction currentSelectFunction = GridFunction.Area;
+        public GridFunction currentSelectFunction = GridFunction.Ground;
         // 当前选择的 prefab
         private LEPrefab currentSelectPrefab;
         // 当前选中 prefab go
@@ -395,11 +395,11 @@ namespace SU.Editor.LevelEditor
                 }
 
                 // 生成场景配置
-                if (GUILayout.Button("Generate Level Data", GUILayout.Height(30)))
+                if (GUILayout.Button("Export Xml", GUILayout.Height(30)))
                 {
                     EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), LEUtils.GetLevelScenePath(LELevel.Inst.levelName));
                     
-                    LELevel.Inst.ExportLevelData();
+                    LELevel.Inst.ExportXml();
                 }
                 EditorGUILayout.EndVertical();
 
@@ -414,9 +414,9 @@ namespace SU.Editor.LevelEditor
         {
             EditorGUILayout.BeginHorizontal();
             // Ground
-            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Area, content = new GUIContent(GridFunction.Area.ToString()), "Button", GUILayout.Height(20)))
+            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Ground, content = new GUIContent(GridFunction.Ground.ToString()), "Button", GUILayout.Height(20)))
             {
-                currentSelectFunction = GridFunction.Area;
+                currentSelectFunction = GridFunction.Ground;
                 currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
                 if (currentSelectTool == SceneTool.Brush)
                 {

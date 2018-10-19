@@ -1,0 +1,29 @@
+<area index='{#area_index}'>
+	<ground>
+	{#ground_content}
+	</ground>
+
+	<player>
+	{#player_content}
+	</player>
+
+	<monster>
+	{#monster_content}
+	</monster>
+
+	<door>
+	{#door_content}
+	</door>
+
+	<trap>
+	{#trap_content}
+	</trap>
+
+	<transfer>
+	{#transfer_content}
+	</transfer>
+
+	<decoration>
+	{#decoration_content}
+	</decoration>
+</area>
