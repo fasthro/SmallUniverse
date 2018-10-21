@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CameraControler
 {
-    public void Initialize()
+    public static CameraControler Create()
     {
-
+        return null;
     }
 }

@@ -46,10 +46,10 @@ public class LevelGround : GameBehaviour {
     }
     
     /// <summary>
-    /// 初始格子
+    /// 加载格子
     /// </summary>
     /// <param name="aniType">动画类型</param>
-    public void InitGrid(LevelAnimationType aniType)
+    public void LoadGrid(LevelAnimationType aniType)
     {
         for (int i = 0; i < grids.Count; i++)
         {

@@ -43,7 +43,20 @@ public class LevelInfo : GameBehaviour
         base.OnStart();
     }
 
-    public void Initialize(string _levelName)
+    /// <summary>
+    /// 创建关卡信息
+    /// </summary>
+    /// <param name="parent"></param>
+    public static LevelInfo Create(string _levelName)
+    {
+        GameObject go = new GameObject();
+        go.name = "LevelInfo";
+        var levelInfo = go.AddComponent<LevelInfo>();
+        levelInfo.Initialize(_levelName);
+        return levelInfo;
+    }
+
+    private void Initialize(string _levelName)
     {
         levelName = _levelName;
         xml = LoadXml();
@@ -60,9 +73,14 @@ public class LevelInfo : GameBehaviour
             area.Initialize(this, areaIndex, xmlChild);
             areas[areaIndex - 1] = area;
         }
+    }
 
-        areas[0].ground.InitGrid(LevelAnimationType.None);
-        areas[1].ground.InitGrid(LevelAnimationType.None);
+    public void InitEnvironment(LevelEnvironment _environment)
+    {
+        for(int i = 0; i < areas.Length; i++)
+        {
+            areas[i].InitEnvironment(_environment);
+        }
     }
     
     /// <summary>

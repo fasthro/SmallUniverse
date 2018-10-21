@@ -8,10 +8,10 @@ namespace SU.Manager
     {
         // 关卡
         public LevelInfo levelInfo;
-
-        // 角色
-
-        // 相机
+        // 角色控制器
+        public CharacterControler characterContorler;
+        // 相机控制器
+        public CameraControler cameraControler;
 
         public override void Initialize()
         {
@@ -29,32 +29,11 @@ namespace SU.Manager
         {
         }
 
-        /// <summary>
-        /// 创建关卡
-        /// </summary>
-        /// <param name="levelName"></param>
-        public void CreateLevel(string levelName)
+        public void InitLevel(string _levelName, string _characterName)
         {
-            GameObject go = new GameObject();
-            go.name = "LevelInfo";
-            levelInfo = go.AddComponent<LevelInfo>();
-            levelInfo.Initialize(levelName);
-        }
-
-        /// <summary>
-        /// 创建角色
-        /// </summary>
-        public void CreateCharacter()
-        {
-
-        }
-
-        /// <summary>
-        /// 创建相机
-        /// </summary>
-        public void CreateCamera()
-        {
-            
+            levelInfo = LevelInfo.Create(_levelName);
+            characterContorler = CharacterControler.Create(_characterName);
+            cameraControler = CameraControler.Create();
         }
     }
 }

@@ -14,7 +14,7 @@ namespace SU.Scene
 
             //panelMgr.CreatePanel(UI.PanelName.LoginPanel);
 
-            levelMgr.CreateLevel("Level_001");
+            levelMgr.InitLevel("Level_001", "");
         }
 
         public override void OnLeaveScenel(SceneType level, Action action = null)

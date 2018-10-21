@@ -71,6 +71,16 @@ public class LevelArea : GameBehaviour
     }
 
     /// <summary>
+    /// 初始化区域环境
+    /// </summary>
+    /// <param name="_environment"></param>
+    public void InitEnvironment(LevelEnvironment _environment)
+    {
+        // 地面
+        ground.LoadGrid(LevelAnimationType.None);
+    }
+
+    /// <summary>
     /// 创建节点
     /// </summary>
     /// <param name="parent"></param>
