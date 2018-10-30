@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SU.Behaviour;
-using SU.Scene;
+using SmallUniverse.UI;
+using SmallUniverse.Behaviour;
+using SmallUniverse.Scene;
 using UnityEngine.SceneManagement;
 
-namespace SU.Manager
+namespace SmallUniverse.Manager
 {
     public enum SceneType {
         InitScene = 0,

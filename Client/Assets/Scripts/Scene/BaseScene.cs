@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SU.Behaviour;
+using SmallUniverse.Behaviour;
 using System;
-using SU.Manager;
+using SmallUniverse.Manager;
 
-namespace SU.Scene
+namespace SmallUniverse.Scene
 {
     public abstract class BaseScene : BaseBehaviour, IScene
     {

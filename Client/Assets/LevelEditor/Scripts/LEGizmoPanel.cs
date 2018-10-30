@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SU.Editor.LevelEditor
+namespace SmallUniverse.Editor.LevelEditor
 {
     public class LEGizmoPanel : MonoBehaviour
     {

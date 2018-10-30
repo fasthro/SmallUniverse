@@ -1,8 +1,8 @@
 ﻿using FairyGUI;
-using SU.Manager;
+using SmallUniverse.Manager;
 using UnityEngine;
 
-namespace SU.UI
+namespace SmallUniverse.UI
 {
     public class PanelBase : Window
     {

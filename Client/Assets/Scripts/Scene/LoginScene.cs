@@ -1,10 +1,10 @@
-﻿using SU.Manager;
+﻿using SmallUniverse.Manager;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SU.Scene
+namespace SmallUniverse.Scene
 {
     public class LoginScene : BaseScene
     {
@@ -14,7 +14,7 @@ namespace SU.Scene
 
             //panelMgr.CreatePanel(UI.PanelName.LoginPanel);
 
-            levelMgr.InitLevel("Level_001", "");
+            levelMgr.InitLevel("Level_001", "Super");
         }
 
         public override void OnLeaveScenel(SceneType level, Action action = null)

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SU.Editor.ExportPanelCode
+namespace SmallUniverse.Editor.ExportPanelCode
 {
     public class ComponentScript
     {

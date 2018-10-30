@@ -1,5 +1,5 @@
 //Generate By @ExportUIMapCode
-namespace SU.UI
+namespace SmallUniverse.UI
 {
     public enum PanelName
     {

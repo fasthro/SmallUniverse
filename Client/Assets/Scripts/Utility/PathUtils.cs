@@ -1,10 +1,10 @@
-﻿using SU.Define;
+﻿using SmallUniverse.Define;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace SU.Utils
+namespace SmallUniverse.Utils
 {
     public class PathUtils
     {

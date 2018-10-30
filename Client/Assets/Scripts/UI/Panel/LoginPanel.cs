@@ -1,43 +1,47 @@
 // Generate By @ExportViewCode
-using SU.UI;
-using SU.Manager;
+using SmallUniverse.UI;
+using SmallUniverse.Manager;
+using SmallUniverse;
 
-public class LoginPanel : PanelBase
+namespace SmallUniverse.UI
 {
-    // 视图 PanelView
-    private LoginPanelView view;
-
-    public LoginPanel(params string[] _parameters) : base()
+    public class LoginPanel : PanelBase
     {
-        pname = PanelName.LoginPanel;
-        view = PanelMap.GetView(pname) as LoginPanelView;
-        mainPackage = "login_panel";
-        packages = new string[] {"common"};
-        pcname = "login_panel";
-        parameters = _parameters;
-        layer = PanelLayer.WINDOW;
-    }
+        // 视图 PanelView
+        private LoginPanelView view;
 
-    protected override void OnShown()
-    {
-        base.OnShown();
+        public LoginPanel(params string[] _parameters) : base()
+        {
+            pname = PanelName.LoginPanel;
+            view = PanelMap.GetView(pname) as LoginPanelView;
+            mainPackage = "login_panel";
+            packages = new string[] { "common" };
+            pcname = "login_panel";
+            parameters = _parameters;
+            layer = PanelLayer.WINDOW;
+        }
 
-        view.SetRoot(contentPane);
-        view.Get();
-        view.Init();
+        protected override void OnShown()
+        {
+            base.OnShown();
 
-        view.begin_game_btn.onClick.Set(this.OckBeginGame);
-    }
+            view.SetRoot(contentPane);
+            view.Get();
+            view.Init();
 
-    protected override void OnHide()
-    {
-        base.OnHide();
+            view.begin_game_btn.onClick.Set(this.OckBeginGame);
+        }
 
-        view.Dispose();
-    }
+        protected override void OnHide()
+        {
+            base.OnHide();
 
-    private void OckBeginGame()
-    {
-        Game.GetManager<GSceneManager>().LoadLevel(SceneType.MainScene);
+            view.Dispose();
+        }
+
+        private void OckBeginGame()
+        {
+            Game.GetManager<GSceneManager>().LoadLevel(SceneType.MainScene);
+        }
     }
 }

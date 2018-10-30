@@ -1,18 +1,18 @@
-﻿using SU.Utils;
+﻿using SmallUniverse.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace SU.Editor
+namespace SmallUniverse.Editor
 {
     public class AssetBundleTools
     {
         /// <summary>
         /// 设置资源asset bundle name
         /// </summary>
-        [MenuItem("SU/AssetsBundleTools/Set AssetBundle Name")]
+        [MenuItem("SmallUniverse/AssetsBundleTools/Set AssetBundle Name")]
         public static void SetAssetBundleName()
         {
             // 清理无用asset bundle name
@@ -21,6 +21,9 @@ namespace SU.Editor
             // level
             SetAssetBundleNameToLevelPrefab();
             SetAssetBundleNameToLevelScene();
+
+            // heros
+            SetAssetBundleNameToHeros();
 
             Debug.Log("设置资源 assetBundleName 完成!");
         }
@@ -43,7 +46,7 @@ namespace SU.Editor
                 string[] filePaths = Directory.GetFiles(prefabDir, "*.prefab", SearchOption.TopDirectoryOnly);
                 for (int k = 0; k < filePaths.Length; k++)
                 {
-                    SetAssetBundleName(filePaths[k], "level/prefabs/" + prefabName);
+                    SetAssetBundleName(filePaths[k], "levels/prefabs/" + prefabName);
                 }
             }
         }
@@ -64,7 +67,30 @@ namespace SU.Editor
                 var levelName = PathUtils.GetPathSection(levelDir, -1);
                 var levelPath = Path.Combine(levelDir, levelName + ".xml");
 
-                SetAssetBundleName(levelPath, "level/scene/" + levelName);
+                SetAssetBundleName(levelPath, "levels/scenes/" + levelName);
+            }
+        }
+
+        /// <summary>
+        /// 设置 heros bundle name
+        /// </summary>
+        private static void SetAssetBundleNameToHeros()
+        {
+            string rootDir = Path.Combine(Application.dataPath, "Heros");
+            if (!Directory.Exists(rootDir))
+                return;
+
+            string[] heroDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
+            for (int i = 0; i < heroDirs.Length; i++)
+            {
+                var herolDir = heroDirs[i];
+                var prefabDir = Path.Combine(herolDir, "Prefabs");
+                var heroName = PathUtils.GetPathSection(herolDir, -1);
+                string[] filePaths = Directory.GetFiles(prefabDir, "*.prefab", SearchOption.TopDirectoryOnly);
+                for (int k = 0; k < filePaths.Length; k++)
+                {
+                    SetAssetBundleName(filePaths[k], "heros/" + heroName);
+                }
             }
         }
 
@@ -90,5 +116,6 @@ namespace SU.Editor
                 import.assetBundleName = bundleName;
             }
         }
+        
     }
 }

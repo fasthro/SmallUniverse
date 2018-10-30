@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace SU.Editor.LevelEditor
+namespace SmallUniverse.Editor.LevelEditor
 {
     public class LECreateWindow : EditorWindow
     {
@@ -18,7 +18,7 @@ namespace SU.Editor.LevelEditor
         // 关卡规模
         private Vector2Int dimension = new Vector2Int(20, 20);
         
-        [MenuItem("SU/LevelEditor/Create Level")]
+        [MenuItem("SmallUniverse/LevelEditor/Create Level")]
         public static void Initialize()
         {
             window = GetWindow<LECreateWindow>();

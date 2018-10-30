@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="1136,640" opaque="false">
-  <displayList/>
+  <displayList>
+    <component id="n0_kkxc" name="@joystick" src="kkxcw" fileName="component/joystick/joystick.xml" pkg="tqc2b6mi" xy="64,374"/>
+  </displayList>
 </component>

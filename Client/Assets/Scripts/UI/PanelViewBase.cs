@@ -1,6 +1,6 @@
 ﻿using FairyGUI;
 
-namespace SU.UI
+namespace SmallUniverse.UI
 {
     public class PanelViewBase
     {

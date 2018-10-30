@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace SU.Editor.LevelEditor
+namespace SmallUniverse.Editor.LevelEditor
 {
     public class LECubeGizmoGrid : EditorWindow
     {

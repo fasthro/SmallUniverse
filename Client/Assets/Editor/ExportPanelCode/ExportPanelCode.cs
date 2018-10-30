@@ -1,6 +1,6 @@
 ﻿using FairyGUI.Utils;
-using SU.UI;
-using SU.Utils;
+using SmallUniverse.UI;
+using SmallUniverse.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +16,7 @@ using UnityEngine;
  * 支持导出c#和lua代码格式
  * 2.根据 Panel Name 导出框架 Panel Map 代码
  */
-namespace SU.Editor.ExportPanelCode
+namespace SmallUniverse.Editor.ExportPanelCode
 {
     public enum ComponentType
     {
@@ -49,7 +49,7 @@ namespace SU.Editor.ExportPanelCode
         private static ExportLanauge exportLanauge = ExportLanauge.CSharp;
         
         #region csharp
-        [MenuItem("SU/Panel/export panel-view code", false, 1)]
+        [MenuItem("SmallUniverse/Panel/export panel-view code", false, 1)]
         public static void ExportViewScript()
         {
             // 全局包对象
@@ -97,17 +97,17 @@ namespace SU.Editor.ExportPanelCode
                     continue;
 
                 // 定义
-                vars += "   " + script.GetVarCodeWithCSharp() + "\n";
+                vars += "      " + script.GetVarCodeWithCSharp() + "\n";
                 // 组件获取
-                gets += "        " + script.GetGetCodeWithCSharp() + "\n";
+                gets += "           " + script.GetGetCodeWithCSharp() + "\n";
                 // 初始化
                 var istr = script.GetInitCodeWithCSharp();
                 if (!string.IsNullOrEmpty(istr))
                 {
-                    inits += "        " + istr + "\n";
+                    inits += "           " + istr + "\n";
                 }
                 // 销毁
-                disposes += "        " + script.GetDisposeCodeWithCSharp() + "\n";
+                disposes += "           " + script.GetDisposeCodeWithCSharp() + "\n";
             }
 
             vars = vars.TrimEnd('\n');
@@ -149,7 +149,7 @@ namespace SU.Editor.ExportPanelCode
         }
 
         // panel map code
-        [MenuItem("SU/Panel/export panel map code", false, 2)]
+        [MenuItem("SmallUniverse/Panel/export panel map code", false, 2)]
         public static void GenerateMapCodeWithCSharp()
         {
             string map_source = ReadCodeTemplate("MapTemplate.txt");
@@ -189,7 +189,7 @@ namespace SU.Editor.ExportPanelCode
         }
 
         // panel name code
-        [MenuItem("SU/Panel/export panel name code", false, 3)]
+        [MenuItem("SmallUniverse/Panel/export panel name code", false, 3)]
         public static void GenerateNameCodeWithCSharp()
         {
             string name_source = ReadCodeTemplate("NameTemplate.txt");

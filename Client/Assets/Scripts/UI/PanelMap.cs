@@ -1,5 +1,5 @@
 //Generate By @ExportPanelCode
-namespace SU.UI
+namespace SmallUniverse.UI
 {
     public class PanelMap
     {

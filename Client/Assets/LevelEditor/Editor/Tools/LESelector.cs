@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace SU.Editor.LevelEditor
+namespace SmallUniverse.Editor.LevelEditor
 {
     /// <summary>
     /// 选择器工具
@@ -15,7 +15,7 @@ namespace SU.Editor.LevelEditor
             None,
             Selected,
         }
-        
+
         // 选择器当前状态
         private SelectorState state = SelectorState.None;
         // 当前选中的位置
@@ -82,20 +82,21 @@ namespace SU.Editor.LevelEditor
             {
                 if (state == SelectorState.None && state != SelectorState.Selected)
                 {
-                   grid = LELevel.Inst.GetGrid(mousePosition, LEWindow.Inst.area.ToString());
+                    grid = LELevel.Inst.GetGrid(mousePosition, LEWindow.Inst.area.ToString());
                     if (grid != null)
                     {
                         state = SelectorState.Selected;
                         position = mousePosition;
                     }
                 }
-                else {
+                else
+                {
                     state = SelectorState.None;
                     grid = null;
                 }
             }
         }
-        
+
         public override void Close()
         {
             state = SelectorState.None;

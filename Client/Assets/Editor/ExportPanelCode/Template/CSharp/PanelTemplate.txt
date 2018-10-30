@@ -1,35 +1,38 @@
 // Generate By @ExportPanelCode
-using SU.UI;
-using SU.Manager;
+using SmallUniverse.UI;
+using SmallUniverse.Manager;
 
-public class [CLASS_NAME] : PanelBase
+namespace SmallUniverse.UI
 {
-    private [VIEW_NAME] view;
-
-    public [CONSTRUCTOR_NAME](params string[] _parameters) : base()
+    public class [CLASS_NAME] : PanelBase
     {
-        pname = PanelName.[PANEL_NAME];
-        view = PanelMap.GetView(pname) as [VIEW_NAME];
-        mainPackage = [MAIN_PACKAGE];
-        packages = new string[] {};
-        pcname = [PANEL_COMPONENT_NAME];
-        parameters = _parameters;
-        layer = PanelLayer.WINDOW;
-    }
+        private [VIEW_NAME] view;
 
-    protected override void OnShown()
-    {
-        base.OnShown();
+        public [CONSTRUCTOR_NAME](params string[] _parameters) : base()
+        {
+            pname = PanelName.[PANEL_NAME];
+            view = PanelMap.GetView(pname) as [VIEW_NAME];
+            mainPackage = [MAIN_PACKAGE];
+            packages = new string[] {};
+            pcname = [PANEL_COMPONENT_NAME];
+            parameters = _parameters;
+            layer = PanelLayer.WINDOW;
+        }
 
-        view.SetRoot(contentPane);
-        view.Get();
-        view.Init();
-    }
+        protected override void OnShown()
+        {
+            base.OnShown();
 
-    protected override void OnHide()
-    {
-        base.OnHide();
+            view.SetRoot(contentPane);
+            view.Get();
+            view.Init();
+        }
 
-        view.Dispose();
+        protected override void OnHide()
+        {
+            base.OnHide();
+
+            view.Dispose();
+        }
     }
 }

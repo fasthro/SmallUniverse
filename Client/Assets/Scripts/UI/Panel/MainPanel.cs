@@ -1,36 +1,39 @@
 // Generate By @ExportViewCode
-using SU.UI;
-using SU.Manager;
+using SmallUniverse.UI;
+using SmallUniverse.Manager;
 
-public class MainPanel : PanelBase
+namespace SmallUniverse.UI
 {
-    // 视图 PanelView
-    private MainPanelView view;
-
-    public MainPanel(params string[] _parameters) : base()
+    public class MainPanel : PanelBase
     {
-        pname = PanelName.MainPanel;
-        view = PanelMap.GetView(pname) as MainPanelView;
-        mainPackage = "main_panel";
-        packages = new string[] {"common"};
-        pcname = "main_panel";
-        parameters = _parameters;
-        layer = PanelLayer.WINDOW;
-    }
+        // 视图 PanelView
+        private MainPanelView view;
 
-    protected override void OnShown()
-    {
-        base.OnShown();
+        public MainPanel(params string[] _parameters) : base()
+        {
+            pname = PanelName.MainPanel;
+            view = PanelMap.GetView(pname) as MainPanelView;
+            mainPackage = "main_panel";
+            packages = new string[] { "common" };
+            pcname = "main_panel";
+            parameters = _parameters;
+            layer = PanelLayer.WINDOW;
+        }
 
-        view.SetRoot(contentPane);
-        view.Get();
-        view.Init();
-    }
+        protected override void OnShown()
+        {
+            base.OnShown();
 
-    protected override void OnHide()
-    {
-        base.OnHide();
+            view.SetRoot(contentPane);
+            view.Get();
+            view.Init();
+        }
 
-        view.Dispose();
+        protected override void OnHide()
+        {
+            base.OnHide();
+
+            view.Dispose();
+        }
     }
 }

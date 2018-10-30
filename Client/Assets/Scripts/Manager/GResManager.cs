@@ -1,11 +1,11 @@
-﻿using SU.Define;
-using SU.Utils;
+﻿using SmallUniverse.Define;
+using SmallUniverse.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SU.Manager
+namespace SmallUniverse.Manager
 {
     public class AssetBundleInfo
     {

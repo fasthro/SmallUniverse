@@ -1,17 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SmallUniverse;
 
-namespace SU.Manager
+namespace SmallUniverse.Manager
 {
     public class GLevelManager : BaseManager
     {
         // 关卡
         public LevelInfo levelInfo;
-        // 角色控制器
-        public CharacterControler characterContorler;
-        // 相机控制器
-        public CameraControler cameraControler;
+        // 英雄
+        public Hero hero;
+        // 英雄相机
+        public VirtualCamera heroCamera;
+
+        // 区域索引
+        private int areaIndex;
 
         public override void Initialize()
         {
@@ -29,11 +33,25 @@ namespace SU.Manager
         {
         }
 
-        public void InitLevel(string _levelName, string _characterName)
+        public void InitLevel(string _levelName, string _heroName)
         {
             levelInfo = LevelInfo.Create(_levelName);
-            characterContorler = CharacterControler.Create(_characterName);
-            cameraControler = CameraControler.Create();
+            hero = Hero.Create(_heroName);
+            heroCamera = Game.gameCamera.heroCamera;
+
+            areaIndex = 1;
+
+            // 初始化环境
+            levelInfo.InitEnvironment(new LevelEnvironment());
+
+            
+            var points = levelInfo.GetPlayerPoints(areaIndex);
+            // 玩家出生
+            hero.Born(points[0]);
+
+            // 设置相机
+            heroCamera.Initialize();
+            heroCamera.SetLookAt(hero.heroTransform.head);
         }
     }
 }

@@ -1,0 +1,30 @@
+ManifestFileVersion: 0
+CRC: 2345161974
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: fe1c0551d9b97c557a2c416fb61de03d
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9b4f1593cdf7a1ab33da9444111cb398
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Levels/Prefabs/Player/test_060.prefab
+Dependencies: []

@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SU.Behaviour;
+using SmallUniverse.Behaviour;
 
-namespace SU.Manager
+namespace SmallUniverse.Manager
 {
     public abstract class BaseManager : BaseBehaviour, IManager
     {

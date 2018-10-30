@@ -4,12 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - UICameraView
-  - UICamera
   - MainGame
-  - BattleCameraView
-  - BattleCamera
   - Ground
+  - Node
   layers:
   - Default
   - TransparentFX

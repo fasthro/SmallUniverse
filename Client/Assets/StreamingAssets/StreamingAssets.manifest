@@ -1,16 +1,19 @@
 ManifestFileVersion: 0
-CRC: 2235820195
+CRC: 4270015825
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: level/scene/level_001
+      Name: levels/prefabs/door
       Dependencies: {}
     Info_1:
-      Name: level/prefabs/door
+      Name: levels/prefabs/ground
       Dependencies: {}
     Info_2:
-      Name: level/prefabs/player
+      Name: levels/prefabs/player
       Dependencies: {}
     Info_3:
-      Name: level/prefabs/ground
+      Name: levels/scenes/level_001
+      Dependencies: {}
+    Info_4:
+      Name: heros/super
       Dependencies: {}

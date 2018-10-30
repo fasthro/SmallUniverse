@@ -5,7 +5,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace SU.Editor.LevelEditor
+namespace SmallUniverse.Editor.LevelEditor
 {
     public class LELevel : MonoBehaviour
     {

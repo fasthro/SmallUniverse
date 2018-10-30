@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SU.Behaviour
+namespace SmallUniverse.Behaviour
 {
     public class GameBehaviour : MonoBehaviour
     {

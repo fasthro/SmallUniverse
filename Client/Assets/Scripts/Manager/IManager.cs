@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SU.Manager
+namespace SmallUniverse.Manager
 {
     public interface IManager  {
         void Initialize();

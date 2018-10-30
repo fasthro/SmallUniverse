@@ -1,29 +1,32 @@
 //Generate By @ExportPanelCode
 using FairyGUI;
-using SU.UI;
+using SmallUniverse.UI;
 
-public class LoaderPanelView : PanelViewBase
+namespace SmallUniverse.UI
 {
-   public GProgressBar loader_progressbar;
-
-    public override void Get()
+    public class LoaderPanelView : PanelViewBase
     {
-        base.Get();
+        public GProgressBar loader_progressbar;
 
-        loader_progressbar = root.GetChild("@loader_progressbar").asProgress;
+        public override void Get()
+        {
+            base.Get();
+
+            loader_progressbar = root.GetChild("@loader_progressbar").asProgress;
+        }
+
+        public override void Init()
+        {
+            base.Init();
+
+
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            loader_progressbar = null;
+        }
     }
-
-    public override void Init()
-    {
-        base.Init();
-
-
-    }
-	
-    public override void Dispose() 
-    {
-        base.Dispose();
-
-        loader_progressbar = null;
-	}
 }

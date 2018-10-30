@@ -3,7 +3,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace SU.Editor.LevelEditor
+namespace SmallUniverse.Editor.LevelEditor
 {
     /// <summary>
     /// 住面板页签菜单
@@ -170,7 +170,7 @@ namespace SU.Editor.LevelEditor
         // controlId
         private int controlId;
 
-        [MenuItem("SU/LevelEditor/Open Level Editor Window")]
+        [MenuItem("SmallUniverse/LevelEditor/Open Level Editor Window")]
         public static void Initialize()
         {
             Inst = GetWindow<LEWindow>(false, "Level Editor");

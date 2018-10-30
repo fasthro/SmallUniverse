@@ -30,6 +30,9 @@
     <component id="kahwt" name="line_purple.xml" path="/component/line/" exported="true"/>
     <component id="kahwu" name="line_transparent.xml" path="/component/line/" exported="true"/>
     <component id="kahwv" name="line_white.xml" path="/component/line/" exported="true"/>
+    <component id="kkxcw" name="joystick.xml" path="/component/joystick/" exported="true"/>
+    <image id="kkxcy" name="yinying_5.png" path="/component/joystick/image/"/>
+    <image id="kkxc10" name="yinying_4.png" path="/component/joystick/image/"/>
   </resources>
   <publish name="common" path="..\Client\Assets\Resources\UI\common"/>
 </packageDescription>

@@ -1,29 +1,32 @@
 //Generate By @ExportPanelCode
 using FairyGUI;
-using SU.UI;
+using SmallUniverse.UI;
 
-public class MainPanelView : PanelViewBase
+namespace SmallUniverse.UI
 {
-
-
-    public override void Get()
+    public class MainPanelView : PanelViewBase
     {
-        base.Get();
 
 
+        public override void Get()
+        {
+            base.Get();
+
+
+        }
+
+        public override void Init()
+        {
+            base.Init();
+
+
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+
+
+        }
     }
-
-    public override void Init()
-    {
-        base.Init();
-
-
-    }
-	
-    public override void Dispose() 
-    {
-        base.Dispose();
-
-
-	}
 }

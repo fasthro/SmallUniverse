@@ -4,7 +4,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace SU.Editor.LevelEditor
+namespace SmallUniverse.Editor.LevelEditor
 {
     [System.Serializable]
     public class LEPrefabGo
@@ -43,7 +43,7 @@ namespace SU.Editor.LevelEditor
 #if UNITY_EDITOR
                 pgo.go = AssetDatabase.LoadAssetAtPath(p, typeof(GameObject)) as GameObject;
 #endif
-                pgo.bundleName = "level/prefabs/" + name.ToLower();
+                pgo.bundleName = "levels/prefabs/" + name.ToLower();
 
                 gos.Add(pgo.name, pgo);
             }

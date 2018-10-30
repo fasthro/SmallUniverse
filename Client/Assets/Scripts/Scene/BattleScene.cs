@@ -1,10 +1,10 @@
-﻿using SU.Manager;
+﻿using SmallUniverse.Manager;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SU.Scene
+namespace SmallUniverse.Scene
 {
     public class BattleScene : BaseScene
     {

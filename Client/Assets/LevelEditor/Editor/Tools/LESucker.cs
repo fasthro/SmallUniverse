@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-namespace SU.Editor.LevelEditor
+
+namespace SmallUniverse.Editor.LevelEditor
 {
     /// <summary>
     /// 吸管工具

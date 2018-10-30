@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using FairyGUI;
-using SU.UI;
+using SmallUniverse.UI;
 using System;
 using System.Reflection;
 
-namespace SU.Manager
+namespace SmallUniverse.Manager
 {
     public enum PanelLayer
     {

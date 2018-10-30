@@ -1,8 +1,8 @@
-﻿using SU.Utils;
+﻿using SmallUniverse.Utils;
 using System.Collections.Generic;
 using System.IO;
 
-namespace SU.Editor.ExportPanelCode
+namespace SmallUniverse.Editor.ExportPanelCode
 {
     public class Package
     {

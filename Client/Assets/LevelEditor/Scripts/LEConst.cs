@@ -1,4 +1,4 @@
-﻿namespace SU.Editor.LevelEditor
+﻿namespace SmallUniverse.Editor.LevelEditor
 {
     public class LEConst
     {

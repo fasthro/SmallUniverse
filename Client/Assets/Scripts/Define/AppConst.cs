@@ -1,4 +1,4 @@
-﻿namespace SU.Define
+﻿namespace SmallUniverse.Define
 {
     public class AppConst
     {

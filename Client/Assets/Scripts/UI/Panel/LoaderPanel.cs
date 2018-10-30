@@ -1,44 +1,47 @@
 // Generate By @ExportViewCode
-using SU.UI;
-using SU.Manager;
+using SmallUniverse.UI;
+using SmallUniverse.Manager;
 
-public class LoaderPanel : PanelBase
+namespace SmallUniverse.UI
 {
-    // 视图 PanelView
-    private LoaderPanelView view;
-
-    public LoaderPanel(params string[] _parameters) : base()
+    public class LoaderPanel : PanelBase
     {
-        pname = PanelName.LoaderPanel;
-        view = PanelMap.GetView(pname) as LoaderPanelView;
-        mainPackage = "loader_panel";
-        packages = new string[] {"common"};
-        pcname = "loader_panel";
-        parameters = _parameters;
-        layer = PanelLayer.WINDOW;
-    }
+        // 视图 PanelView
+        private LoaderPanelView view;
 
-    protected override void OnShown()
-    {
-        base.OnShown();
+        public LoaderPanel(params string[] _parameters) : base()
+        {
+            pname = PanelName.LoaderPanel;
+            view = PanelMap.GetView(pname) as LoaderPanelView;
+            mainPackage = "loader_panel";
+            packages = new string[] {"common"};
+            pcname = "loader_panel";
+            parameters = _parameters;
+            layer = PanelLayer.WINDOW;
+        }
 
-        view.SetRoot(contentPane);
-        view.Get();
-        view.Init();
-    }
+        protected override void OnShown()
+        {
+            base.OnShown();
 
-    protected override void OnHide()
-    {
-        base.OnHide();
+            view.SetRoot(contentPane);
+            view.Get();
+            view.Init();
+        }
 
-        view.Dispose();
-    }
+        protected override void OnHide()
+        {
+            base.OnHide();
 
-    public void SetLoaderProgress(float progress)
-    {
-        if (!view.Initialized)
-            return;
+            view.Dispose();
+        }
 
-        view.loader_progressbar.value = progress;
+        public void SetLoaderProgress(float progress)
+        {
+            if (!view.Initialized)
+                return;
+
+            view.loader_progressbar.value = progress;
+        }
     }
 }
