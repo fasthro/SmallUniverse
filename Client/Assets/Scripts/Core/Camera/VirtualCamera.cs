@@ -6,7 +6,7 @@ using Cinemachine;
 
 namespace SmallUniverse
 {
-    public class VirtualCamera : GameBehaviour {
+    public class VirtualCamera : MonoBehaviour {
         public CinemachineVirtualCamera virtualCamera;
         public float distance = 15f;
         public float degree = 45f;
@@ -24,7 +24,7 @@ namespace SmallUniverse
             lookTrans = _lookTrans;
         }
 
-        protected override void OnLateUpdate()
+        void LateUpdate()
         {
             if(lookTrans == null)
                 return;

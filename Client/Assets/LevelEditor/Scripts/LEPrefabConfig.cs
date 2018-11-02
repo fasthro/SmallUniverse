@@ -4,7 +4,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace SmallUniverse.Editor.LevelEditor
+namespace SmallUniverse.GameEditor.LevelEditor
 {
     [System.Serializable]
     public class LEPrefabGo

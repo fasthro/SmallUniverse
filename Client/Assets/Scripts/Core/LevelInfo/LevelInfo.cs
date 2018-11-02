@@ -24,7 +24,7 @@ namespace SmallUniverse
         None,               // 无
     }
 
-    public class LevelInfo : GameBehaviour
+    public class LevelInfo : MonoBehaviour
     {
         // 关卡名称
         private string levelName;
@@ -34,16 +34,6 @@ namespace SmallUniverse
         private int areaCount;
         // 区域列表
         private LevelArea[] areas;
-
-        protected override void OnAwake()
-        {
-            base.OnAwake();
-        }
-
-        protected override void OnStart()
-        {
-            base.OnStart();
-        }
 
         /// <summary>
         /// 创建关卡信息

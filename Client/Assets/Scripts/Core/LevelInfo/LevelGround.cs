@@ -6,24 +6,14 @@ using System.Security;
 
 namespace SmallUniverse
 {
-    public class LevelGround : GameBehaviour {
+    public class LevelGround : MonoBehaviour {
         // 区域
         private LevelArea area;
         // xml 数据
         private SecurityElement xml;
         // 格子集合
         private List<LevelGrid> grids;
-
-        protected override void OnAwake()
-        {
-            base.OnAwake();
-        }
-
-        protected override void OnStart()
-        {
-            base.OnStart();
-        }
-
+        
         public void Initialize(LevelArea _area, SecurityElement _xml)
         {
             xml = _xml;

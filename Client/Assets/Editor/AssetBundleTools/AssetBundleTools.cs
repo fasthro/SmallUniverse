@@ -5,7 +5,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace SmallUniverse.Editor
+namespace SmallUniverse.GameEditor
 {
     public class AssetBundleTools
     {
@@ -22,8 +22,8 @@ namespace SmallUniverse.Editor
             SetAssetBundleNameToLevelPrefab();
             SetAssetBundleNameToLevelScene();
 
-            // heros
-            SetAssetBundleNameToHeros();
+            // hero
+            SetAssetBundleNameToHero();
 
             Debug.Log("设置资源 assetBundleName 完成!");
         }
@@ -72,11 +72,11 @@ namespace SmallUniverse.Editor
         }
 
         /// <summary>
-        /// 设置 heros bundle name
+        /// 设置 hero bundle name
         /// </summary>
-        private static void SetAssetBundleNameToHeros()
+        private static void SetAssetBundleNameToHero()
         {
-            string rootDir = Path.Combine(Application.dataPath, "Heros");
+            string rootDir = Path.Combine(Application.dataPath, "Art/Hero");
             if (!Directory.Exists(rootDir))
                 return;
 
@@ -84,12 +84,12 @@ namespace SmallUniverse.Editor
             for (int i = 0; i < heroDirs.Length; i++)
             {
                 var herolDir = heroDirs[i];
-                var prefabDir = Path.Combine(herolDir, "Prefabs");
+                var prefabDir = Path.Combine(herolDir, "Prefab");
                 var heroName = PathUtils.GetPathSection(herolDir, -1);
                 string[] filePaths = Directory.GetFiles(prefabDir, "*.prefab", SearchOption.TopDirectoryOnly);
                 for (int k = 0; k < filePaths.Length; k++)
                 {
-                    SetAssetBundleName(filePaths[k], "heros/" + heroName);
+                    SetAssetBundleName(filePaths[k], "hero/" + heroName);
                 }
             }
         }

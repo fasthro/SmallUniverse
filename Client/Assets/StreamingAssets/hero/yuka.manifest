@@ -1,0 +1,48 @@
+ManifestFileVersion: 0
+CRC: 2218933844
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 0c593193bdcf96b13caf689a7f567bbd
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 38e8343900607306bb36d39b85f13e6b
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2980838b86c36d043b96ed4350058523, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+Assets:
+- Assets/Art/Hero/Yuka/Prefab/Yuka.prefab
+Dependencies: []

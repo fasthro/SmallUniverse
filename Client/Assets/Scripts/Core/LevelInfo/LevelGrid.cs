@@ -6,7 +6,7 @@ using SmallUniverse.Behaviour;
 
 namespace SmallUniverse
 {
-    public class LevelGrid : GameBehaviour
+    public class LevelGrid : MonoBehaviour
     {
         // 资源名称
         public string assetName;
@@ -22,16 +22,6 @@ namespace SmallUniverse
         // 格子实例物体
         private GameObject gridGameObject;
         private Transform gridTransform;
-
-        protected override void OnAwake()
-        {
-            base.OnAwake();
-        }
-
-        protected override void OnStart()
-        {
-            base.OnStart();
-        }
 
         public void Initialize()
         {

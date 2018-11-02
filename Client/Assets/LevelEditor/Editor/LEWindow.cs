@@ -3,7 +3,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace SmallUniverse.Editor.LevelEditor
+namespace SmallUniverse.GameEditor.LevelEditor
 {
     /// <summary>
     /// 住面板页签菜单

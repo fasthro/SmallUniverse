@@ -16,7 +16,7 @@ using UnityEngine;
  * 支持导出c#和lua代码格式
  * 2.根据 Panel Name 导出框架 Panel Map 代码
  */
-namespace SmallUniverse.Editor.ExportPanelCode
+namespace SmallUniverse.GameEditor.ExportPanelCode
 {
     public enum ComponentType
     {

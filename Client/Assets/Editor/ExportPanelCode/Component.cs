@@ -1,7 +1,7 @@
 ﻿using FairyGUI.Utils;
 using System.IO;
 
-namespace SmallUniverse.Editor.ExportPanelCode
+namespace SmallUniverse.GameEditor.ExportPanelCode
 {
     public class Component
     {

@@ -1,0 +1,36 @@
+ManifestFileVersion: 0
+CRC: 2015288526
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 9cbcaa6530502ba66b0f076f15e19713
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 92328a55f431f0c60240a2269dfcfa5a
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2980838b86c36d043b96ed4350058523, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+Assets:
+- Assets/Art/Hero/Super/Prefab/Super.prefab
+Dependencies: []

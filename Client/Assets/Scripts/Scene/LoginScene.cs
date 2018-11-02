@@ -12,16 +12,14 @@ namespace SmallUniverse.Scene
         {
             base.OnEnterScene(level, action);
 
-            //panelMgr.CreatePanel(UI.PanelName.LoginPanel);
-
-            levelMgr.InitLevel("Level_001", "Super");
+            panelMgr.CreatePanel(UI.PanelName.LoginPanel);
         }
 
         public override void OnLeaveScenel(SceneType level, Action action = null)
         {
             base.OnLeaveScenel(level, action);
 
-            //panelMgr.ClosePanel(UI.PanelName.LoginPanel);
+            panelMgr.ClosePanel(UI.PanelName.LoginPanel);
         }
     }
 }

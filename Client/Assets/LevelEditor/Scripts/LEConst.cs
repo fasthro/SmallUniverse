@@ -1,4 +1,4 @@
-﻿namespace SmallUniverse.Editor.LevelEditor
+﻿namespace SmallUniverse.GameEditor.LevelEditor
 {
     public class LEConst
     {

@@ -5,21 +5,21 @@ using SmallUniverse.Behaviour;
 
 namespace SmallUniverse
 {
-    public class Hero : GameBehaviour {
+    public class Hero : MonoBehaviour {
         public HeroTransform heroTransform;
 
-        public static Hero Create(string _heroName)
+        public static Hero Create(string heroName, string resName)
         {
             GameObject go = new GameObject();
-            go.name = "Hero_" + _heroName ;
+            go.name = "Hero_" + heroName ;
             var hero = go.AddComponent<Hero>();
-            hero.Initialize(_heroName);
+            hero.Initialize(heroName, resName);
             return hero;
         }
 
-        private void Initialize(string characterName)
+        private void Initialize(string heroName, string resName)
         {
-            CreateHero(characterName);
+            CreateHero(heroName, resName);
         }
 
         public void Born(LevelPoint point)
@@ -29,9 +29,9 @@ namespace SmallUniverse
             heroTransform.gameObject.SetActive(true);
         }
 
-        private void CreateHero(string heroName)
+        private void CreateHero(string heroName, string resName)
         {
-            GameObject prefab = LevelAsset.GetGameObject("heros/" + heroName, heroName);
+            GameObject prefab = LevelAsset.GetGameObject("hero/" + heroName, resName);
             var heroGo = GameObject.Instantiate<GameObject>(prefab);
             heroGo.transform.parent = transform;
             heroGo.SetActive(false);

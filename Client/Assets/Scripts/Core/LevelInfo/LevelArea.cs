@@ -6,7 +6,7 @@ using SmallUniverse.Behaviour;
 
 namespace SmallUniverse
 {
-    public class LevelArea : GameBehaviour
+    public class LevelArea : MonoBehaviour
     {
         // 关卡信息
         private LevelInfo levelInfo;
@@ -20,16 +20,6 @@ namespace SmallUniverse
         public List<LevelPoint> playerPoints;
         // 怪出生点
         public List<LevelPoint> monsterPoints;
-
-        protected override void OnAwake()
-        {
-            base.OnAwake();
-        }
-
-        protected override void OnStart()
-        {
-            base.OnStart();
-        }
 
         public void Initialize(LevelInfo _levelInfo, int _index, SecurityElement _xml)
         {

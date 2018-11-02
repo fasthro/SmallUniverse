@@ -43,6 +43,18 @@ namespace SmallUniverse
             }
         }
 
+        // game joystick
+        private static Joystick _gameJoystick = null;
+        public static Joystick gameJoystick {
+            get {
+                if (_gameJoystick == null)
+                {
+                    _gameJoystick = mainGame.transform.Find("Joystick").GetComponent<Joystick>();
+                }
+                return _gameJoystick;
+            }
+        }
+
         // 获取Scene
         public static T GetScene<T>() where T : class
         {

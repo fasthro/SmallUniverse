@@ -6,13 +6,13 @@ namespace SmallUniverse.UI
 {
     public class LoaderPanelView : PanelViewBase
     {
-        public GProgressBar loader_progressbar;
+      public GProgressBar loader_progressbar;
 
         public override void Get()
         {
             base.Get();
 
-            loader_progressbar = root.GetChild("@loader_progressbar").asProgress;
+           loader_progressbar = root.GetChild("@loader_progressbar").asProgress;
         }
 
         public override void Init()
@@ -21,12 +21,12 @@ namespace SmallUniverse.UI
 
 
         }
-
-        public override void Dispose()
+        
+        public override void Dispose() 
         {
             base.Dispose();
 
-            loader_progressbar = null;
+           loader_progressbar = null;
         }
     }
 }

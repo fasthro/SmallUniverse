@@ -8,12 +8,10 @@ using SmallUniverse.Manager;
 
 namespace SmallUniverse
 {
-    public class MainGame : GameBehaviour {
+    public class MainGame : MonoBehaviour {
         
-        protected override void OnAwake()
+        void Awake()
         {
-            base.OnAwake();
-
             InitGame();
         }
 

@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="200,200">
   <displayList>
-    <image id="n2_kkxc" name="bg" src="kkxcy" fileName="component/joystick/image/yinying_5.png" xy="0,0" pivot="0.5,0.5" aspect="true"/>
-    <image id="n4_kkxc" name="@sign" src="kkxc10" fileName="component/joystick/image/yinying_4.png" xy="78,0" pivot="0.5,1" size="43,100" aspect="true"/>
+    <image id="n2_kkxc" name="@bg" src="kkxcy" fileName="component/joystick/image/yinying_5.png" xy="0,0" pivot="0.5,0.5" aspect="true" alpha="0.5"/>
+    <image id="n5_rl8t" name="@point" src="rl8t12" fileName="component/joystick/image/yinying_3.png" xy="68,68" size="64,64"/>
+    <image id="n6_sfkx" name="@dir" src="kkxc10" fileName="component/joystick/image/yinying_4.png" xy="78,-19" pivot="0.5,1" size="44,121"/>
   </displayList>
+  <transition name="bg_start">
+    <item time="0" type="Alpha" target="n2_kkxc" tween="true" startValue="0.2" endValue="0.8" duration="3" ease="Linear"/>
+    <item time="3" type="Alpha" target="n2_kkxc" tween="true" startValue="0.8" ease="Linear"/>
+  </transition>
+  <transition name="bg_end">
+    <item time="0" type="Alpha" target="n2_kkxc" tween="true" startValue="0.8" endValue="0.2" duration="3" ease="Linear"/>
+    <item time="3" type="Alpha" target="n2_kkxc" tween="true" startValue="0.2" ease="Linear"/>
+  </transition>
 </component>

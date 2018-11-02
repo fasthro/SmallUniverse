@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace SmallUniverse.Editor.LevelEditor
+namespace SmallUniverse.GameEditor.LevelEditor
 {
     /// <summary>
     /// 擦除工具

@@ -15,6 +15,8 @@ namespace SmallUniverse.Scene
             Game.mainGame.OnEnterMainScene();
 
             panelMgr.CreatePanel(UI.PanelName.MainPanel);
+
+            levelMgr.InitLevel("Level_001", "Yuka", "Yuka");
         }
 
         public override void OnLeaveScenel(SceneType level, Action action = null)

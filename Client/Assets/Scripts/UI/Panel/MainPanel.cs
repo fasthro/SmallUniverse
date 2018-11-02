@@ -27,6 +27,17 @@ namespace SmallUniverse.UI
             view.SetRoot(contentPane);
             view.Get();
             view.Init();
+            
+            JoystickUI joystickUI = new JoystickUI();
+            
+            joystickUI.component = view.joystick;
+            joystickUI.bgImage = view.bg_joystick;
+            joystickUI.bgStartAni = view.joystick.GetTransition("bg_start");
+            joystickUI.bgEndAni = view.joystick.GetTransition("bg_end");
+            joystickUI.pointImage = view.point_joystick;
+            joystickUI.dirImage = view.dir_joystick;
+
+            Game.gameJoystick.Initialize(joystickUI);
         }
 
         protected override void OnHide()
