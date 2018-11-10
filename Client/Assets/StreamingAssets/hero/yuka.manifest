@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2218933844
+CRC: 939316402
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 0c593193bdcf96b13caf689a7f567bbd
+    Hash: 1cb5fef75f2c98dbcc82fd1ab99eec51
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 38e8343900607306bb36d39b85f13e6b
+    Hash: 32b3bdcc843d3cc7533eb0d37e283e0a
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -39,9 +39,9 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 2980838b86c36d043b96ed4350058523, type: 3}
 - Class: 115
   Script: {instanceID: 0}
-- Class: 136
-  Script: {instanceID: 0}
 - Class: 137
+  Script: {instanceID: 0}
+- Class: 195
   Script: {instanceID: 0}
 Assets:
 - Assets/Art/Hero/Yuka/Prefab/Yuka.prefab

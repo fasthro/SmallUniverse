@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SmallUniverse
 {
-    public class HeroTransform : MonoBehaviour
+    public class ActorGameObject : MonoBehaviour
     {
         public Transform head;
     }

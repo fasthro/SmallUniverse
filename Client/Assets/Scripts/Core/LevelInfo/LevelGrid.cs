@@ -19,13 +19,16 @@ namespace SmallUniverse
         // 功能
         public LevelFunctionType function;
 
+        // 所在层
+        public int layer;
+
         // 格子实例物体
         private GameObject gridGameObject;
         private Transform gridTransform;
-
+        
         public void Initialize()
         {
-            
+            gameObject.layer = layer;
         }
 
         public void LoadAsset()
@@ -37,6 +40,8 @@ namespace SmallUniverse
             gridTransform.parent = transform;
             gridTransform.localEulerAngles = rotationAngle;
             gridGameObject.AddComponent<BoxCollider>();
+
+            GameUtils.SetGameObjectLayer(gridGameObject, layer);
         }
     }
 

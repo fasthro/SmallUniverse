@@ -21,6 +21,7 @@ namespace SmallUniverse.GameEditor
             // level
             SetAssetBundleNameToLevelPrefab();
             SetAssetBundleNameToLevelScene();
+            SetAssetBundleNameToLevelSceneNavmesh();
 
             // hero
             SetAssetBundleNameToHero();
@@ -70,6 +71,30 @@ namespace SmallUniverse.GameEditor
                 SetAssetBundleName(levelPath, "levels/scenes/" + levelName);
             }
         }
+
+        /// <summary>
+        /// 设置关卡场景 navmesh bundle name
+        /// </summary>
+        private static void SetAssetBundleNameToLevelSceneNavmesh()
+        {
+            string rootDir = Path.Combine(Application.dataPath, "Levels/Scenes");
+            if (!Directory.Exists(rootDir))
+                return;
+
+            string[] levelDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
+            for (int i = 0; i < levelDirs.Length; i++)
+            {
+                var levelDir = levelDirs[i];
+                var levelName = PathUtils.GetPathSection(levelDir, -1);
+                var navmeshDir = Path.Combine(levelDir, levelName);
+                var navmeshPath = Path.Combine(navmeshDir, "NavMesh-Ground.asset");
+
+                SetAssetBundleName(navmeshPath, "levels/navmesh/" + levelName);
+            }
+        }
+
+
+        
 
         /// <summary>
         /// 设置 hero bundle name

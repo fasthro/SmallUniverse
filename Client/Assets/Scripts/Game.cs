@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SmallUniverse.Manager;
 
 namespace SmallUniverse
 {
@@ -52,6 +53,14 @@ namespace SmallUniverse
                     _gameJoystick = mainGame.transform.Find("Joystick").GetComponent<Joystick>();
                 }
                 return _gameJoystick;
+            }
+        }
+
+        // hero
+        private static Hero _hero = null;
+        public static Hero hero{
+            get{
+                return GetManager<GLevelManager>().hero;
             }
         }
 

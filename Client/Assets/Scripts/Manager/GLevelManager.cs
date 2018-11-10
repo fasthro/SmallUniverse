@@ -44,14 +44,13 @@ namespace SmallUniverse.Manager
             // 初始化环境
             levelInfo.InitEnvironment(new LevelEnvironment());
 
-            
             var points = levelInfo.GetPlayerPoints(areaIndex);
             // 玩家出生
             hero.Born(points[0]);
 
             // 设置相机
             heroCamera.Initialize();
-            heroCamera.SetLookAt(hero.heroTransform.head);
+            heroCamera.SetLookAt(hero.actorGameObject.head);
         }
     }
 }

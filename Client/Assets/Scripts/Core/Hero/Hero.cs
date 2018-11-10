@@ -5,9 +5,8 @@ using SmallUniverse.Behaviour;
 
 namespace SmallUniverse
 {
-    public class Hero : MonoBehaviour {
-        public HeroTransform heroTransform;
-
+    public class Hero : ActorBase 
+    {
         public static Hero Create(string heroName, string resName)
         {
             GameObject go = new GameObject();
@@ -19,23 +18,23 @@ namespace SmallUniverse
 
         private void Initialize(string heroName, string resName)
         {
-            CreateHero(heroName, resName);
-        }
-
-        public void Born(LevelPoint point)
-        {
-            heroTransform.transform.position = point.position;
-            heroTransform.transform.localEulerAngles = point.rotationAngle;
-            heroTransform.gameObject.SetActive(true);
-        }
-
-        private void CreateHero(string heroName, string resName)
-        {
+            base.InitActorData();
+            
             GameObject prefab = LevelAsset.GetGameObject("hero/" + heroName, resName);
             var heroGo = GameObject.Instantiate<GameObject>(prefab);
             heroGo.transform.parent = transform;
             heroGo.SetActive(false);
-            heroTransform = heroGo.GetComponent<HeroTransform>();
+            actorGameObject = heroGo.GetComponent<ActorGameObject>();
+        }
+
+        public override void Born(LevelPoint point)
+        {
+            base.Born(point);
+        }
+
+        public override void Move(Vector3 move, float delta)
+        {
+            base.Move(move, delta);
         }
     }
 }

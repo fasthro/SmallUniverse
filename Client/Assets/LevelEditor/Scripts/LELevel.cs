@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace SmallUniverse.GameEditor.LevelEditor
 {
@@ -26,23 +27,9 @@ namespace SmallUniverse.GameEditor.LevelEditor
         // 区域字典
         public Dictionary<string, LEArea> areas;
 
-        // 关卡宽
-        public int width
-        {
-            get {
-                return 0;
-            }
-        }
+        // navmesh
+        public NavMeshSurface navMeshSurface;
 
-        // 关卡长
-        public int length
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        
         #region editor
         /// <summary>
         /// 初始化
@@ -52,6 +39,8 @@ namespace SmallUniverse.GameEditor.LevelEditor
             areas = new Dictionary<string, LEArea>();
 
             var trans = gameObject.transform.Find(GridFunction.Ground.ToString());
+
+            navMeshSurface = trans.gameObject.GetComponent<NavMeshSurface>();
 
             // area
             var transCount = trans.childCount;

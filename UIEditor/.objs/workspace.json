@@ -1,9 +1,4 @@
 {
-	"active_doc": [
-		"tqc2b6mi",
-		"kkxcw"
-	],
-	"hidden_packages": [],
 	"docs": [
 		"twzaid7z",
 		"kahw0",
@@ -21,5 +16,10 @@
 		"/",
 		"twzaid7z",
 		"/"
-	]
+	],
+	"active_doc": [
+		"tqc2b6mi",
+		"kkxcw"
+	],
+	"hidden_packages": []
 }

@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace SmallUniverse
 {
@@ -34,6 +35,9 @@ namespace SmallUniverse
         private int areaCount;
         // 区域列表
         private LevelArea[] areas;
+        
+        // navMesh Surface
+        public NavMeshSurface navMeshSurface;
 
         /// <summary>
         /// 创建关卡信息
@@ -65,6 +69,10 @@ namespace SmallUniverse
                 area.Initialize(this, areaIndex, xmlChild);
                 areas[areaIndex - 1] = area;
             }
+
+            navMeshSurface = gameObject.AddComponent<NavMeshSurface>();
+            navMeshSurface.collectObjects = CollectObjects.Children;
+            navMeshSurface.layerMask = 1 << LayerMask.NameToLayer(LevelFunctionType.Ground.ToString());
         }
 
         public void InitEnvironment(LevelEnvironment _environment)
@@ -73,6 +81,8 @@ namespace SmallUniverse
             {
                 areas[i].InitEnvironment(_environment);
             }
+
+            navMeshSurface.BuildNavMesh();
         }
 
         /// <summary>

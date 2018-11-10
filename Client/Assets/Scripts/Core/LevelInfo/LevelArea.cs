@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Security;
 using UnityEngine;
-using SmallUniverse.Behaviour;
+using UnityEngine.AI;
 
 namespace SmallUniverse
 {
@@ -20,16 +20,18 @@ namespace SmallUniverse
         public List<LevelPoint> playerPoints;
         // 怪出生点
         public List<LevelPoint> monsterPoints;
+        // 门
+        public List<LevelDoor> doors;
 
         public void Initialize(LevelInfo _levelInfo, int _index, SecurityElement _xml)
         {
             xml = _xml;
             index = _index;
             levelInfo = _levelInfo;
-            
+
             playerPoints = new List<LevelPoint>();
             monsterPoints = new List<LevelPoint>();
-
+            
             Transform root = null;
 
             foreach (SecurityElement xmlChild in xml.Children)
@@ -46,7 +48,8 @@ namespace SmallUniverse
                 }
                 else if (xmlChild.Tag == LevelFunctionType.Door.ToString().ToLower())
                 {
-
+                    root = CreateRoot(transform, LevelFunctionType.Door.ToString());
+                    InitializeDoors(root, xmlChild);
                 }
                 else if (xmlChild.Tag == LevelFunctionType.Trap.ToString().ToLower())
                 {
@@ -67,6 +70,21 @@ namespace SmallUniverse
             }
         }
 
+        // 初始化门
+        public void InitializeDoors(Transform root, SecurityElement _xml)
+        {
+            doors = new List<LevelDoor>();
+            if (_xml.Children != null)
+            {
+                foreach (SecurityElement xmlChild in _xml.Children)
+                {
+                    var door = root.gameObject.AddComponent<LevelDoor>();
+                    door.Initialize(this, xmlChild);
+                    doors.Add(door);
+                }
+            }
+        }
+
         /// <summary>
         /// 初始化区域环境
         /// </summary>
@@ -75,6 +93,12 @@ namespace SmallUniverse
         {
             // 地面
             ground.LoadGrid(LevelAnimationType.None);
+
+            // 门
+            for (int i = 0; i < doors.Count; i++)
+            {
+                doors[i].LoadDoor();
+            }
         }
 
         /// <summary>
@@ -85,10 +109,15 @@ namespace SmallUniverse
         /// <returns></returns>
         private Transform CreateRoot(Transform parent, string name)
         {
-            GameObject go = new GameObject();
-            go.name = name;
-            go.transform.parent = parent;
-            return go.transform;
+            var root = parent.Find(name);
+            if (root == null)
+            {
+                GameObject go = new GameObject();
+                go.name = name;
+                go.transform.parent = parent;
+                root = go.transform;
+            }
+            return root;
         }
 
         /// <summary>
@@ -98,11 +127,11 @@ namespace SmallUniverse
         private List<LevelPoint> GetPoints(SecurityElement _xml)
         {
             List<LevelPoint> points = new List<LevelPoint>();
-            if(_xml.Children != null)
+            if (_xml.Children != null)
             {
                 foreach (SecurityElement xmlChild in _xml.Children)
                 {
-                    LevelPoint point= new LevelPoint(xmlChild);
+                    LevelPoint point = new LevelPoint(xmlChild);
                     points.Add(point);
                 }
             }
