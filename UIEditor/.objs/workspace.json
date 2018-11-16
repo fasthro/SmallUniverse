@@ -1,12 +1,4 @@
 {
-	"docs": [
-		"twzaid7z",
-		"kahw0",
-		"t2p56nxm",
-		"api20",
-		"tqc2b6mi",
-		"kkxcw"
-	],
 	"expanded_nodes": [
 		"tqc2b6mi",
 		"/",
@@ -21,5 +13,13 @@
 		"tqc2b6mi",
 		"kkxcw"
 	],
-	"hidden_packages": []
+	"hidden_packages": [],
+	"docs": [
+		"twzaid7z",
+		"kahw0",
+		"t2p56nxm",
+		"api20",
+		"tqc2b6mi",
+		"kkxcw"
+	]
 }

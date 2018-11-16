@@ -43,6 +43,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1148806710663472
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4315639531446522}
+  - component: {fileID: 114346065620559368}
+  m_Layer: 0
+  m_Name: VirtualJoy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1180338460505128
 GameObject:
   m_ObjectHideFlags: 1
@@ -56,22 +72,6 @@ GameObject:
   - component: {fileID: 114932428517201120}
   m_Layer: 0
   m_Name: cm
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1192781088376444
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4797348612658734}
-  - component: {fileID: 114094789471769534}
-  m_Layer: 0
-  m_Name: Joystick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -218,7 +218,7 @@ Transform:
   - {fileID: 4669101483930852}
   - {fileID: 4111349890094246}
   - {fileID: 4697422006030142}
-  - {fileID: 4797348612658734}
+  - {fileID: 4315639531446522}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -261,6 +261,19 @@ Transform:
   m_Father: {fileID: 4543074837187324}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4315639531446522
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1148806710663472}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4140411629761054}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4543074837187324
 Transform:
   m_ObjectHideFlags: 1
@@ -301,19 +314,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4140411629761054}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4797348612658734
-Transform:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1192781088376444}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4140411629761054}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &20760393504777966
 Camera:
@@ -497,20 +497,51 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &114094789471769534
+--- !u!114 &114346065620559368
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1192781088376444}
+  m_GameObject: {fileID: 1148806710663472}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26c527740c12731438d1efb407fffe9b, type: 3}
+  m_Script: {fileID: 11500000, guid: a2da6891ef12f8248abb2b2bd9cb0280, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 100
-  percent: {x: 0.25, y: 0.4}
-  enableJoystick: 0
+  moveJoy:
+    joyFunc: 0
+    screenDirection: 0
+    virtualShape: 1
+    parame:
+      radius: 150
+      boundary: {x: 0, y: 0}
+  attackJoy:
+    joyFunc: 0
+    screenDirection: 1
+    virtualShape: 0
+    parame:
+      radius: 60
+      boundary: {x: 20, y: 20}
+  joys:
+  - joyFunc: 0
+    screenDirection: 1
+    virtualShape: 0
+    parame:
+      radius: 40
+      boundary: {x: 200, y: 20}
+  - joyFunc: 0
+    screenDirection: 1
+    virtualShape: 0
+    parame:
+      radius: 40
+      boundary: {x: 145, y: 160}
+  - joyFunc: 0
+    screenDirection: 1
+    virtualShape: 0
+    parame:
+      radius: 40
+      boundary: {x: 20, y: 215}
+  enableVirtuakJoy: 1
 --- !u!114 &114350056836672864
 MonoBehaviour:
   m_ObjectHideFlags: 1

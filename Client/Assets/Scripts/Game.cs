@@ -9,55 +9,55 @@ namespace SmallUniverse
     public class Game {
         
         // 游戏管理对象
-        private static GameObject _manager = null;
+        private static GameObject m_manager = null;
         public static GameObject manager {
             get {
-                if (_manager == null)
+                if (m_manager == null)
                 {
-                    _manager = GameObject.FindWithTag("MainGame");
+                    m_manager = GameObject.FindWithTag("MainGame");
                 }
-                return _manager;
+                return m_manager;
             }
         }
 
         // main game
-        private static MainGame _mainGame = null;
+        private static MainGame m_mainGame = null;
         public static MainGame mainGame {
             get {
-                if (_mainGame == null)
+                if (m_mainGame == null)
                 {
-                    _mainGame = manager.GetComponent<MainGame>();
+                    m_mainGame = manager.GetComponent<MainGame>();
                 }
-                return _mainGame;
+                return m_mainGame;
             }
         }
 
         // game camera
-        private static GameCamera _gameCamera = null;
+        private static GameCamera m_gameCamera = null;
         public static GameCamera gameCamera {
             get {
-                if (_gameCamera == null)
+                if (m_gameCamera == null)
                 {
-                    _gameCamera = mainGame.transform.Find("GameCamera").GetComponent<GameCamera>();
+                    m_gameCamera = mainGame.transform.Find("GameCamera").GetComponent<GameCamera>();
                 }
-                return _gameCamera;
+                return m_gameCamera;
             }
         }
 
-        // game joystick
-        private static Joystick _gameJoystick = null;
-        public static Joystick gameJoystick {
+        // virtual joy
+        private static VirtualJoy m_virtualJoy = null;
+        public static VirtualJoy virtualJoy {
             get {
-                if (_gameJoystick == null)
+                if (m_virtualJoy == null)
                 {
-                    _gameJoystick = mainGame.transform.Find("Joystick").GetComponent<Joystick>();
+                    m_virtualJoy = mainGame.transform.Find("VirtualJoy").GetComponent<VirtualJoy>();
                 }
-                return _gameJoystick;
+                return m_virtualJoy;
             }
         }
 
         // hero
-        private static Hero _hero = null;
+        private static Hero m_hero = null;
         public static Hero hero{
             get{
                 return GetManager<GLevelManager>().hero;

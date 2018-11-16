@@ -4,11 +4,10 @@ using UnityEngine;
 
 namespace SmallUniverse
 {
-    public class JoystickDebug
+    public class VirtualJoyDebug
     {
-        public delegate void OnGUIDelegate();
+		public delegate void OnGUIDelegate();
 
         public static OnGUIDelegate OnGUIHandlers;
     }
 }
-

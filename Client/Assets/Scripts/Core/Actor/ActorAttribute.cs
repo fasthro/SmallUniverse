@@ -6,13 +6,31 @@ namespace SmallUniverse
 {
 	public enum ActorAttributeType
 	{
-		MoveSpeed, // 移动速度
+		MoveSpeed,
+		AttackSpeed,
+		RotationSpeed,
+		Range,
+		Attack,
+		MagicAttack,
+		Defense,
+		MagicDefense,
 	}
 
     public class ActorAttribute
     {
-		// 移动速度
-		private float m_moveSpeed = 1;
+		private float m_moveSpeed;
+		private float m_attackSpeed;
+		private float m_rotationSpeed;
+		private float m_range;
+		private float m_attack;
+		private float m_magicAttack;
+		private float m_defense;
+		private float m_magicDefense;
+
+		public static ActorAttribute Create()
+		{
+			return new ActorAttribute();
+		}
 
 		public float GetAttribute(ActorAttributeType attributeType)
 		{
@@ -20,6 +38,20 @@ namespace SmallUniverse
 			{
 				case ActorAttributeType.MoveSpeed:
 					return m_moveSpeed;
+				case ActorAttributeType.AttackSpeed:
+					return m_attackSpeed;
+				case ActorAttributeType.RotationSpeed:
+					return m_rotationSpeed;
+				case ActorAttributeType.Range:
+					return m_range;
+				case ActorAttributeType.Attack:
+					return m_attack;
+				case ActorAttributeType.MagicAttack:
+					return m_magicAttack;
+				case ActorAttributeType.Defense:
+					return m_defense;
+				case ActorAttributeType.MagicDefense:
+					return m_magicDefense;
 				default:
 					return 0;
 			}
@@ -31,6 +63,27 @@ namespace SmallUniverse
 			{
 				case ActorAttributeType.MoveSpeed:
 					m_moveSpeed = value;
+					break;
+				case ActorAttributeType.AttackSpeed:
+					m_attackSpeed = value;
+					break;
+				case ActorAttributeType.RotationSpeed:
+					m_rotationSpeed = value;
+					break;
+				case ActorAttributeType.Range:
+					m_range = value;
+					break;
+				case ActorAttributeType.Attack:
+					m_attack = value;
+					break;
+				case ActorAttributeType.MagicAttack:
+					m_magicAttack = value;
+					break;
+				case ActorAttributeType.Defense:
+					m_defense = value;
+					break;
+				case ActorAttributeType.MagicDefense:
+					m_magicDefense = value;
 					break;
 			}
 		}

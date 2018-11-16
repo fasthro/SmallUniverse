@@ -1,6 +1,7 @@
 // Generate By @ExportViewCode
 using SmallUniverse.UI;
 using SmallUniverse.Manager;
+using UnityEngine;
 
 namespace SmallUniverse.UI
 {
@@ -8,6 +9,10 @@ namespace SmallUniverse.UI
     {
         // 视图 PanelView
         private MainPanelView view;
+        
+        // 移动摇杆
+        private VirtualMoveJoy m_moveJoy;
+        private Vector3 m_move;
 
         public MainPanel(params string[] _parameters) : base()
         {
@@ -28,16 +33,29 @@ namespace SmallUniverse.UI
             view.Get();
             view.Init();
             
-            JoystickUI joystickUI = new JoystickUI();
-            
-            joystickUI.component = view.joystick;
-            joystickUI.bgImage = view.bg_joystick;
-            joystickUI.bgStartAni = view.joystick.GetTransition("bg_start");
-            joystickUI.bgEndAni = view.joystick.GetTransition("bg_end");
-            joystickUI.pointImage = view.point_joystick;
-            joystickUI.dirImage = view.dir_joystick;
+            // 移动摇杆
+            m_moveJoy = new VirtualMoveJoy();
+            m_moveJoy.ui = view.joystick;
+            m_moveJoy.slider = view.touch_joystick;
+            m_moveJoy.startTransition = view.joystick.GetTransition("touch_start");
+            m_moveJoy.endTransition = view.joystick.GetTransition("touch_end");
+            m_moveJoy.Initialize(Game.virtualJoy.moveJoy);
 
-            Game.gameJoystick.Initialize(joystickUI);
+            m_moveJoy.moveJoyHandler -= MoveJoyHandler;
+            m_moveJoy.moveJoyHandler += MoveJoyHandler;
+        }
+
+
+        private void MoveJoyHandler(Vector2 move)
+        {
+            if(Game.hero != null)
+            {
+                m_move.x = move.x;
+                m_move.y = 0;
+                m_move.z = move.y;
+
+                Game.hero.Move(m_move, Time.deltaTime);
+            }
         }
 
         protected override void OnHide()
@@ -45,6 +63,13 @@ namespace SmallUniverse.UI
             base.OnHide();
 
             view.Dispose();
+
+            if(m_moveJoy != null)
+            {
+                m_moveJoy.moveJoyHandler -= MoveJoyHandler;
+                m_moveJoy = null;
+            }
         }
+        
     }
 }

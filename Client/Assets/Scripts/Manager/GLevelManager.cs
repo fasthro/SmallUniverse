@@ -51,6 +51,9 @@ namespace SmallUniverse.Manager
             // 设置相机
             heroCamera.Initialize();
             heroCamera.SetLookAt(hero.actorGameObject.head);
+            
+            // move 摇杆初始化
+            Game.virtualJoy.moveJoy.Initialize();
         }
     }
 }

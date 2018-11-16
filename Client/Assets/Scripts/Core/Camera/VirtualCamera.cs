@@ -29,11 +29,20 @@ namespace SmallUniverse
             if(lookTrans == null)
                 return;
 
-            transform.position = Vector3.MoveTowards(transform.position, lookTrans.position, Time.deltaTime * moveSpeed);
+            transform.position = Vector3.MoveTowards(transform.position, lookTrans.position, Time.deltaTime * GetMoveSpeed());
             transform.eulerAngles = new Vector3(0f, -this.yDegree, 0f);
 
             virtualCamera.transform.localPosition = GetCameraPostion();
             virtualCamera.transform.LookAt(transform);
+        }
+
+        private float GetMoveSpeed()
+        {
+            if(Game.hero != null)
+            {
+                return Game.hero.attribute.GetAttribute(ActorAttributeType.MoveSpeed);
+            }
+            return moveSpeed;
         }
 
         public Vector3 GetCameraPostion()
