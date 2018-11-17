@@ -17,12 +17,20 @@ namespace SmallUniverse
 
 			m_joy.updateHandler -= OnUpdate;
 			m_joy.updateHandler += OnUpdate;
+
+            m_joy.keyDownHandler -= OnKeyDown;
+            m_joy.keyDownHandler += OnKeyDown;
+
+            m_joy.keyUpHandler -= OnKeyUp;
+            m_joy.keyUpHandler += OnKeyUp;
         }
 
         public virtual void Disable()
         {
             m_joy.touchHandler -= TouchHandler;
 			m_joy.updateHandler -= OnUpdate;
+            m_joy.keyDownHandler -= OnKeyDown;
+            m_joy.keyUpHandler -= OnKeyUp;
         }
 
         private void TouchHandler(JoyGesture gesture)
@@ -49,6 +57,9 @@ namespace SmallUniverse
 		protected virtual void OnTouchStart(JoyGesture gesture){}
 		protected virtual void OnTouchMove(JoyGesture gesture){}
 		protected virtual void OnTouchUp(JoyGesture gesture){}
+
+        protected virtual void OnKeyDown(){}
+        protected virtual void OnKeyUp(){}
 		
 
         protected Vector2 CenterToUIPoint(Vector2 center, float uiRadius)

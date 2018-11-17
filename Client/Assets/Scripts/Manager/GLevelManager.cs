@@ -27,6 +27,7 @@ namespace SmallUniverse.Manager
 
         public override void OnUpdate(float deltaTime)
         {
+    
         }
 
         public override void OnDispose()
@@ -50,10 +51,11 @@ namespace SmallUniverse.Manager
 
             // 设置相机
             heroCamera.Initialize();
-            heroCamera.SetLookAt(hero.actorGameObject.head);
+            heroCamera.SetLookAt(hero.actorGameObject.transform);
             
             // move 摇杆初始化
             Game.virtualJoy.moveJoy.Initialize();
+            Game.virtualJoy.attackJoy.Initialize();
         }
     }
 }

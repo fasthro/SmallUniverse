@@ -37,15 +37,19 @@ namespace SmallUniverse
     public class Joy
     {
 		public delegate void JoyTouchHandler(JoyGesture gesture);
+		public delegate void JoyKeyHandler();
 		public delegate void JoyUpdateHandler();
 		
 		public JoyFunc joyFunc;
 		public JoyScreenDirection screenDirection;
+		public KeyCode keyCode;
 		public JoyVirtualShape virtualShape;
 		public JoyParame parame;
 
 		public event JoyTouchHandler touchHandler;
 		public event JoyUpdateHandler updateHandler;
+		public event JoyKeyHandler keyDownHandler;
+		public event JoyKeyHandler keyUpHandler;
 
 		// 虚拟摇杆的中心点
 		private Vector2 m_virtualCenter;
@@ -136,6 +140,22 @@ namespace SmallUniverse
 			if(updateHandler != null)
 			{
 				updateHandler();
+			}
+
+			if(Input.GetKeyDown(keyCode))
+			{
+				if(keyDownHandler != null)
+				{
+					keyDownHandler();
+				}
+			}
+
+			if(Input.GetKeyUp(keyCode))
+			{
+				if(keyUpHandler != null)
+				{
+					keyUpHandler();
+				}
 			}
 		}
 

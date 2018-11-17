@@ -14,6 +14,9 @@ namespace SmallUniverse.UI
         private VirtualMoveJoy m_moveJoy;
         private Vector3 m_move;
 
+        // 普通攻击
+        private VirtualAttackJoy m_attackJoy;
+
         public MainPanel(params string[] _parameters) : base()
         {
             pname = PanelName.MainPanel;
@@ -43,6 +46,11 @@ namespace SmallUniverse.UI
 
             m_moveJoy.moveJoyHandler -= MoveJoyHandler;
             m_moveJoy.moveJoyHandler += MoveJoyHandler;
+
+            // 普通攻击
+            m_attackJoy = new VirtualAttackJoy();
+            m_attackJoy.Initialize(Game.virtualJoy.attackJoy);
+            
         }
 
 

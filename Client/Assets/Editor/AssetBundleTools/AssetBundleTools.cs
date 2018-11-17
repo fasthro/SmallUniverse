@@ -21,10 +21,12 @@ namespace SmallUniverse.GameEditor
             // level
             SetAssetBundleNameToLevelPrefab();
             SetAssetBundleNameToLevelScene();
-            SetAssetBundleNameToLevelSceneNavmesh();
 
             // hero
             SetAssetBundleNameToHero();
+
+            // weapon
+            SetAssetBundleNameToWeapon();
 
             Debug.Log("设置资源 assetBundleName 完成!");
         }
@@ -73,30 +75,6 @@ namespace SmallUniverse.GameEditor
         }
 
         /// <summary>
-        /// 设置关卡场景 navmesh bundle name
-        /// </summary>
-        private static void SetAssetBundleNameToLevelSceneNavmesh()
-        {
-            string rootDir = Path.Combine(Application.dataPath, "Levels/Scenes");
-            if (!Directory.Exists(rootDir))
-                return;
-
-            string[] levelDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
-            for (int i = 0; i < levelDirs.Length; i++)
-            {
-                var levelDir = levelDirs[i];
-                var levelName = PathUtils.GetPathSection(levelDir, -1);
-                var navmeshDir = Path.Combine(levelDir, levelName);
-                var navmeshPath = Path.Combine(navmeshDir, "NavMesh-Ground.asset");
-
-                SetAssetBundleName(navmeshPath, "levels/navmesh/" + levelName);
-            }
-        }
-
-
-        
-
-        /// <summary>
         /// 设置 hero bundle name
         /// </summary>
         private static void SetAssetBundleNameToHero()
@@ -115,6 +93,29 @@ namespace SmallUniverse.GameEditor
                 for (int k = 0; k < filePaths.Length; k++)
                 {
                     SetAssetBundleName(filePaths[k], "hero/" + heroName);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 设置 weapon bundle name
+        /// </summary>
+        private static void SetAssetBundleNameToWeapon()
+        {
+            string rootDir = Path.Combine(Application.dataPath, "Art/Weapon");
+            if (!Directory.Exists(rootDir))
+                return;
+
+            string[] weaponDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
+            for (int i = 0; i < weaponDirs.Length; i++)
+            {
+                var weaponlDir = weaponDirs[i];
+                var prefabDir = Path.Combine(weaponlDir, "Prefab");
+                var weaponName = PathUtils.GetPathSection(weaponlDir, -1);
+                string[] filePaths = Directory.GetFiles(prefabDir, "*.prefab", SearchOption.TopDirectoryOnly);
+                for (int k = 0; k < filePaths.Length; k++)
+                {
+                    SetAssetBundleName(filePaths[k], "weapon/" + weaponName);
                 }
             }
         }

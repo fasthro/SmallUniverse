@@ -5,6 +5,14 @@ using UnityEngine.AI;
 
 namespace SmallUniverse
 {
+
+    public enum ActorAnimatorAttribute
+    {
+        Speed,
+        Attack,
+        Death,
+    }
+
     public class ActorBase : MonoBehaviour
     {
         public ActorGameObject actorGameObject;
@@ -69,19 +77,24 @@ namespace SmallUniverse
         public virtual void Move(Vector3 move, float delta)
         {
             Vector3 vector = move * attribute.GetAttribute(ActorAttributeType.MoveSpeed);
-            if(move.magnitude > 0)
-            {
-                actorGameObject.transform.position = actorGameObject.transform.position + vector * delta;
+            actorGameObject.transform.position = actorGameObject.transform.position + vector * delta;
             
+            if(vector.magnitude > 0)
+            {
                 moveDir = vector;
                 moveDir.y = 0;
                 moveDir.Normalize();
+            }
 
-                animator.SetBool("run", true);
-            }
-            else{
-                animator.SetBool("run", false);
-            }
+            animator.SetFloat(ActorAnimatorAttribute.Speed.ToString(), vector.magnitude);
+        }
+
+        /// <summary>
+        /// 攻击
+        /// </summary>
+        public virtual void Attack()
+        {
+            animator.SetBool(ActorAnimatorAttribute.Attack.ToString(), true);
         }
 
         /// <summary>
@@ -89,8 +102,7 @@ namespace SmallUniverse
         /// </summary>
         public virtual void UpdateDirection()
         {
-            Quaternion tq = Quaternion.LookRotation(moveDir, Vector3.up);
-            actorGameObject.transform.rotation = Quaternion.Lerp(actorGameObject.transform.rotation, tq, Time.fixedDeltaTime * attribute.GetAttribute(ActorAttributeType.RotationSpeed));
+            actorGameObject.transform.rotation = Quaternion.LookRotation(moveDir, Vector3.up);
         }
 
         protected virtual void OnUpdate()

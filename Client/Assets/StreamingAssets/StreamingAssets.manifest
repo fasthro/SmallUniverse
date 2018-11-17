@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 2093933975
+CRC: 24615867
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -15,8 +15,11 @@ AssetBundleManifest:
       Name: levels/scenes/level_001
       Dependencies: {}
     Info_4:
-      Name: hero/super
+      Name: hero/yuka
       Dependencies: {}
     Info_5:
-      Name: hero/yuka
+      Name: hero/yurowm
+      Dependencies: {}
+    Info_6:
+      Name: weapon/scifirifle
       Dependencies: {}
