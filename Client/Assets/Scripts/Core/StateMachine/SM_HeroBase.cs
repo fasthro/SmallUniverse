@@ -29,7 +29,18 @@ namespace SmallUniverse
 
         public override void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            
+
+        }
+
+        protected bool IsAniEnd(float normalizedTime)
+        {
+            if(normalizedTime > 1.0f)
+            {
+                int round = (int)normalizedTime;
+                float nt = normalizedTime - round;
+                return nt >= 0.99f;
+            }
+            return normalizedTime >= 0.99f;
         }
     }
 

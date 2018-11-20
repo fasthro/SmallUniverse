@@ -511,32 +511,37 @@ MonoBehaviour:
   moveJoy:
     joyFunc: 0
     screenDirection: 0
+    keyCode: 0
     virtualShape: 1
     parame:
       radius: 150
       boundary: {x: 0, y: 0}
   attackJoy:
-    joyFunc: 0
+    joyFunc: 1
     screenDirection: 1
+    keyCode: 106
     virtualShape: 0
     parame:
       radius: 60
       boundary: {x: 20, y: 20}
   joys:
-  - joyFunc: 0
+  - joyFunc: 2
     screenDirection: 1
+    keyCode: 0
     virtualShape: 0
     parame:
       radius: 40
       boundary: {x: 200, y: 20}
-  - joyFunc: 0
+  - joyFunc: 3
     screenDirection: 1
+    keyCode: 0
     virtualShape: 0
     parame:
       radius: 40
       boundary: {x: 145, y: 160}
-  - joyFunc: 0
+  - joyFunc: 4
     screenDirection: 1
+    keyCode: 0
     virtualShape: 0
     parame:
       radius: 40

@@ -6,27 +6,46 @@ using UnityEngine.AI;
 namespace SmallUniverse
 {
 
-    public enum ActorAnimatorAttribute
+    public enum ActorAnimatorParameters
     {
         Speed,
         Attack,
+        AttackSpeed,
         Death,
+    }
+
+    public enum ActorState
+    {
+        None,
+        Attack,
+        AttackEnd,
     }
 
     public class ActorBase : MonoBehaviour
     {
         public ActorGameObject actorGameObject;
         public ActorAttribute attribute;
-        protected Animator animator;
-        protected Rigidbody rigidbody;
-        protected NavMeshAgent navMeshAgent;
+        protected Animator m_animator;
+        protected ActorAnimationEvent m_animationEvent;
+        protected Rigidbody m_rigidbody;
+        protected NavMeshAgent m_navMeshAgent;
         
+        // 当前状态
+        public ActorState actorState;
+
+        // 技能数据
+        protected SkillData m_skillData;
+
         // 目标方向
-        protected Vector3 targetDir;
+        protected Vector3 m_targetDir;
         // 移动方向
-        protected Vector3 moveDir;
+        protected Vector3 m_moveDir;
         // 当前朝向
-        protected Vector3 lookDir;
+        protected Vector3 m_lookDir;
+        
+        // 是否输入攻击
+        protected bool m_attackInput;
+        
 
         void Update()
         {
@@ -52,7 +71,7 @@ namespace SmallUniverse
         {
             attribute = ActorAttribute.Create();
             attribute.SetAttribute(ActorAttributeType.MoveSpeed, 3);
-            attribute.SetAttribute(ActorAttributeType.RotationSpeed, 10);
+            attribute.SetAttribute(ActorAttributeType.AttackSpeed, 2);
         }
 
         /// <summary>
@@ -60,15 +79,25 @@ namespace SmallUniverse
         /// </summary>
         public virtual void Born(LevelPoint point)
         {
-            animator = actorGameObject.GetComponent<Animator>();
-            rigidbody = actorGameObject.GetComponent<Rigidbody>();
-            navMeshAgent = actorGameObject.GetComponent<NavMeshAgent>();
+            m_animator = actorGameObject.GetComponent<Animator>();
+            m_animationEvent = actorGameObject.GetComponent<ActorAnimationEvent>();
+            m_rigidbody = actorGameObject.GetComponent<Rigidbody>();
+            m_navMeshAgent = actorGameObject.GetComponent<NavMeshAgent>();
 
             actorGameObject.transform.position = point.position;
             actorGameObject.transform.localEulerAngles = point.rotationAngle;
             actorGameObject.gameObject.SetActive(true);
 
-            moveDir = actorGameObject.transform.forward;
+            m_moveDir = actorGameObject.transform.forward;
+
+            // 加载武器
+            LoadWeapon();
+        }
+
+        // 加载武器
+        public virtual void LoadWeapon()
+        {
+
         }
 
         /// <summary>
@@ -81,20 +110,37 @@ namespace SmallUniverse
             
             if(vector.magnitude > 0)
             {
-                moveDir = vector;
-                moveDir.y = 0;
-                moveDir.Normalize();
+                m_moveDir = vector;
+                m_moveDir.y = 0;
+                m_moveDir.Normalize();
             }
 
-            animator.SetFloat(ActorAnimatorAttribute.Speed.ToString(), vector.magnitude);
+            m_animator.SetFloat(ActorAnimatorParameters.Speed.ToString(), vector.magnitude);
         }
 
         /// <summary>
         /// 攻击
         /// </summary>
-        public virtual void Attack()
+        public virtual void Attack(SkillData skillData)
         {
-            animator.SetBool(ActorAnimatorAttribute.Attack.ToString(), true);
+            m_skillData = skillData;
+            m_attackInput = true;
+        }
+
+        /// <summary>
+        /// 停止攻击
+        /// </summary>
+        public virtual void StopAttack()
+        {
+            m_attackInput = false;
+        }
+
+        /// <summary>
+        /// 被攻击
+        /// </summary>
+        public virtual void BeAttack(AttackData attackData)
+        {
+            
         }
 
         /// <summary>
@@ -102,17 +148,27 @@ namespace SmallUniverse
         /// </summary>
         public virtual void UpdateDirection()
         {
-            actorGameObject.transform.rotation = Quaternion.LookRotation(moveDir, Vector3.up);
+            actorGameObject.transform.rotation = Quaternion.LookRotation(m_moveDir, Vector3.up);
+        }
+
+        /// <summary>
+        /// 状态刷新
+        /// </summary>
+        protected virtual void UpdateState()
+        {
+
         }
 
         protected virtual void OnUpdate()
         {
             UpdateDirection();
+            UpdateState();
         }
 
         protected virtual void OnLateUpdate()
         {
 
         }
+        
     }
 }

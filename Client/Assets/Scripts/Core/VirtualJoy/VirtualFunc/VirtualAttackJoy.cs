@@ -6,14 +6,14 @@ namespace SmallUniverse
 {
     public class VirtualAttackJoy : VirtualFuncJoyBase
     {
-        protected override void OnTouchUp(JoyGesture gesture)
+        protected override void OnKeyUp()
         {
-            Game.hero.Attack();
+            Game.hero.StopAttack();
         }
 
         protected override void OnKeyDown()
         {
-            Game.hero.Attack();
+            Game.hero.Attack(new SkillData());
         }
     }
 }

@@ -733,6 +733,7 @@ GameObject:
   - component: {fileID: 54757075656716514}
   - component: {fileID: 195671396200044798}
   - component: {fileID: 114522985219436390}
+  - component: {fileID: 114053626413779608}
   m_Layer: 0
   m_Name: Sci-Fi_Soldier
   m_TagString: Untagged
@@ -1564,6 +1565,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &114053626413779608
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78c2e2745008dc7479b9a713858bd478, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114522985219436390
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1575,7 +1587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2980838b86c36d043b96ed4350058523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  head: {fileID: 400000}
+  WeaponBone: {fileID: 400018}
 --- !u!195 &195671396200044798
 NavMeshAgent:
   m_ObjectHideFlags: 1

@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace SmallUniverse
 {
-    public class ActorGameObject : MonoBehaviour
+    public class AttackData
     {
-        public Transform WeaponBone;
+
     }
 }
