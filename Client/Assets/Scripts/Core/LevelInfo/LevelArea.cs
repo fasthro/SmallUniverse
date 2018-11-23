@@ -9,9 +9,9 @@ namespace SmallUniverse
     public class LevelArea : MonoBehaviour
     {
         // 关卡信息
-        private LevelInfo levelInfo;
+        private LevelInfo m_levelInfo;
         // xml 数据
-        private SecurityElement xml;
+        private SecurityElement m_xml;
         // 区域索引
         public int index;
         // 地面
@@ -23,18 +23,18 @@ namespace SmallUniverse
         // 门
         public List<LevelDoor> doors;
 
-        public void Initialize(LevelInfo _levelInfo, int _index, SecurityElement _xml)
+        public void Initialize(LevelInfo levelInfo, int index, SecurityElement xml)
         {
-            xml = _xml;
-            index = _index;
-            levelInfo = _levelInfo;
+            this.m_xml = xml;
+            this.index = index;
+            this.m_levelInfo = levelInfo;
 
             playerPoints = new List<LevelPoint>();
             monsterPoints = new List<LevelPoint>();
             
             Transform root = null;
 
-            foreach (SecurityElement xmlChild in xml.Children)
+            foreach (SecurityElement xmlChild in m_xml.Children)
             {
                 if (xmlChild.Tag == LevelFunctionType.Ground.ToString().ToLower())
                 {
@@ -88,11 +88,11 @@ namespace SmallUniverse
         /// <summary>
         /// 初始化区域环境
         /// </summary>
-        /// <param name="_environment"></param>
-        public void InitEnvironment(LevelEnvironment _environment)
+        /// <param name="environment"></param>
+        public void InitEnvironment(LevelEnvironment environment)
         {
             // 地面
-            ground.LoadGrid(LevelAnimationType.None);
+            ground.LoadGrid(environment);
 
             // 门
             for (int i = 0; i < doors.Count; i++)

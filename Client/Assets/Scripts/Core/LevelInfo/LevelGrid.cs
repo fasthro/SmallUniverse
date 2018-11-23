@@ -8,6 +8,8 @@ namespace SmallUniverse
 {
     public class LevelGrid : MonoBehaviour
     {
+        // id
+        public string id;
         // 资源名称
         public string assetName;
         // bundle 名称
@@ -18,30 +20,53 @@ namespace SmallUniverse
         public Vector3 rotationAngle;
         // 功能
         public LevelFunctionType function;
+        // 相邻 x 正方向格子id
+        public string adjacentPx;
+         // 相邻 x 负方向格子id
+        public string adjacentNx;
+         // 相邻 z 正方向格子id
+        public string adjacentPz;
+         // 相邻 z 负方向格子id
+        public string adjacentNz;
 
         // 所在层
         public int layer;
 
         // 格子实例物体
-        private GameObject gridGameObject;
-        private Transform gridTransform;
-        
+        private GameObject m_gridGameObject;
+        private Transform m_gridTransform;
+
+        // 动画
+        public LevelGridAnimation animation;
+
         public void Initialize()
         {
+            this.id = GetId(position);
             gameObject.layer = layer;
         }
 
         public void LoadAsset()
         {
             var prefab = LevelAsset.GetGameObject(bundleName, assetName);
-            gridGameObject = GameObject.Instantiate<GameObject>(prefab);
-            gridTransform = gridGameObject.transform;
-            gridTransform.position = position;
-            gridTransform.parent = transform;
-            gridTransform.localEulerAngles = rotationAngle;
-            gridGameObject.AddComponent<BoxCollider>();
+            m_gridGameObject = GameObject.Instantiate<GameObject>(prefab);
+            m_gridTransform = m_gridGameObject.transform;
+            m_gridTransform.position = position;
+            m_gridTransform.parent = transform;
+            m_gridTransform.localEulerAngles = rotationAngle;
+            m_gridGameObject.AddComponent<BoxCollider>();
+            animation = m_gridGameObject.AddComponent<LevelGridAnimation>();
 
-            GameUtils.SetGameObjectLayer(gridGameObject, layer);
+            GameUtils.SetGameObjectLayer(m_gridGameObject, layer);
+        }
+
+        /// <summary>
+        /// 获取Id
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <returns></returns>
+        public static string GetId(Vector3 pos)
+        {
+            return string.Format("{0}|{1}|{2}", pos.x, pos.y, pos.z);
         }
     }
 

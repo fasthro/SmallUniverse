@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="1136,640">
   <displayList>
-    <component id="n8_kahw" name="start_bg" src="kahwi" fileName="component/larger_bg/start_bg.xml" pkg="tqc2b6mi" xy="0,0"/>
-    <component id="n9_kahw" name="@begin_game_btn" src="kahwk" fileName="button/begin_game_button.xml" pkg="tqc2b6mi" xy="419,505"/>
+    <component id="n10_cj4k" name="dark_skin_background" src="kahwg" fileName="component/background/dark_skin_background.xml" pkg="tqc2b6mi" xy="0,0">
+      <relation target="" sidePair="width-width,height-height"/>
+    </component>
+    <component id="n9_kahw" name="@begin_game_btn" src="cj4k24" fileName="button/basic/yellow_button.xml" pkg="tqc2b6mi" xy="394,479">
+      <Button title="开始游戏"/>
+    </component>
   </displayList>
 </component>

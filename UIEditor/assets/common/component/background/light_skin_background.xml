@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="1136,640" initName="light_skin_background">
+  <displayList>
+    <image id="n1_cj4k" name="light_skin_background" src="cj4k13" fileName="component/background/image/light_skin_background.png" xy="0,0" size="1136,640">
+      <relation target="" sidePair=""/>
+    </image>
+  </displayList>
+</component>

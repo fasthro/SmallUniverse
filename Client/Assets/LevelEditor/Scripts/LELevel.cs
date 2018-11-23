@@ -348,6 +348,16 @@ namespace SmallUniverse.GameEditor.LevelEditor
         }
 
         /// <summary>
+        /// 获取运行时key
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public static string GetRunTimeKey(Vector3 position)
+        {
+            return string.Format("{0}|{1}|{2}", position.x, position.y, position.z);
+        }
+
+        /// <summary>
         /// 通过key获取area
         /// </summary>
         /// <param name="key"></param>

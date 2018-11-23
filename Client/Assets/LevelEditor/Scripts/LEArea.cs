@@ -5,6 +5,18 @@ using UnityEngine;
 
 namespace SmallUniverse.GameEditor.LevelEditor
 {
+    /// <summary>
+    /// 动画方向
+    /// </summary>
+    public enum AnimationDirection
+    {
+        All,               // 所有方向
+        PositiveX,         // x 正方向
+        NegativeX,         // x 负方向
+        PositiveZ,         // z 正方向
+        NegativeZ,         // z 负方向
+    }
+
     public class LEArea : MonoBehaviour
     {
         public string areaName;
@@ -20,11 +32,14 @@ namespace SmallUniverse.GameEditor.LevelEditor
 
         // 当前区域是否显示
         private bool _showing = true;
-        public bool showing {
-            get {
+        public bool showing
+        {
+            get
+            {
                 return _showing;
             }
-            set {
+            set
+            {
                 _showing = value;
 
                 SetShowing();
@@ -37,6 +52,13 @@ namespace SmallUniverse.GameEditor.LevelEditor
         public Vector3 coordRU = Vector3.zero;
         public Vector3 coordRD = Vector3.zero;
 
+
+        #region editor 参数
+        // 区域设置是否显示
+        public bool editorShowing = false;
+        // 区域动画方向
+        public int editorAnimationDirection = 0;
+        #endregion
         /// <summary>
         /// 初始化
         /// </summary>
@@ -219,7 +241,8 @@ namespace SmallUniverse.GameEditor.LevelEditor
                     coordRD.y = 0;
                     coordRD.z = grid.position.z;
                 }
-                else {
+                else
+                {
                     // coordLD
                     if (grid.position.x < coordLD.x)
                         coordLD.x = grid.position.x;
@@ -309,13 +332,13 @@ namespace SmallUniverse.GameEditor.LevelEditor
         }
 
         /// <summary>
-        /// 替换格子模版
+        /// 导出格子模版
         /// </summary>
         /// <param name="grid"></param>
         /// <returns></returns>
         private string ExporGridtXml(LEGrid grid)
         {
-            string template = "<grid bundle_name='{#bundle_name}' asset_name='{#asset_name}' pos_x='{#pos_x}' pos_y='{#pos_y}' pos_z='{#pos_z}' angle_x='{#angle_x}' angle_y='{#angle_y}' angle_z='{#angle_z}'></grid>";
+            string template = "<grid bundle_name='{#bundle_name}' asset_name='{#asset_name}' pos_x='{#pos_x}' pos_y='{#pos_y}' pos_z='{#pos_z}' angle_x='{#angle_x}' angle_y='{#angle_y}' angle_z='{#angle_z}' {#adjacent}></grid>";
             template = template.Replace("{#bundle_name}", grid.prefabGo.bundleName);
             template = template.Replace("{#asset_name}", grid.prefabGo.name);
             template = template.Replace("{#pos_x}", grid.position.x.ToString());
@@ -324,7 +347,117 @@ namespace SmallUniverse.GameEditor.LevelEditor
             template = template.Replace("{#angle_x}", grid.rotationAngle.x.ToString());
             template = template.Replace("{#angle_y}", grid.rotationAngle.y.ToString());
             template = template.Replace("{#angle_z}", grid.rotationAngle.z.ToString());
+
+            // animation direction
+            string adjacent = string.Empty;
+
+            if ((AnimationDirection)editorAnimationDirection == AnimationDirection.All)
+            {
+                string px = ExportGridAdjacentXml(grid, AnimationDirection.PositiveX);
+                if (!string.IsNullOrEmpty(px))
+                {
+                    adjacent += string.Format(" {0}", px);
+                }
+                string nx = ExportGridAdjacentXml(grid, AnimationDirection.NegativeX);
+                if (!string.IsNullOrEmpty(nx))
+                {
+                    adjacent += string.Format(" {0}", nx);
+                }
+                string pz = ExportGridAdjacentXml(grid, AnimationDirection.PositiveZ);
+                if (!string.IsNullOrEmpty(pz))
+                {
+                    adjacent += string.Format(" {0}", pz);
+                }
+                string nz = ExportGridAdjacentXml(grid, AnimationDirection.NegativeZ);
+                if (!string.IsNullOrEmpty(nz))
+                {
+                    adjacent += string.Format(" {0}", nz);
+                }
+            }
+            else if ((AnimationDirection)editorAnimationDirection == AnimationDirection.PositiveX)
+            {
+                string px = ExportGridAdjacentXml(grid, AnimationDirection.PositiveX);
+                if (!string.IsNullOrEmpty(px))
+                {
+                    adjacent += string.Format(" {0}", px);
+                }
+            }
+            else if ((AnimationDirection)editorAnimationDirection == AnimationDirection.NegativeX)
+            {
+                string nx = ExportGridAdjacentXml(grid, AnimationDirection.NegativeX);
+                if (!string.IsNullOrEmpty(nx))
+                {
+                    adjacent += string.Format(" {0}", nx);
+                }
+            }
+            else if ((AnimationDirection)editorAnimationDirection == AnimationDirection.PositiveZ)
+            {
+                string pz = ExportGridAdjacentXml(grid, AnimationDirection.PositiveZ);
+                if (!string.IsNullOrEmpty(pz))
+                {
+                    adjacent += string.Format(" {0}", pz);
+                }
+            }
+            else if ((AnimationDirection)editorAnimationDirection == AnimationDirection.NegativeZ)
+            {
+                string nz = ExportGridAdjacentXml(grid, AnimationDirection.NegativeZ);
+                if (!string.IsNullOrEmpty(nz))
+                {
+                    adjacent += string.Format(" {0}", nz);
+                }
+            }
+
+            template = template.Replace("{#adjacent}", adjacent);
+
             return template;
+        }
+
+        /// <summary>
+        /// 导出相邻格子id
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        private string ExportGridAdjacentXml(LEGrid grid, AnimationDirection direction)
+        {
+            if (grid.function != GridFunction.Ground)
+                return "";
+
+            Vector3 position = Vector3.zero;
+            position.x = grid.position.x;
+            position.y = grid.position.y;
+            position.z = grid.position.z;
+
+            string dirstr = string.Empty;
+
+            if (direction == AnimationDirection.PositiveX)
+            {
+                position.x = grid.position.x + 1f;
+                dirstr = "adjacent_px";
+            }
+            else if (direction == AnimationDirection.NegativeX)
+            {
+                position.x = grid.position.x - 1f;
+                dirstr = "adjacent_nx";
+            }
+            else if (direction == AnimationDirection.PositiveZ)
+            {
+                position.z = grid.position.z + 1f;
+                dirstr = "adjacent_pz";
+            }
+            else if (direction == AnimationDirection.NegativeZ)
+            {
+                position.z = grid.position.z - 1f;
+                dirstr = "adjacent_nz";
+            }
+
+            string key = LELevel.GetKey(position, areaName);
+
+            LEGrid adjacentGrid = GetGrid(key);
+            if (adjacentGrid != null)
+            {
+                return string.Format("{0}='{1}'", dirstr, LELevel.GetRunTimeKey(adjacentGrid.position));
+            }
+            return "";
         }
     }
 }

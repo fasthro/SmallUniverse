@@ -28,13 +28,13 @@ namespace SmallUniverse
     public class LevelInfo : MonoBehaviour
     {
         // 关卡名称
-        private string levelName;
+        private string m_levelName;
         // xml 数据
-        private SecurityElement xml;
+        private SecurityElement m_xml;
         // 区域数量
-        private int areaCount;
+        private int m_areaCount;
         // 区域列表
-        private LevelArea[] areas;
+        private LevelArea[] m_areas;
         
         // navMesh Surface
         public NavMeshSurface navMeshSurface;
@@ -43,31 +43,31 @@ namespace SmallUniverse
         /// 创建关卡信息
         /// </summary>
         /// <param name="parent"></param>
-        public static LevelInfo Create(string _levelName)
+        public static LevelInfo Create(string levelName)
         {
             GameObject go = new GameObject();
             go.name = "LevelInfo";
             var levelInfo = go.AddComponent<LevelInfo>();
-            levelInfo.Initialize(_levelName);
+            levelInfo.Initialize(levelName);
             return levelInfo;
         }
 
-        private void Initialize(string _levelName)
+        private void Initialize(string levelName)
         {
-            levelName = _levelName;
-            xml = LoadXml();
+            m_levelName = levelName;
+            m_xml = LoadXml();
 
-            areaCount = int.Parse(xml.Attribute("area_count"));
-            areas = new LevelArea[areaCount];
+            m_areaCount = int.Parse(m_xml.Attribute("area_count"));
+            m_areas = new LevelArea[m_areaCount];
 
             // 初始化关卡区域
-            foreach (SecurityElement xmlChild in xml.Children)
+            foreach (SecurityElement xmlChild in m_xml.Children)
             {
                 var areaIndex = int.Parse(xmlChild.Attribute("index"));
                 var areaTrans = CreateRoot(transform, "Area_" + areaIndex);
                 var area = areaTrans.gameObject.AddComponent<LevelArea>();
                 area.Initialize(this, areaIndex, xmlChild);
-                areas[areaIndex - 1] = area;
+                m_areas[areaIndex - 1] = area;
             }
 
             navMeshSurface = gameObject.AddComponent<NavMeshSurface>();
@@ -75,11 +75,11 @@ namespace SmallUniverse
             navMeshSurface.layerMask = 1 << LayerMask.NameToLayer(LevelFunctionType.Ground.ToString());
         }
 
-        public void InitEnvironment(LevelEnvironment _environment)
+        public void InitEnvironment(LevelEnvironment environment)
         {
-            for(int i = 0; i < areas.Length; i++)
+            for(int i = 0; i < m_areas.Length; i++)
             {
-                areas[i].InitEnvironment(_environment);
+                m_areas[i].InitEnvironment(environment);
             }
 
             navMeshSurface.BuildNavMesh();
@@ -90,8 +90,8 @@ namespace SmallUniverse
         /// </summary>
         public List<LevelPoint> GetPlayerPoints(int areaIndex)
         {
-            if(areaIndex <= areaCount)
-                return areas[areaIndex - 1].playerPoints;
+            if(areaIndex <= m_areaCount)
+                return m_areas[areaIndex - 1].playerPoints;
             return new List<LevelPoint>();
         }
 
@@ -100,8 +100,8 @@ namespace SmallUniverse
         /// </summary>
         public List<LevelPoint> GetMonsterPoints(int areaIndex)
         {
-            if(areaIndex <= areaCount)
-                return areas[areaIndex - 1].monsterPoints;
+            if(areaIndex <= m_areaCount)
+                return m_areas[areaIndex - 1].monsterPoints;
             return new List<LevelPoint>();
         }
         
@@ -127,9 +127,9 @@ namespace SmallUniverse
         {
             // 加载配置
             var resMgr = Game.GetManager<GResManager>();
-            var bundleName = "levels/scenes/" + levelName.ToLower();
+            var bundleName = "levels/scenes/" + m_levelName.ToLower();
             var bundle = resMgr.LoadAssetBundle(bundleName);
-            var textAsset = bundle.LoadAsset(levelName + ".xml") as TextAsset;
+            var textAsset = bundle.LoadAsset(m_levelName + ".xml") as TextAsset;
 
             SecurityParser parser = new SecurityParser();
             parser.LoadXml(textAsset.text);

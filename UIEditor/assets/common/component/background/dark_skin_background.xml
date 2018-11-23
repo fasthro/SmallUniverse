@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="1136,640" initName="dark_skin_background">
+  <displayList>
+    <image id="n1_cj4k" name="dark_skin_background" src="cj4k15" fileName="component/background/image/dark_skin_background.png" xy="0,0" size="1136,640"/>
+  </displayList>
+</component>

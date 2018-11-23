@@ -4729,6 +4729,8 @@ MonoBehaviour:
   coordLU: {x: -3, y: 0, z: 1}
   coordRU: {x: 11, y: 0, z: 1}
   coordRD: {x: 11, y: 0, z: -3}
+  editorShowing: 1
+  editorAnimationDirection: 0
 --- !u!1 &437537371
 GameObject:
   m_ObjectHideFlags: 0
@@ -7537,7 +7539,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 50, y: 0.1, z: 16}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: -0.5, y: -0.5, z: -0.5}
 --- !u!114 &671845271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9769,7 +9771,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.016666668
   m_BuildHeightMesh: 0
   m_NavMeshData: {fileID: 23800000, guid: 6118c885e01894e47b798c836506c3ca, type: 2}
 --- !u!1 &862827187
@@ -20219,6 +20221,8 @@ MonoBehaviour:
   coordLU: {x: 12, y: 0, z: 4}
   coordRU: {x: 23, y: 0, z: 4}
   coordRD: {x: 23, y: 0, z: -6}
+  editorShowing: 1
+  editorAnimationDirection: 0
 --- !u!1 &1864103818
 GameObject:
   m_ObjectHideFlags: 0

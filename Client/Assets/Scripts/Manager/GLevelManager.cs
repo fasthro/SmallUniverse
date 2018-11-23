@@ -56,6 +56,9 @@ namespace SmallUniverse.Manager
             // move 摇杆初始化
             Game.virtualJoy.moveJoy.Initialize();
             Game.virtualJoy.attackJoy.Initialize();
+            Game.virtualJoy.joys[0].Initialize();
+            Game.virtualJoy.joys[1].Initialize();
+            Game.virtualJoy.joys[2].Initialize();
         }
     }
 }

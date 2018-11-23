@@ -1,10 +1,10 @@
 {
 	"buttonClickSound":"",
-	"colorScheme":["自定义颜色 #FF0000"],
+	"colorScheme":["Color_1 #3B4E61","Color_2 #A839BA","Color_3 #E63F85","Color_4 #F13242","Color_5 #FF8400","Color_6 #FFB700","Color_7 #02BD5B","Color_8 #068CE4","Color_9 #1BB4DB"],
 	"font":"FZLanTingHei-DB-GBK",
 	"fontScheme":["默认字体"],
-	"fontSize":12,
-	"fontSizeScheme":["自定义字体大小 30"],
+	"fontSize":32,
+	"fontSizeScheme":["自定义字体大小 30","自定义字体大小 32","自定义字体大小 36"],
 	"publishDepEnabled":true,
 	"scrollBars":{
 		"defaultDisplay":"visible",

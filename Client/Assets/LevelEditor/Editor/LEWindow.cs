@@ -2,6 +2,7 @@
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace SmallUniverse.GameEditor.LevelEditor
 {
@@ -30,7 +31,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
         RotateY,                // 旋转 Y 轴
         RotateZ,                // 旋转 Z 轴
     }
-    
+
     /// <summary>
     /// 鼠标在 GizmoPanel 上的状态
     /// </summary>
@@ -56,8 +57,10 @@ namespace SmallUniverse.GameEditor.LevelEditor
 
         // 当前网格的高度
         private int _gridHeight;
-        public int gridHeight {
-            get {
+        public int gridHeight
+        {
+            get
+            {
                 return _gridHeight;
             }
         }
@@ -75,7 +78,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
         // 是否开启编辑模式
         private bool editorEnabled = false;
         private bool _editorEnabled = true;
-        
+
         // model view
         private Vector2 modelViewScrollPosition;
         private int modelViewHorizontalCounter;
@@ -100,13 +103,16 @@ namespace SmallUniverse.GameEditor.LevelEditor
 
         // 关卡场景名称
         private string levelName;
-        
+
         // Enumerator
         private Dictionary<string, LEPrefabGo>.Enumerator prefabGoEnumerator;
         private Dictionary<string, LEArea>.Enumerator areaEnumerator;
 
         // GizmoPanelState
         private GizmoPanelState gizmoPanelState = GizmoPanelState.Exit;
+
+        // 动画方向数组
+        private string[] animationDirectionNames;
 
         // 选择器工具
         private LESelector _selector;
@@ -179,10 +185,10 @@ namespace SmallUniverse.GameEditor.LevelEditor
 
         void OnEnable()
         {
-            if (GameObject.Find(LEConst.EditorGizmoGridPanelName) == null 
+            if (GameObject.Find(LEConst.EditorGizmoGridPanelName) == null
                 || GameObject.Find(LEConst.EditorLevelName) == null)
                 return;
-            
+
             if (Inst == null)
             {
                 Initialize();
@@ -224,6 +230,21 @@ namespace SmallUniverse.GameEditor.LevelEditor
             SceneView.onSceneGUIDelegate -= OnSceneGUI;
             SceneView.onSceneGUIDelegate += OnSceneGUI;
 
+            // 动画方向名称
+            FieldInfo[] adfields = typeof(AnimationDirection).GetFields();
+            List<string> ads = new List<string>();
+
+            for (int i = 0; i < adfields.Length; i++)
+            {
+                var name = adfields[i].Name;
+                if (!name.Equals("value__"))
+                {
+                   ads.Add(name);
+                }
+            }
+            animationDirectionNames = new string[ads.Count];
+            animationDirectionNames = ads.ToArray();
+
             EditorSceneManager.sceneOpened += OnSceneOpened;
 
             // 将资源预览缓存设置为可以同时保存屏幕上所有可见预览的大小
@@ -260,7 +281,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
             SceneView.onSceneGUIDelegate -= OnSceneGUI;
             EditorSceneManager.sceneOpened -= OnSceneOpened;
         }
-        
+
         /// <summary>
         /// 场景打开
         /// </summary>
@@ -398,7 +419,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
                 if (GUILayout.Button("Export Xml", GUILayout.Height(30)))
                 {
                     EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), LEUtils.GetLevelScenePath(LELevel.Inst.levelName));
-                    
+
                     LELevel.Inst.ExportXml();
                 }
                 EditorGUILayout.EndVertical();
@@ -561,16 +582,33 @@ namespace SmallUniverse.GameEditor.LevelEditor
         /// </summary>
         private void DrawAreaView()
         {
+            if (Inst == null)
+                return;
+
             areaViewScrollPosition = EditorGUILayout.BeginScrollView(areaViewScrollPosition);
 
             using (areaEnumerator = LELevel.Inst.areas.GetEnumerator())
             {
                 while (areaEnumerator.MoveNext())
                 {
-                    EditorGUILayout.BeginHorizontal("box");
                     var area = areaEnumerator.Current.Value;
-                    area.showing = GUILayout.Toggle(area.showing, "Area : " + area.areaName);
-                    EditorGUILayout.EndHorizontal();
+
+                    if (GUILayout.Button("Area : " + area.areaName, "box", GUILayout.Width(Inst.position.width - 28)))
+                    {
+                        area.editorShowing = !area.editorShowing;
+                    }
+                    if (area.editorShowing)
+                    {
+                        EditorGUILayout.BeginVertical("box");
+                        // showiung
+                        area.showing = GUILayout.Toggle(area.showing, "Showing Scene");
+                        
+                        // animation direction
+                        area.editorAnimationDirection = EditorGUILayout.Popup("Animation Direction : ", area.editorAnimationDirection, animationDirectionNames);
+
+                        EditorGUILayout.EndVertical();
+                    }
+
                 }
             }
 
@@ -584,12 +622,12 @@ namespace SmallUniverse.GameEditor.LevelEditor
 
             // 计算鼠标在Grid上的位置
             CalculateSceneMousePosition();
-            
+
             controlId = GUIUtility.GetControlID(FocusType.Passive);
-            
+
             // 画选择工具栏
             DrawToolbar(sceneView);
-            
+
             switch (currentSelectTool)
             {
                 case SceneTool.Selector:
@@ -641,7 +679,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
             Handles.BeginGUI();
 
             GUI.skin = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Scene);
-            
+
             int nextInterval = LESetting.SceneToolSize + LESetting.SceneTooIInterval;
             float rightX = sceneView.position.width - LESetting.SceneToolSize - 5;
             float downY = sceneView.position.height - LESetting.SceneToolSize - 25;
@@ -657,7 +695,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
                 erase.Close();
                 currentSelectTool = SceneTool.Selector;
             }
-            
+
             // 笔刷工具
             content = new GUIContent(IconConfig.GetIconTexture("iconBlockMode"));
             if (GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY + nextInterval, LESetting.SceneToolSize, LESetting.SceneToolSize), currentSelectTool == SceneTool.Brush, content, GUI.skin.button))
@@ -691,7 +729,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
             #endregion
 
             #region 左下角
-           
+
             // 上一区域
             content = new GUIContent(IconConfig.GetIconTexture("iconArrowUp"));
             if (GUI.Button(new Rect(LESetting.SceneTooIX, downY, LESetting.SceneToolSize, LESetting.SceneToolSize / 2), content))
@@ -789,7 +827,8 @@ namespace SmallUniverse.GameEditor.LevelEditor
                     OnGizmoPanelState();
                 }
             }
-            else {
+            else
+            {
                 if (gizmoPanelState == GizmoPanelState.Enter)
                 {
                     gizmoPanelState = GizmoPanelState.Exit;

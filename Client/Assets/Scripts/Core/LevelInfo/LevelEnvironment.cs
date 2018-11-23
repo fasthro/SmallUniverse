@@ -6,7 +6,7 @@ namespace SmallUniverse
 {
     public class LevelEnvironment
     {
-
+        
     }
 }
 

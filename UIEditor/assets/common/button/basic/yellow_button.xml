@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="348,100" extention="Button">
+  <controller name="button" pages="0,up,1,down,2,over,3,selectedOver" selected="0"/>
+  <displayList>
+    <image id="n0_cj4k" name="n0" src="cj4k1b" fileName="button/basic/image/yellow_button.png" xy="0,0">
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <text id="n1_cj4k" name="title" xy="0,0" size="348,100" fontSize="30" color="#3b4e61" align="center" vAlign="middle" autoSize="none" singleLine="true" text="开始游戏">
+      <relation target="" sidePair="width-width,height-height"/>
+    </text>
+  </displayList>
+  <Button/>
+</component>

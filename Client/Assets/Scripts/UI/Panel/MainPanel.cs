@@ -16,6 +16,9 @@ namespace SmallUniverse.UI
 
         // 普通攻击
         private VirtualAttackJoy m_attackJoy;
+        private VirtualSkillJoy m_skillJoy1;
+        private VirtualSkillJoy m_skillJoy2;
+        private VirtualSkillJoy m_skillJoy3;
 
         public MainPanel(params string[] _parameters) : base()
         {
@@ -38,10 +41,10 @@ namespace SmallUniverse.UI
             
             // 移动摇杆
             m_moveJoy = new VirtualMoveJoy();
-            m_moveJoy.ui = view.joystick;
-            m_moveJoy.slider = view.touch_joystick;
-            m_moveJoy.startTransition = view.joystick.GetTransition("touch_start");
-            m_moveJoy.endTransition = view.joystick.GetTransition("touch_end");
+            m_moveJoy.ui = view.move_joy;
+            m_moveJoy.slider = view.touch_move_joy;
+            m_moveJoy.startTransition = view.move_joy.GetTransition("touch_start");
+            m_moveJoy.endTransition = view.move_joy.GetTransition("touch_end");
             m_moveJoy.Initialize(Game.virtualJoy.moveJoy);
 
             m_moveJoy.moveJoyHandler -= MoveJoyHandler;
@@ -49,8 +52,21 @@ namespace SmallUniverse.UI
 
             // 普通攻击
             m_attackJoy = new VirtualAttackJoy();
+            m_attackJoy.ui = view.attack_joy;
             m_attackJoy.Initialize(Game.virtualJoy.attackJoy);
             
+            // skill
+            m_skillJoy1 = new VirtualSkillJoy();
+            m_skillJoy1.ui = view.skill_1_joy;
+            m_skillJoy1.Initialize(Game.virtualJoy.joys[0]);
+
+            m_skillJoy2 = new VirtualSkillJoy();
+            m_skillJoy2.ui = view.skill_2_joy;
+            m_skillJoy2.Initialize(Game.virtualJoy.joys[1]);
+
+            m_skillJoy3 = new VirtualSkillJoy();
+            m_skillJoy3.ui = view.skill_3_joy;
+            m_skillJoy3.Initialize(Game.virtualJoy.joys[2]);
         }
 
 

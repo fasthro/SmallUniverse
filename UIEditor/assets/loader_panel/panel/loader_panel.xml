@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="1136,640">
   <displayList>
-    <component id="n1_yjm4" name="black_barrier" src="kahwg" fileName="component/barrier/blue_barrier.xml" pkg="tqc2b6mi" xy="0,0" size="1136,640">
+    <component id="n3_cj4k" name="light_skin_background" src="yjm4e" fileName="component/background/light_skin_background.xml" pkg="tqc2b6mi" xy="0,0">
       <relation target="" sidePair="width-width,height-height"/>
     </component>
-    <component id="n2_yjm4" name="@loader_progressbar" src="yjm4f" fileName="component/bar/loader_progressbar.xml" pkg="tqc2b6mi" xy="88,566" size="960,30">
-      <ProgressBar value="100" max="100"/>
+    <component id="n2_yjm4" name="@loader_progressbar" src="cj4k2w" fileName="progress_bar/progress_bar_blueLight.xml" pkg="tqc2b6mi" xy="93,558" size="950,12">
+      <ProgressBar max="100"/>
     </component>
   </displayList>
 </component>

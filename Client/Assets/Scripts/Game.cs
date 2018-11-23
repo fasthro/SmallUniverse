@@ -56,6 +56,18 @@ namespace SmallUniverse
             }
         }
 
+        // game curve
+        private static GameCurve m_gameCurve = null;
+        public static GameCurve gameCurve {
+            get {
+                if (m_gameCurve == null)
+                {
+                    m_gameCurve = mainGame.transform.Find("GameCurve").GetComponent<GameCurve>();
+                }
+                return m_gameCurve;
+            }
+        }
+
         // hero
         private static Hero m_hero = null;
         public static Hero hero{
