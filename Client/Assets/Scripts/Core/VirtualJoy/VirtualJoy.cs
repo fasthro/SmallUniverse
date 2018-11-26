@@ -13,9 +13,17 @@ namespace SmallUniverse
 
 		public bool enableVirtuakJoy = true;
 
-		void Awake()
+		/// <summary>
+        /// 初始化
+        /// </summary>
+		public void Initialize()
 		{
 			moveJoy.Initialize();
+			attackJoy.Initialize();
+			for(int i = 0; i < joys.Length; i++)
+			{
+				joys[i].Initialize();
+			}
 		}
 
 #if UNITY_EDITOR

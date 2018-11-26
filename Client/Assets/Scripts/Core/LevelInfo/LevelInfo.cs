@@ -23,10 +23,15 @@ namespace SmallUniverse
     public enum LevelAnimationType
     {
         None,               // 无
+        Volatility,         // 波动
     }
 
     public class LevelInfo : MonoBehaviour
     {
+        // 区域地面加载完成
+        public delegate void GroudLoadCompletedHandler(LevelArea area);
+        public event GroudLoadCompletedHandler OnGroudLoadCompletedHandler;
+
         // 关卡名称
         private string m_levelName;
         // xml 数据
@@ -35,9 +40,9 @@ namespace SmallUniverse
         private int m_areaCount;
         // 区域列表
         private LevelArea[] m_areas;
-        
+
         // navMesh Surface
-        public NavMeshSurface navMeshSurface;
+        private NavMeshSurface m_navMeshSurface;
 
         /// <summary>
         /// 创建关卡信息
@@ -55,7 +60,8 @@ namespace SmallUniverse
         private void Initialize(string levelName)
         {
             m_levelName = levelName;
-            m_xml = LoadXml();
+
+            LoadLevelConfig();
 
             m_areaCount = int.Parse(m_xml.Attribute("area_count"));
             m_areas = new LevelArea[m_areaCount];
@@ -69,20 +75,32 @@ namespace SmallUniverse
                 area.Initialize(this, areaIndex, xmlChild);
                 m_areas[areaIndex - 1] = area;
             }
-
-            navMeshSurface = gameObject.AddComponent<NavMeshSurface>();
-            navMeshSurface.collectObjects = CollectObjects.Children;
-            navMeshSurface.layerMask = 1 << LayerMask.NameToLayer(LevelFunctionType.Ground.ToString());
         }
 
         public void InitEnvironment(LevelEnvironment environment)
         {
-            for(int i = 0; i < m_areas.Length; i++)
+            for (int i = 0; i < m_areas.Length; i++)
             {
                 m_areas[i].InitEnvironment(environment);
             }
+        }
 
-            navMeshSurface.BuildNavMesh();
+        // <summary>
+        /// 区域地面加载完毕
+        /// </summary>
+        public void OnGroudLoadCompleted(LevelArea area)
+        {
+            area.ground.PlayAnimation();
+            
+            if(OnGroudLoadCompletedHandler != null)
+            {
+                OnGroudLoadCompletedHandler(area);
+            }
+        }
+
+        public void PlayerAreaAnimation()
+        {
+            m_areas[0].ground.PlayAnimation();
         }
 
         /// <summary>
@@ -90,7 +108,7 @@ namespace SmallUniverse
         /// </summary>
         public List<LevelPoint> GetPlayerPoints(int areaIndex)
         {
-            if(areaIndex <= m_areaCount)
+            if (areaIndex <= m_areaCount)
                 return m_areas[areaIndex - 1].playerPoints;
             return new List<LevelPoint>();
         }
@@ -100,11 +118,11 @@ namespace SmallUniverse
         /// </summary>
         public List<LevelPoint> GetMonsterPoints(int areaIndex)
         {
-            if(areaIndex <= m_areaCount)
+            if (areaIndex <= m_areaCount)
                 return m_areas[areaIndex - 1].monsterPoints;
             return new List<LevelPoint>();
         }
-        
+
         /// <summary>
         /// 创建节点
         /// </summary>
@@ -120,23 +138,29 @@ namespace SmallUniverse
         }
 
         /// <summary>
-        ///  加载场景配置
+        ///  加载关卡配置
         /// </summary>
         /// <returns></returns>
-        private SecurityElement LoadXml()
+        private void LoadLevelConfig()
         {
             // 加载配置
             var resMgr = Game.GetManager<GResManager>();
             var bundleName = "levels/scenes/" + m_levelName.ToLower();
             var bundle = resMgr.LoadAssetBundle(bundleName);
-            var textAsset = bundle.LoadAsset(m_levelName + ".xml") as TextAsset;
 
+            var mapTextAsset = bundle.LoadAsset("Map.xml") as TextAsset;
             SecurityParser parser = new SecurityParser();
-            parser.LoadXml(textAsset.text);
+            parser.LoadXml(mapTextAsset.text);
+            m_xml = parser.ToXml();
+
+            // navmesh
+            var navmeshPrefab = bundle.LoadAsset("Navmesh.prefab") as GameObject;
+            var navGo = GameObject.Instantiate(navmeshPrefab) as GameObject;
+            navGo.transform.position = Vector3.zero;
+            m_navMeshSurface = navGo.GetComponent<NavMeshSurface>();
+            m_navMeshSurface.layerMask = 1 << LayerMask.NameToLayer(LevelFunctionType.Ground.ToString());
 
             resMgr.UnLoadAssetBundle(bundleName);
-
-            return parser.ToXml();
         }
     }
 }

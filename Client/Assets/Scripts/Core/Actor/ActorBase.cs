@@ -29,7 +29,17 @@ namespace SmallUniverse
         protected ActorAnimationEvent m_animationEvent;
         protected Rigidbody m_rigidbody;
         protected NavMeshAgent m_navMeshAgent;
-        
+
+        // 是否已经出生
+        protected bool m_isBorn;
+        public bool IsBorn
+        {
+            get
+            {
+                return m_isBorn;
+            }
+        }
+
         // 当前状态
         public ActorState actorState;
 
@@ -42,14 +52,14 @@ namespace SmallUniverse
         protected Vector3 m_moveDir;
         // 当前朝向
         protected Vector3 m_lookDir;
-        
+
         // 是否输入攻击
         protected bool m_attackInput;
-        
+
 
         void Update()
         {
-            if(actorGameObject == null)
+            if (actorGameObject == null)
                 return;
 
             OnUpdate();
@@ -57,9 +67,9 @@ namespace SmallUniverse
 
         void LateUpdate()
         {
-            if(actorGameObject == null)
+            if (actorGameObject == null)
                 return;
-                
+
             OnLateUpdate();
         }
 
@@ -79,6 +89,7 @@ namespace SmallUniverse
         /// </summary>
         public virtual void Born(LevelPoint point)
         {
+            m_isBorn = true;
             m_animator = actorGameObject.GetComponent<Animator>();
             m_animationEvent = actorGameObject.GetComponent<ActorAnimationEvent>();
             m_rigidbody = actorGameObject.GetComponent<Rigidbody>();
@@ -107,8 +118,8 @@ namespace SmallUniverse
         {
             Vector3 vector = move * attribute.GetAttribute(ActorAttributeType.MoveSpeed);
             actorGameObject.transform.position = actorGameObject.transform.position + vector * delta;
-            
-            if(vector.magnitude > 0)
+
+            if (vector.magnitude > 0)
             {
                 m_moveDir = vector;
                 m_moveDir.y = 0;
@@ -140,7 +151,7 @@ namespace SmallUniverse
         /// </summary>
         public virtual void BeAttack(AttackData attackData)
         {
-            
+
         }
 
         /// <summary>
@@ -161,14 +172,17 @@ namespace SmallUniverse
 
         protected virtual void OnUpdate()
         {
-            UpdateDirection();
-            UpdateState();
+            if (m_isBorn)
+            {
+                UpdateDirection();
+                UpdateState();
+            }
         }
 
         protected virtual void OnLateUpdate()
         {
 
         }
-        
+
     }
 }

@@ -1,16 +1,27 @@
 ManifestFileVersion: 0
-CRC: 681959900
+CRC: 1511112079
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 2ed74ed632632452bf7de8b699b018c4
+    Hash: 443bdf8a6ffa9536a2c0ca9f0584c30e
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 5ad585dd02dfb5016c0dad519eab8f49
+    Hash: a8b543661c70dd917f5f9453f80ae02e
 HashAppended: 0
 ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
 - Class: 49
   Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 238
+  Script: {instanceID: 0}
 Assets:
-- Assets/Levels/Scenes/Level_001/Level_001.xml
+- Assets/Levels/Scenes/Level_001/Navmesh.prefab
+- Assets/Levels/Scenes/Level_001/Map.xml
 Dependencies: []

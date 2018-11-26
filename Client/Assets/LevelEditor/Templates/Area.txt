@@ -1,5 +1,5 @@
 <area index='{#area_index}'>
-	<ground>
+	<ground animation_start_id='{#animation_start_id}'>
 	{#ground_content}
 	</ground>
 

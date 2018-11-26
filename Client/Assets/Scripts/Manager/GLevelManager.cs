@@ -13,6 +13,8 @@ namespace SmallUniverse.Manager
         public Hero hero;
         // 英雄相机
         public VirtualCamera heroCamera;
+        // 关卡环境
+        public LevelEnvironment environment;
 
         // 区域索引
         private int areaIndex;
@@ -27,7 +29,7 @@ namespace SmallUniverse.Manager
 
         public override void OnUpdate(float deltaTime)
         {
-    
+
         }
 
         public override void OnDispose()
@@ -40,25 +42,38 @@ namespace SmallUniverse.Manager
             hero = Hero.Create(heroName, heroResName);
             heroCamera = Game.gameCamera.heroCamera;
 
+            // 默认区域索引
             areaIndex = 1;
 
-            // 初始化环境
-            levelInfo.InitEnvironment(new LevelEnvironment());
-
-            var points = levelInfo.GetPlayerPoints(areaIndex);
-            // 玩家出生
-            hero.Born(points[0]);
-
-            // 设置相机
+            // 相机初始化
             heroCamera.Initialize();
-            heroCamera.SetLookAt(hero.actorGameObject.transform);
+
+            // 环境相关
+            environment = new LevelEnvironment();
+
+            levelInfo.OnGroudLoadCompletedHandler += OnGroudLoadCompletedHandler;
+            levelInfo.InitEnvironment(environment);
+        }
+
+        /// <summary>
+        /// 区域地面加载完成
+        /// </summary>
+        private void OnGroudLoadCompletedHandler(LevelArea area)
+        {
+            Debug.Log("OnGroudLoadCompletedHandler -> area.index : " + area.index);
             
-            // move 摇杆初始化
-            Game.virtualJoy.moveJoy.Initialize();
-            Game.virtualJoy.attackJoy.Initialize();
-            Game.virtualJoy.joys[0].Initialize();
-            Game.virtualJoy.joys[1].Initialize();
-            Game.virtualJoy.joys[2].Initialize();
+            if (area.index == 1)
+            {
+                var points = levelInfo.GetPlayerPoints(areaIndex);
+                // 玩家出生
+                hero.Born(points[0]);
+
+                // 设置相机
+                heroCamera.SetLookAt(hero.actorGameObject.transform);
+
+                // 摇杆初始化
+                Game.virtualJoy.Initialize();
+            }
         }
     }
 }

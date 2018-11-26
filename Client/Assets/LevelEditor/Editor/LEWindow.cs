@@ -51,9 +51,10 @@ namespace SmallUniverse.GameEditor.LevelEditor
         public static LEPrefabConfig PrefabConfig;
 
         // GizmoPanel
-        private LEGizmoPanel gizmoPanel;
-        private Vector2Int gridDimensions;
-        private Vector2Int _gridDimensions;
+        private LEGizmoPanel m_gizmoPanel;
+        [HideInInspector]
+        public Vector2Int gridDimensions;
+        private Vector2Int m_gridDimensions;
 
         // 当前网格的高度
         private int _gridHeight;
@@ -66,115 +67,117 @@ namespace SmallUniverse.GameEditor.LevelEditor
         }
 
         // 当前画格子所在区域
-        private int _area = 1;
+        private int m_area = 1;
         public int area
         {
             get
             {
-                return _area;
+                return m_area;
             }
         }
 
         // 是否开启编辑模式
-        private bool editorEnabled = false;
-        private bool _editorEnabled = true;
+        [HideInInspector]
+        public bool editorEnabled = false;
+        private bool m_editorEnabled = true;
 
         // model view
-        private Vector2 modelViewScrollPosition;
-        private int modelViewHorizontalCounter;
-        private int modelViewColumn;
+        private Vector2 m_modelViewScrollPosition;
+        private int m_modelViewHorizontalCounter;
+        private int m_modelViewColumn;
 
         // area view
-        private Vector2 areaViewScrollPosition;
+        private Vector2 m_areaViewScrollPosition;
 
         // 当前 Tab 菜单
-        private TabMenu currentSelectTabMenu = TabMenu.Function;
+        public TabMenu currentSelectTabMenu = TabMenu.Function;
         // 当前选择的工具
-        private SceneTool currentSelectTool;
+        public SceneTool currentSelectTool;
         // 当前选择的功能
         public GridFunction currentSelectFunction = GridFunction.Ground;
+
         // 当前选择的 prefab
-        private LEPrefab currentSelectPrefab;
+        private LEPrefab m_currentSelectPrefab;
         // 当前选中 prefab go
-        private LEPrefabGo currentSelectPrefabGo;
+        private LEPrefabGo m_currentSelectPrefabGo;
 
         // 当前鼠标所在GizmoGrid上的位置
-        private Vector3 mousePosition;
+        private Vector3 m_mousePosition;
 
         // 关卡场景名称
-        private string levelName;
+        private string m_levelName;
 
         // Enumerator
-        private Dictionary<string, LEPrefabGo>.Enumerator prefabGoEnumerator;
-        private Dictionary<string, LEArea>.Enumerator areaEnumerator;
+        private Dictionary<string, LEPrefabGo>.Enumerator m_prefabGoEnumerator;
+        private Dictionary<string, LEArea>.Enumerator m_areaEnumerator;
 
         // GizmoPanelState
-        private GizmoPanelState gizmoPanelState = GizmoPanelState.Exit;
-
-        // 动画方向数组
-        private string[] animationDirectionNames;
+        private GizmoPanelState m_gizmoPanelState = GizmoPanelState.Exit;
 
         // 选择器工具
-        private LESelector _selector;
+        private LESelector m_selector;
         public LESelector selector
         {
             get
             {
-                if (_selector == null)
+                if (m_selector == null)
                 {
-                    _selector = new LESelector();
+                    m_selector = new LESelector();
                 }
-                return _selector;
+                return m_selector;
             }
         }
 
         // 笔刷工具
-        private LEBrush _brush;
+        private LEBrush m_brush;
         public LEBrush brush
         {
             get
             {
-                if (_brush == null)
+                if (m_brush == null)
                 {
-                    _brush = new LEBrush();
+                    m_brush = new LEBrush();
                 }
-                return _brush;
+                return m_brush;
             }
         }
 
         // 吸管工具
-        private LESucker _sucker;
+        private LESucker m_sucker;
         public LESucker sucker
         {
             get
             {
-                if (_sucker == null)
+                if (m_sucker == null)
                 {
-                    _sucker = new LESucker();
+                    m_sucker = new LESucker();
                 }
-                return _sucker;
+                return m_sucker;
             }
         }
 
         // 擦除工具
-        private LEErase _erase;
+        private LEErase m_erase;
         public LEErase erase
         {
             get
             {
-                if (_erase == null)
+                if (m_erase == null)
                 {
-                    _erase = new LEErase();
+                    m_erase = new LEErase();
                 }
-                return _erase;
+                return m_erase;
             }
         }
 
 
         // content
-        private GUIContent content;
+        private GUIContent m_content;
         // controlId
-        private int controlId;
+        private int m_controlId;
+        // GUI color
+        private Color m_guiColor;
+
 
         [MenuItem("SmallUniverse/LevelEditor/Open Level Editor Window")]
         public static void Initialize()
@@ -194,7 +197,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
                 Initialize();
             }
 
-            levelName = LELevel.Inst.levelName;
+            m_levelName = LELevel.Inst.levelName;
 
             // 关卡初始化
             LELevel.Inst.Initialize();
@@ -202,24 +205,24 @@ namespace SmallUniverse.GameEditor.LevelEditor
             // 网格尺寸
             var dim = LELevel.Inst.GetGizmoDimension();
             // 网格实例获取
-            if (gizmoPanel == null)
+            if (m_gizmoPanel == null)
             {
                 var gizmoGridGo = GameObject.Find(LEConst.EditorGizmoGridPanelName);
                 if (gizmoGridGo != null)
                 {
-                    gizmoPanel = gizmoGridGo.GetComponent<LEGizmoPanel>();
+                    m_gizmoPanel = gizmoGridGo.GetComponent<LEGizmoPanel>();
                 }
             }
             gridDimensions.x = dim.x;
             gridDimensions.y = dim.y;
 
-            _gridDimensions.x = dim.x;
-            _gridDimensions.y = dim.y;
+            m_gridDimensions.x = dim.x;
+            m_gridDimensions.y = dim.y;
 
             _gridHeight = 0;
 
-            gizmoPanel.SetSize(dim.x, dim.y);
-            gizmoPanel.SetHight(_gridHeight);
+            m_gizmoPanel.SetSize(dim.x, dim.y);
+            m_gizmoPanel.SetHight(_gridHeight);
 
             // config
             IconConfig = AssetDatabase.LoadAssetAtPath(LEConst.IconConfigPath, typeof(LEIconConfig)) as LEIconConfig;
@@ -229,21 +232,6 @@ namespace SmallUniverse.GameEditor.LevelEditor
             // scene view
             SceneView.onSceneGUIDelegate -= OnSceneGUI;
             SceneView.onSceneGUIDelegate += OnSceneGUI;
-
-            // 动画方向名称
-            FieldInfo[] adfields = typeof(AnimationDirection).GetFields();
-            List<string> ads = new List<string>();
-
-            for (int i = 0; i < adfields.Length; i++)
-            {
-                var name = adfields[i].Name;
-                if (!name.Equals("value__"))
-                {
-                   ads.Add(name);
-                }
-            }
-            animationDirectionNames = new string[ads.Count];
-            animationDirectionNames = ads.ToArray();
 
             EditorSceneManager.sceneOpened += OnSceneOpened;
 
@@ -256,27 +244,27 @@ namespace SmallUniverse.GameEditor.LevelEditor
             Inst = null;
 
             // 网格实例销毁
-            if (gizmoPanel != null)
+            if (m_gizmoPanel != null)
             {
-                gizmoPanel.GizmoGridEnabled = false;
+                m_gizmoPanel.GizmoGridEnabled = false;
             }
-            gizmoPanel = null;
+            m_gizmoPanel = null;
 
             // 选择器工具
             selector.Destroy();
-            _selector = null;
+            m_selector = null;
 
             // 笔刷工具
             brush.Destroy();
-            _brush = null;
+            m_brush = null;
 
             // 吸管工具
             sucker.Destroy();
-            _sucker = null;
+            m_sucker = null;
 
             // 擦除工具
             erase.Destroy();
-            _erase = null;
+            m_erase = null;
 
             SceneView.onSceneGUIDelegate -= OnSceneGUI;
             EditorSceneManager.sceneOpened -= OnSceneOpened;
@@ -323,23 +311,23 @@ namespace SmallUniverse.GameEditor.LevelEditor
                 // 编辑模式选项按钮
                 editorEnabled = GUILayout.Toggle(editorEnabled, "Enable Editor", "Button", GUILayout.Height(30));
 
-                if (editorEnabled != _editorEnabled)
+                if (editorEnabled != m_editorEnabled)
                 {
-                    _editorEnabled = editorEnabled;
+                    m_editorEnabled = editorEnabled;
 
                     if (editorEnabled)
                     {
                         // 编辑模式
 
                         // 开启网格
-                        gizmoPanel.GizmoGridEnabled = true;
+                        m_gizmoPanel.GizmoGridEnabled = true;
                     }
                     else
                     {
                         // 非编辑模式
 
                         // 关闭网格
-                        gizmoPanel.GizmoGridEnabled = false;
+                        m_gizmoPanel.GizmoGridEnabled = false;
                         // 销毁画刷
                         brush.Destroy();
                     }
@@ -364,12 +352,12 @@ namespace SmallUniverse.GameEditor.LevelEditor
                 if (gridDimensions.y % 2 != 0)
                     gridDimensions.y += 1;
 
-                if (gridDimensions.x != _gridDimensions.x || gridDimensions.y != _gridDimensions.y)
+                if (gridDimensions.x != m_gridDimensions.x || gridDimensions.y != m_gridDimensions.y)
                 {
-                    _gridDimensions.x = gridDimensions.x;
-                    _gridDimensions.y = gridDimensions.y;
+                    m_gridDimensions.x = gridDimensions.x;
+                    m_gridDimensions.y = gridDimensions.y;
 
-                    gizmoPanel.SetSize(gridDimensions.x, gridDimensions.y);
+                    m_gizmoPanel.SetSize(gridDimensions.x, gridDimensions.y);
                 }
 
                 EditorGUILayout.EndVertical();
@@ -384,13 +372,13 @@ namespace SmallUniverse.GameEditor.LevelEditor
                 EditorGUILayout.BeginVertical("box");
                 EditorGUILayout.BeginHorizontal();
                 // function tab menu
-                if (GUILayout.Toggle(currentSelectTabMenu == TabMenu.Function, content = new GUIContent(TabMenu.Function.ToString()), "Button", GUILayout.Height(30)))
+                if (GUILayout.Toggle(currentSelectTabMenu == TabMenu.Function, m_content = new GUIContent(TabMenu.Function.ToString()), "Button", GUILayout.Height(30)))
                 {
                     currentSelectTabMenu = TabMenu.Function;
                 }
 
                 // group tab menu
-                if (GUILayout.Toggle(currentSelectTabMenu == TabMenu.Area, content = new GUIContent(TabMenu.Area.ToString()), "Button", GUILayout.Height(30)))
+                if (GUILayout.Toggle(currentSelectTabMenu == TabMenu.Area, m_content = new GUIContent(TabMenu.Area.ToString()), "Button", GUILayout.Height(30)))
                 {
                     currentSelectTabMenu = TabMenu.Area;
                 }
@@ -435,10 +423,10 @@ namespace SmallUniverse.GameEditor.LevelEditor
         {
             EditorGUILayout.BeginHorizontal();
             // Ground
-            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Ground, content = new GUIContent(GridFunction.Ground.ToString()), "Button", GUILayout.Height(20)))
+            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Ground, m_content = new GUIContent(GridFunction.Ground.ToString()), "Button", GUILayout.Height(20)))
             {
                 currentSelectFunction = GridFunction.Ground;
-                currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
+                m_currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
                 if (currentSelectTool == SceneTool.Brush)
                 {
                     brush.CleanPrefabGo();
@@ -446,10 +434,10 @@ namespace SmallUniverse.GameEditor.LevelEditor
             }
 
             // Door
-            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Door, content = new GUIContent(GridFunction.Door.ToString()), "Button", GUILayout.Height(20)))
+            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Door, m_content = new GUIContent(GridFunction.Door.ToString()), "Button", GUILayout.Height(20)))
             {
                 currentSelectFunction = GridFunction.Door;
-                currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
+                m_currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
                 if (currentSelectTool == SceneTool.Brush)
                 {
                     brush.CleanPrefabGo();
@@ -457,10 +445,10 @@ namespace SmallUniverse.GameEditor.LevelEditor
             }
 
             // Transfer
-            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Transfer, content = new GUIContent(GridFunction.Transfer.ToString()), "Button", GUILayout.Height(20)))
+            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Transfer, m_content = new GUIContent(GridFunction.Transfer.ToString()), "Button", GUILayout.Height(20)))
             {
                 currentSelectFunction = GridFunction.Transfer;
-                currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
+                m_currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
                 if (currentSelectTool == SceneTool.Brush)
                 {
                     brush.CleanPrefabGo();
@@ -468,10 +456,10 @@ namespace SmallUniverse.GameEditor.LevelEditor
             }
 
             // Trap
-            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Trap, content = new GUIContent(GridFunction.Trap.ToString()), "Button", GUILayout.Height(20)))
+            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Trap, m_content = new GUIContent(GridFunction.Trap.ToString()), "Button", GUILayout.Height(20)))
             {
                 currentSelectFunction = GridFunction.Trap;
-                currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
+                m_currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
                 if (currentSelectTool == SceneTool.Brush)
                 {
                     brush.CleanPrefabGo();
@@ -479,10 +467,10 @@ namespace SmallUniverse.GameEditor.LevelEditor
             }
 
             // Player
-            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Player, content = new GUIContent(GridFunction.Player.ToString()), "Button", GUILayout.Height(20)))
+            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Player, m_content = new GUIContent(GridFunction.Player.ToString()), "Button", GUILayout.Height(20)))
             {
                 currentSelectFunction = GridFunction.Player;
-                currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
+                m_currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
                 if (currentSelectTool == SceneTool.Brush)
                 {
                     brush.CleanPrefabGo();
@@ -490,10 +478,10 @@ namespace SmallUniverse.GameEditor.LevelEditor
             }
 
             // Monster
-            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Monster, content = new GUIContent(GridFunction.Monster.ToString()), "Button", GUILayout.Height(20)))
+            if (GUILayout.Toggle(currentSelectFunction == GridFunction.Monster, m_content = new GUIContent(GridFunction.Monster.ToString()), "Button", GUILayout.Height(20)))
             {
                 currentSelectFunction = GridFunction.Monster;
-                currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
+                m_currentSelectPrefab = PrefabConfig.GetPrefab(currentSelectFunction.ToString());
                 if (currentSelectTool == SceneTool.Brush)
                 {
                     brush.CleanPrefabGo();
@@ -502,7 +490,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
             EditorGUILayout.EndHorizontal();
 
             // 资源库预览界面
-            if (currentSelectPrefab != null)
+            if (m_currentSelectPrefab != null)
             {
                 DrawModelView();
             }
@@ -516,46 +504,46 @@ namespace SmallUniverse.GameEditor.LevelEditor
             if (Inst == null)
                 return;
 
-            modelViewScrollPosition = EditorGUILayout.BeginScrollView(modelViewScrollPosition);
+            m_modelViewScrollPosition = EditorGUILayout.BeginScrollView(m_modelViewScrollPosition);
 
-            modelViewHorizontalCounter = 0;
+            m_modelViewHorizontalCounter = 0;
 
-            modelViewColumn = (int)(Inst.position.width / 200f);
-            if (modelViewColumn <= 1)
+            m_modelViewColumn = (int)(Inst.position.width / 200f);
+            if (m_modelViewColumn <= 1)
             {
-                modelViewColumn = 1;
+                m_modelViewColumn = 1;
             }
 
             EditorGUILayout.BeginHorizontal();
 
-            using (prefabGoEnumerator = currentSelectPrefab.gos.GetEnumerator())
+            using (m_prefabGoEnumerator = m_currentSelectPrefab.gos.GetEnumerator())
             {
-                while (prefabGoEnumerator.MoveNext())
+                while (m_prefabGoEnumerator.MoveNext())
                 {
-                    var prefabGo = prefabGoEnumerator.Current.Value;
+                    var prefabGo = m_prefabGoEnumerator.Current.Value;
 
                     EditorGUILayout.BeginVertical();
 
                     // 模型预览
                     Texture2D previewImage = AssetPreview.GetAssetPreview(prefabGo.go);
-                    content = new GUIContent(previewImage);
+                    m_content = new GUIContent(previewImage);
                     // 选中状态
                     bool selected = false;
-                    if (currentSelectPrefabGo != null)
+                    if (m_currentSelectPrefabGo != null)
                     {
-                        if (currentSelectPrefabGo.name == prefabGo.go.name)
+                        if (m_currentSelectPrefabGo.name == prefabGo.go.name)
                         {
                             selected = true;
                         }
                     }
 
-                    bool isSelected = GUILayout.Toggle(selected, content, GUI.skin.button);
+                    bool isSelected = GUILayout.Toggle(selected, m_content, GUI.skin.button);
                     if (isSelected && editorEnabled)
                     {
-                        currentSelectPrefabGo = prefabGo;
+                        m_currentSelectPrefabGo = prefabGo;
                         // 选中，设置笔刷
                         ChangeSceneTool(SceneTool.Brush);
-                        brush.SetPrefabGo(currentSelectPrefabGo);
+                        brush.SetPrefabGo(m_currentSelectPrefabGo);
                     }
 
                     EditorGUILayout.BeginHorizontal("Box");
@@ -563,10 +551,10 @@ namespace SmallUniverse.GameEditor.LevelEditor
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.EndVertical();
 
-                    modelViewHorizontalCounter++;
-                    if (modelViewHorizontalCounter == modelViewColumn)
+                    m_modelViewHorizontalCounter++;
+                    if (m_modelViewHorizontalCounter == m_modelViewColumn)
                     {
-                        modelViewHorizontalCounter = 0;
+                        m_modelViewHorizontalCounter = 0;
                         EditorGUILayout.EndHorizontal();
                         EditorGUILayout.BeginHorizontal();
                     }
@@ -585,27 +573,39 @@ namespace SmallUniverse.GameEditor.LevelEditor
             if (Inst == null)
                 return;
 
-            areaViewScrollPosition = EditorGUILayout.BeginScrollView(areaViewScrollPosition);
+            m_areaViewScrollPosition = EditorGUILayout.BeginScrollView(m_areaViewScrollPosition);
 
-            using (areaEnumerator = LELevel.Inst.areas.GetEnumerator())
+            using (m_areaEnumerator = LELevel.Inst.areas.GetEnumerator())
             {
-                while (areaEnumerator.MoveNext())
+                while (m_areaEnumerator.MoveNext())
                 {
-                    var area = areaEnumerator.Current.Value;
+                    var area = m_areaEnumerator.Current.Value;
 
                     if (GUILayout.Button("Area : " + area.areaName, "box", GUILayout.Width(Inst.position.width - 28)))
                     {
-                        area.editorShowing = !area.editorShowing;
+                        area.e_showing = !area.e_showing;
                     }
-                    if (area.editorShowing)
+                    if (area.e_showing)
                     {
                         EditorGUILayout.BeginVertical("box");
                         // showiung
                         area.showing = GUILayout.Toggle(area.showing, "Showing Scene");
                         
-                        // animation direction
-                        area.editorAnimationDirection = EditorGUILayout.Popup("Animation Direction : ", area.editorAnimationDirection, animationDirectionNames);
-
+                        // 导出格子四周
+                        area.e_exportAround = EditorGUILayout.Toggle("Export Grid Around : ", area.e_exportAround);
+                        
+                        // animation start position
+                        area.e_animationStartPosition = EditorGUILayout.Vector3IntField("Animation Start Position : ", area.e_animationStartPosition);
+                        var startGrid = area.GetGrid(LELevel.GetKey(area.e_animationStartPosition, area.areaName));
+                        if(startGrid == null)
+                        {
+                            EditorGUILayout.BeginHorizontal("box");
+                            m_guiColor = GUI.color;
+                            GUI.color = Color.red;
+                            EditorGUILayout.LabelField("Error : Animation Start Position Invalid!");
+                            GUI.color = m_guiColor;
+                            EditorGUILayout.EndHorizontal();
+                        }
                         EditorGUILayout.EndVertical();
                     }
 
@@ -623,7 +623,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
             // 计算鼠标在Grid上的位置
             CalculateSceneMousePosition();
 
-            controlId = GUIUtility.GetControlID(FocusType.Passive);
+            m_controlId = GUIUtility.GetControlID(FocusType.Passive);
 
             // 画选择工具栏
             DrawToolbar(sceneView);
@@ -631,22 +631,22 @@ namespace SmallUniverse.GameEditor.LevelEditor
             switch (currentSelectTool)
             {
                 case SceneTool.Selector:
-                    selector.DrawScenePreview(sceneView, mousePosition);
+                    selector.DrawScenePreview(sceneView, m_mousePosition);
                     break;
                 case SceneTool.Brush:
-                    brush.DrawScenePreview(sceneView, mousePosition);
+                    brush.DrawScenePreview(sceneView, m_mousePosition);
                     break;
                 case SceneTool.Sucker:
-                    sucker.DrawScenePreview(sceneView, mousePosition);
+                    sucker.DrawScenePreview(sceneView, m_mousePosition);
                     break;
                 case SceneTool.Erase:
-                    erase.DrawScenePreview(sceneView, mousePosition);
+                    erase.DrawScenePreview(sceneView, m_mousePosition);
                     break;
             }
 
             HandleSceneInput();
 
-            HandleUtility.AddDefaultControl(controlId);
+            HandleUtility.AddDefaultControl(m_controlId);
         }
 
         /// <summary>
@@ -657,16 +657,16 @@ namespace SmallUniverse.GameEditor.LevelEditor
             switch (currentSelectTool)
             {
                 case SceneTool.Selector:
-                    selector.HandleInput(mousePosition);
+                    selector.HandleInput(m_mousePosition);
                     break;
                 case SceneTool.Brush:
-                    brush.HandleInput(mousePosition);
+                    brush.HandleInput(m_mousePosition);
                     break;
                 case SceneTool.Sucker:
-                    sucker.HandleInput(mousePosition);
+                    sucker.HandleInput(m_mousePosition);
                     break;
                 case SceneTool.Erase:
-                    erase.HandleInput(mousePosition);
+                    erase.HandleInput(m_mousePosition);
                     break;
             }
         }
@@ -687,8 +687,8 @@ namespace SmallUniverse.GameEditor.LevelEditor
             #region  左上角
 
             // 选择工具
-            content = new GUIContent(IconConfig.GetIconTexture("iconCursor"));
-            if (GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY, LESetting.SceneToolSize, LESetting.SceneToolSize), currentSelectTool == SceneTool.Selector, content, GUI.skin.button))
+            m_content = new GUIContent(IconConfig.GetIconTexture("iconCursor"));
+            if (GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY, LESetting.SceneToolSize, LESetting.SceneToolSize), currentSelectTool == SceneTool.Selector, m_content, GUI.skin.button))
             {
                 brush.Close();
                 sucker.Close();
@@ -697,8 +697,8 @@ namespace SmallUniverse.GameEditor.LevelEditor
             }
 
             // 笔刷工具
-            content = new GUIContent(IconConfig.GetIconTexture("iconBlockMode"));
-            if (GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY + nextInterval, LESetting.SceneToolSize, LESetting.SceneToolSize), currentSelectTool == SceneTool.Brush, content, GUI.skin.button))
+            m_content = new GUIContent(IconConfig.GetIconTexture("iconBlockMode"));
+            if (GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY + nextInterval, LESetting.SceneToolSize, LESetting.SceneToolSize), currentSelectTool == SceneTool.Brush, m_content, GUI.skin.button))
             {
                 selector.Close();
                 sucker.Close();
@@ -707,8 +707,8 @@ namespace SmallUniverse.GameEditor.LevelEditor
             }
 
             // 吸管工具
-            content = new GUIContent(IconConfig.GetIconTexture("iconPicker"));
-            if (GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY + nextInterval * 2, LESetting.SceneToolSize, LESetting.SceneToolSize), currentSelectTool == SceneTool.Sucker, content, GUI.skin.button))
+            m_content = new GUIContent(IconConfig.GetIconTexture("iconPicker"));
+            if (GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY + nextInterval * 2, LESetting.SceneToolSize, LESetting.SceneToolSize), currentSelectTool == SceneTool.Sucker, m_content, GUI.skin.button))
             {
                 selector.Close();
                 brush.Close();
@@ -717,8 +717,8 @@ namespace SmallUniverse.GameEditor.LevelEditor
             }
 
             // 擦除工具
-            content = new GUIContent(IconConfig.GetIconTexture("iconErase"));
-            if (GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY + nextInterval * 3, LESetting.SceneToolSize, LESetting.SceneToolSize), currentSelectTool == SceneTool.Erase, content, GUI.skin.button))
+            m_content = new GUIContent(IconConfig.GetIconTexture("iconErase"));
+            if (GUI.Toggle(new Rect(LESetting.SceneTooIX, LESetting.SceneTooIY + nextInterval * 3, LESetting.SceneToolSize, LESetting.SceneToolSize), currentSelectTool == SceneTool.Erase, m_content, GUI.skin.button))
             {
                 selector.Close();
                 brush.Close();
@@ -731,21 +731,21 @@ namespace SmallUniverse.GameEditor.LevelEditor
             #region 左下角
 
             // 上一区域
-            content = new GUIContent(IconConfig.GetIconTexture("iconArrowUp"));
-            if (GUI.Button(new Rect(LESetting.SceneTooIX, downY, LESetting.SceneToolSize, LESetting.SceneToolSize / 2), content))
+            m_content = new GUIContent(IconConfig.GetIconTexture("iconArrowUp"));
+            if (GUI.Button(new Rect(LESetting.SceneTooIX, downY, LESetting.SceneToolSize, LESetting.SceneToolSize / 2), m_content))
             {
-                _area++;
+                m_area++;
             }
 
             // 下一区域
-            content = new GUIContent(IconConfig.GetIconTexture("iconArrowDown"));
-            if (GUI.Button(new Rect(LESetting.SceneTooIX, downY + LESetting.SceneToolSize / 2, LESetting.SceneToolSize, LESetting.SceneToolSize / 2), content))
+            m_content = new GUIContent(IconConfig.GetIconTexture("iconArrowDown"));
+            if (GUI.Button(new Rect(LESetting.SceneTooIX, downY + LESetting.SceneToolSize / 2, LESetting.SceneToolSize, LESetting.SceneToolSize / 2), m_content))
             {
-                _area--;
+                m_area--;
 
-                if (_area <= 0)
+                if (m_area <= 0)
                 {
-                    _area = 1;
+                    m_area = 1;
                 }
             }
 
@@ -753,7 +753,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
             {
                 GUILayout.BeginVertical();
                 GUILayout.Label("Area", EditorStyles.label, GUILayout.Width(50));
-                GUILayout.Label(_area.ToString(), EditorStyles.label, GUILayout.Width(50));
+                GUILayout.Label(m_area.ToString(), EditorStyles.label, GUILayout.Width(50));
                 GUILayout.EndVertical();
             }
             GUILayout.EndArea();
@@ -763,30 +763,30 @@ namespace SmallUniverse.GameEditor.LevelEditor
             #region 右下角
 
             // Show Gizmo Panel Base
-            content = new GUIContent(IconConfig.GetIconTexture("iconIsolate"));
-            gizmoPanel.BaseEnabled = GUI.Toggle(new Rect(rightX, downY, LESetting.SceneToolSize, LESetting.SceneToolSize), gizmoPanel.BaseEnabled, content, GUI.skin.button);
+            m_content = new GUIContent(IconConfig.GetIconTexture("iconIsolate"));
+            m_gizmoPanel.BaseEnabled = GUI.Toggle(new Rect(rightX, downY, LESetting.SceneToolSize, LESetting.SceneToolSize), m_gizmoPanel.BaseEnabled, m_content, GUI.skin.button);
 
 
             // GizmoPanelUp
-            content = new GUIContent(IconConfig.GetIconTexture("iconGridUp"));
-            if (GUI.Toggle(new Rect(rightX - nextInterval, downY, LESetting.SceneToolSize, LESetting.SceneToolSize), false, content, GUI.skin.button))
+            m_content = new GUIContent(IconConfig.GetIconTexture("iconGridUp"));
+            if (GUI.Toggle(new Rect(rightX - nextInterval, downY, LESetting.SceneToolSize, LESetting.SceneToolSize), false, m_content, GUI.skin.button))
             {
                 currentSelectTool = SceneTool.None;
                 _gridHeight++;
 
-                gizmoPanel.SetHight(_gridHeight);
+                m_gizmoPanel.SetHight(_gridHeight);
 
                 Repaint();
             }
 
             // GizmoPanelDown
-            content = new GUIContent(IconConfig.GetIconTexture("iconGridDown"));
-            if (GUI.Toggle(new Rect(rightX - nextInterval * 2, downY, LESetting.SceneToolSize, LESetting.SceneToolSize), false, content, GUI.skin.button))
+            m_content = new GUIContent(IconConfig.GetIconTexture("iconGridDown"));
+            if (GUI.Toggle(new Rect(rightX - nextInterval * 2, downY, LESetting.SceneToolSize, LESetting.SceneToolSize), false, m_content, GUI.skin.button))
             {
                 currentSelectTool = SceneTool.None;
                 _gridHeight--;
 
-                gizmoPanel.SetHight(_gridHeight);
+                m_gizmoPanel.SetHight(_gridHeight);
 
                 Repaint();
             }
@@ -812,26 +812,26 @@ namespace SmallUniverse.GameEditor.LevelEditor
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << LayerMask.NameToLayer(LEConst.EditorGizmoGridLayerName)) == true)
             {
-                Vector3 shiftOffset = gizmoPanel.transform.position;
+                Vector3 shiftOffset = m_gizmoPanel.transform.position;
                 shiftOffset.x = shiftOffset.x - (int)shiftOffset.x;
                 shiftOffset.y = shiftOffset.y - (int)shiftOffset.y;
                 shiftOffset.z = shiftOffset.z - (int)shiftOffset.z;
 
-                mousePosition.x = Mathf.Round(((hit.point.x + shiftOffset.x) - hit.normal.x * 0.001f) / 1) * 1 - shiftOffset.x;
-                mousePosition.z = Mathf.Round(((hit.point.z + shiftOffset.z) - hit.normal.z * 0.001f) / 1) * 1 - shiftOffset.z;
-                mousePosition.y = _gridHeight + gizmoPanel.transform.position.y;
+                m_mousePosition.x = Mathf.Round(((hit.point.x + shiftOffset.x) - hit.normal.x * 0.001f) / 1) * 1 - shiftOffset.x;
+                m_mousePosition.z = Mathf.Round(((hit.point.z + shiftOffset.z) - hit.normal.z * 0.001f) / 1) * 1 - shiftOffset.z;
+                m_mousePosition.y = _gridHeight + m_gizmoPanel.transform.position.y;
 
-                if (gizmoPanelState == GizmoPanelState.Exit)
+                if (m_gizmoPanelState == GizmoPanelState.Exit)
                 {
-                    gizmoPanelState = GizmoPanelState.Enter;
+                    m_gizmoPanelState = GizmoPanelState.Enter;
                     OnGizmoPanelState();
                 }
             }
             else
             {
-                if (gizmoPanelState == GizmoPanelState.Enter)
+                if (m_gizmoPanelState == GizmoPanelState.Enter)
                 {
-                    gizmoPanelState = GizmoPanelState.Exit;
+                    m_gizmoPanelState = GizmoPanelState.Exit;
                     OnGizmoPanelState();
                 }
             }
@@ -845,16 +845,16 @@ namespace SmallUniverse.GameEditor.LevelEditor
             switch (currentSelectTool)
             {
                 case SceneTool.Selector:
-                    selector.HaneleGizmoPanelState(gizmoPanelState);
+                    selector.HaneleGizmoPanelState(m_gizmoPanelState);
                     break;
                 case SceneTool.Brush:
-                    brush.HaneleGizmoPanelState(gizmoPanelState);
+                    brush.HaneleGizmoPanelState(m_gizmoPanelState);
                     break;
                 case SceneTool.Sucker:
-                    sucker.HaneleGizmoPanelState(gizmoPanelState);
+                    sucker.HaneleGizmoPanelState(m_gizmoPanelState);
                     break;
                 case SceneTool.Erase:
-                    erase.HaneleGizmoPanelState(gizmoPanelState);
+                    erase.HaneleGizmoPanelState(m_gizmoPanelState);
                     break;
             }
         }
@@ -867,8 +867,8 @@ namespace SmallUniverse.GameEditor.LevelEditor
         {
             ChangeFunction(grid.function);
             ChangeSceneTool(SceneTool.Brush);
-            currentSelectPrefabGo = grid.prefabGo;
-            brush.SetPrefabGo(currentSelectPrefabGo);
+            m_currentSelectPrefabGo = grid.prefabGo;
+            brush.SetPrefabGo(m_currentSelectPrefabGo);
         }
 
         /// <summary>

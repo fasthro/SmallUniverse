@@ -112,7 +112,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
         /// <returns></returns>
         public static string GetLevelDataPath(string levelSceneName, bool absolute = true)
         {
-            return Path.Combine(GetLevelSceneDirectory(levelSceneName, absolute), levelSceneName + ".xml");
+            return Path.Combine(GetLevelSceneDirectory(levelSceneName, absolute), "Map.xml");
         }
     }
 }

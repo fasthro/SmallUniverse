@@ -92,13 +92,21 @@ namespace SmallUniverse
         public void InitEnvironment(LevelEnvironment environment)
         {
             // 地面
-            ground.LoadGrid(environment);
+            ground.InitEnvironment(environment);
 
             // 门
             for (int i = 0; i < doors.Count; i++)
             {
                 doors[i].LoadDoor();
             }
+        }
+
+        /// <summary>
+        /// 地面加载完毕
+        /// </summary>
+        public void OnGroudLoadCompleted()
+        {
+            m_levelInfo.OnGroudLoadCompleted(this);
         }
 
         /// <summary>

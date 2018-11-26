@@ -13,19 +13,26 @@ namespace SmallUniverse
         private LevelArea m_area;
         // xml 数据
         private SecurityElement m_xml;
+        // 动画开始的格子Id
+        private string m_animationStartGridId;
         // 格子集合
         private Dictionary<string, LevelGrid> m_map;
         private Dictionary<string, LevelGrid>.Enumerator m_gridEnumerator;
-
-        private int layer;
+        // 层
+        private int m_layer;
+        // 环境引用
+        private LevelEnvironment m_environment;
 
         public void Initialize(LevelArea area, SecurityElement xml)
         {
             this.m_xml = xml;
             this.m_area = area;
 
-            layer = LayerMask.NameToLayer(LevelFunctionType.Ground.ToString());
-            gameObject.layer = layer;
+            m_layer = LayerMask.NameToLayer(LevelFunctionType.Ground.ToString());
+            gameObject.layer = m_layer;
+
+            // 动画开始格子id
+            m_animationStartGridId = m_xml.Attribute("animation_start_id");
 
             m_map = m_map = new Dictionary<string, LevelGrid>();
 
@@ -34,7 +41,7 @@ namespace SmallUniverse
                 GameObject go = new GameObject();
                 go.name = "gird";
                 go.transform.parent = transform;
-                go.layer = layer;
+                go.layer = m_layer;
                 var grid = go.AddComponent<LevelGrid>();
                 grid.assetName = xmlChild.Attribute("asset_name");
                 grid.bundleName = xmlChild.Attribute("bundle_name");
@@ -45,7 +52,7 @@ namespace SmallUniverse
                 grid.adjacentNx = xmlChild.Attribute("adjacent_nx");
                 grid.adjacentPz = xmlChild.Attribute("adjacent_pz");
                 grid.adjacentNz = xmlChild.Attribute("adjacent_nz");
-                grid.layer = layer;
+                grid.layer = m_layer;
                 grid.Initialize();
 
                 AddGrid(grid);
@@ -82,10 +89,14 @@ namespace SmallUniverse
         }
 
         /// <summary>
-        /// 加载格子
+        /// 初始化环境
         /// </summary>
-        public void LoadGrid(LevelEnvironment environment)
+        /// <param name="environment">环境</param>
+        public void InitEnvironment(LevelEnvironment environment)
         {
+            m_environment = environment;
+
+            // 加载格子
             using (m_gridEnumerator = m_map.GetEnumerator())
             {
                 while (m_gridEnumerator.MoveNext())
@@ -94,30 +105,35 @@ namespace SmallUniverse
                 }
             }
 
-            var sg = GetGrid(LevelGrid.GetId(new Vector3(-3, 0, -3)));
-            if (sg != null)
-            {
-                SetGridAnimation(sg, 0.05f, 0.5f, 1f, Game.gameCurve.levelGridCurve);
-            }
-        }
+            m_area.OnGroudLoadCompleted();
+        }    
 
         #region Grid Animation
+
+        /// <summary>
+        /// 播放动画
+        /// </summary>
+        public void PlayAnimation()
+        {
+            var startGrid = GetGrid(m_animationStartGridId);
+            if(startGrid != null)
+                SetGridAnimation(startGrid, m_environment.animationWaitTime, m_environment.animationTotalTime, m_environment.animationOffset, Game.gameCurve.levelGridCurve);
+        }
 
         /// <summary>
         /// 设置格子动画
         /// </summary>
         /// <param name="startGrid">动画开始的格子</param>
-        private void SetGridAnimation(LevelGrid startGrid, float waitTime, float totalTime, float maxDistance, AnimationCurve curve)
+        private void SetGridAnimation(LevelGrid startGrid, float waitTime, float totalTime, Vector3 offset, AnimationCurve curve)
         {
-            startGrid.animation.Initialize(0, totalTime, maxDistance, curve);
+            startGrid.animation.Initialize(0, totalTime, offset, curve);
 
             List<LevelGrid> list = new List<LevelGrid>();
             list.Add(startGrid);
-
-            SetGridAnimation(list, 1, waitTime, totalTime, maxDistance, curve);
+            SetGridAnimation(list, 1, waitTime, totalTime, offset, curve);
         }
 
-        private void SetGridAnimation(List<LevelGrid> list, int index, float waitTime, float totalTime, float maxDistance, AnimationCurve curve)
+        private void SetGridAnimation(List<LevelGrid> list, int index, float waitTime, float totalTime, Vector3 offset, AnimationCurve curve)
         {
             if (list.Count > 0)
             {
@@ -135,14 +151,13 @@ namespace SmallUniverse
                             if (!ids.ContainsKey(ag.id))
                             {
                                 ids.Add(ag.id, true);
-                                ag.animation.Initialize(waitTime * index, totalTime, maxDistance, curve);
+                                ag.animation.Initialize(waitTime * index, totalTime, offset, curve);
                                 arounds.Add(ag);
                             }
                         }
                     }
                 }
-                Debug.Log(index);
-                SetGridAnimation(arounds, index + 1, waitTime, totalTime, maxDistance, curve);
+                SetGridAnimation(arounds, index + 1, waitTime, totalTime, offset, curve);
             }
         }
 

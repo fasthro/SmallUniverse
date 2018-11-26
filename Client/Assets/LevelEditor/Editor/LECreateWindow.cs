@@ -117,6 +117,15 @@ namespace SmallUniverse.GameEditor.LevelEditor
                 }
             }
 
+            // navmesh
+            GameObject navmeshGo = new GameObject();
+            navmeshGo.transform.position = Vector3.zero;
+            navmeshGo.name = "Navmesh";
+            
+            var navmesh = navmeshGo.AddComponent<NavMeshSurface>();
+            navmesh.collectObjects = CollectObjects.All;
+            navmesh.layerMask = 1 << LayerMask.NameToLayer(LevelFunctionType.Ground.ToString());
+
             EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), LEUtils.GetLevelScenePath(levelSceneName));
 
             Close();

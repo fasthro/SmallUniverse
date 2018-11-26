@@ -584,7 +584,7 @@ MonoBehaviour:
   attackJoy:
     joyFunc: 1
     screenDirection: 1
-    keyCode: 106
+    keyCode: 32
     virtualShape: 0
     parame:
       radius: 60
@@ -592,21 +592,21 @@ MonoBehaviour:
   joys:
   - joyFunc: 2
     screenDirection: 1
-    keyCode: 0
+    keyCode: 104
     virtualShape: 0
     parame:
       radius: 40
       boundary: {x: 200, y: 20}
   - joyFunc: 3
     screenDirection: 1
-    keyCode: 0
+    keyCode: 106
     virtualShape: 0
     parame:
       radius: 40
       boundary: {x: 145, y: 160}
   - joyFunc: 4
     screenDirection: 1
-    keyCode: 0
+    keyCode: 107
     virtualShape: 0
     parame:
       radius: 40

@@ -68,9 +68,12 @@ namespace SmallUniverse.GameEditor
             {
                 var levelDir = levelDirs[i];
                 var levelName = PathUtils.GetPathSection(levelDir, -1);
-                var levelPath = Path.Combine(levelDir, levelName + ".xml");
 
-                SetAssetBundleName(levelPath, "levels/scenes/" + levelName);
+                var mapPath = Path.Combine(levelDir, "Map.xml");
+                var navmeshPath = Path.Combine(levelDir, "Navmesh.prefab");
+
+                SetAssetBundleName(mapPath, "levels/scenes/" + levelName);
+                SetAssetBundleName(navmeshPath, "levels/scenes/" + levelName);
             }
         }
 

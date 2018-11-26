@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using FairyGUI;
 using UnityEngine;
+using SmallUniverse.Manager;
 
 namespace SmallUniverse
 {
@@ -32,7 +33,6 @@ namespace SmallUniverse
 
         }
 
-
         protected override void OnTouchUp(JoyGesture gesture)
         {
 
@@ -40,7 +40,7 @@ namespace SmallUniverse
 
         protected override void OnKeyUp()
         {
-
+            
         }
 
         protected override void OnKeyDown()

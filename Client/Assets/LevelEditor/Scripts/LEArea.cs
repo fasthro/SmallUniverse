@@ -6,15 +6,14 @@ using UnityEngine;
 namespace SmallUniverse.GameEditor.LevelEditor
 {
     /// <summary>
-    /// 动画方向
+    /// 周围方向
     /// </summary>
-    public enum AnimationDirection
+    public enum AroundDirection
     {
-        All,               // 所有方向
-        PositiveX,         // x 正方向
-        NegativeX,         // x 负方向
-        PositiveZ,         // z 正方向
-        NegativeZ,         // z 负方向
+        PositiveX,
+        NegativeX,
+        PositiveZ,
+        NegativeZ,
     }
 
     public class LEArea : MonoBehaviour
@@ -55,9 +54,14 @@ namespace SmallUniverse.GameEditor.LevelEditor
 
         #region editor 参数
         // 区域设置是否显示
-        public bool editorShowing = false;
-        // 区域动画方向
-        public int editorAnimationDirection = 0;
+        public bool e_showing = false;
+        // 是否导出格子四周的格子
+        public bool e_exportAround = true;
+        // 动画开始位置
+        public Vector3Int e_animationStartPosition;
+
+        // 动画开始格子标识
+        private GameObject m_animationStartGridFlag;
         #endregion
         /// <summary>
         /// 初始化
@@ -271,6 +275,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
             }
         }
 
+        #region export
         /// <summary>
         /// 导出xml
         /// </summary>
@@ -320,6 +325,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
 
             string template = LEUtils.LoadTemplate("Area.txt");
             template = template.Replace("{#area_index}", areaName);
+            template = template.Replace("{#animation_start_id}", LELevel.GetRunTimeKey(e_animationStartPosition));
             template = template.Replace("{#ground_content}", groundContent);
             template = template.Replace("{#player_content}", playerContent);
             template = template.Replace("{#monster_content}", monsterContent);
@@ -348,65 +354,31 @@ namespace SmallUniverse.GameEditor.LevelEditor
             template = template.Replace("{#angle_y}", grid.rotationAngle.y.ToString());
             template = template.Replace("{#angle_z}", grid.rotationAngle.z.ToString());
 
-            // animation direction
+            // around direction
             string adjacent = string.Empty;
-
-            if ((AnimationDirection)editorAnimationDirection == AnimationDirection.All)
+            if (e_exportAround)
             {
-                string px = ExportGridAdjacentXml(grid, AnimationDirection.PositiveX);
+                string px = ExportGridAdjacentXml(grid, AroundDirection.PositiveX);
                 if (!string.IsNullOrEmpty(px))
                 {
                     adjacent += string.Format(" {0}", px);
                 }
-                string nx = ExportGridAdjacentXml(grid, AnimationDirection.NegativeX);
+                string nx = ExportGridAdjacentXml(grid, AroundDirection.NegativeX);
                 if (!string.IsNullOrEmpty(nx))
                 {
                     adjacent += string.Format(" {0}", nx);
                 }
-                string pz = ExportGridAdjacentXml(grid, AnimationDirection.PositiveZ);
+                string pz = ExportGridAdjacentXml(grid, AroundDirection.PositiveZ);
                 if (!string.IsNullOrEmpty(pz))
                 {
                     adjacent += string.Format(" {0}", pz);
                 }
-                string nz = ExportGridAdjacentXml(grid, AnimationDirection.NegativeZ);
+                string nz = ExportGridAdjacentXml(grid, AroundDirection.NegativeZ);
                 if (!string.IsNullOrEmpty(nz))
                 {
                     adjacent += string.Format(" {0}", nz);
                 }
             }
-            else if ((AnimationDirection)editorAnimationDirection == AnimationDirection.PositiveX)
-            {
-                string px = ExportGridAdjacentXml(grid, AnimationDirection.PositiveX);
-                if (!string.IsNullOrEmpty(px))
-                {
-                    adjacent += string.Format(" {0}", px);
-                }
-            }
-            else if ((AnimationDirection)editorAnimationDirection == AnimationDirection.NegativeX)
-            {
-                string nx = ExportGridAdjacentXml(grid, AnimationDirection.NegativeX);
-                if (!string.IsNullOrEmpty(nx))
-                {
-                    adjacent += string.Format(" {0}", nx);
-                }
-            }
-            else if ((AnimationDirection)editorAnimationDirection == AnimationDirection.PositiveZ)
-            {
-                string pz = ExportGridAdjacentXml(grid, AnimationDirection.PositiveZ);
-                if (!string.IsNullOrEmpty(pz))
-                {
-                    adjacent += string.Format(" {0}", pz);
-                }
-            }
-            else if ((AnimationDirection)editorAnimationDirection == AnimationDirection.NegativeZ)
-            {
-                string nz = ExportGridAdjacentXml(grid, AnimationDirection.NegativeZ);
-                if (!string.IsNullOrEmpty(nz))
-                {
-                    adjacent += string.Format(" {0}", nz);
-                }
-            }
-
             template = template.Replace("{#adjacent}", adjacent);
 
             return template;
@@ -417,7 +389,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
         /// </summary>
         /// <param name="grid"></param>
         /// <returns></returns>
-        private string ExportGridAdjacentXml(LEGrid grid, AnimationDirection direction)
+        private string ExportGridAdjacentXml(LEGrid grid, AroundDirection direction)
         {
             if (grid.function != GridFunction.Ground)
                 return "";
@@ -429,22 +401,22 @@ namespace SmallUniverse.GameEditor.LevelEditor
 
             string dirstr = string.Empty;
 
-            if (direction == AnimationDirection.PositiveX)
+            if (direction == AroundDirection.PositiveX)
             {
                 position.x = grid.position.x + 1f;
                 dirstr = "adjacent_px";
             }
-            else if (direction == AnimationDirection.NegativeX)
+            else if (direction == AroundDirection.NegativeX)
             {
                 position.x = grid.position.x - 1f;
                 dirstr = "adjacent_nx";
             }
-            else if (direction == AnimationDirection.PositiveZ)
+            else if (direction == AroundDirection.PositiveZ)
             {
                 position.z = grid.position.z + 1f;
                 dirstr = "adjacent_pz";
             }
-            else if (direction == AnimationDirection.NegativeZ)
+            else if (direction == AroundDirection.NegativeZ)
             {
                 position.z = grid.position.z - 1f;
                 dirstr = "adjacent_nz";
@@ -459,5 +431,6 @@ namespace SmallUniverse.GameEditor.LevelEditor
             }
             return "";
         }
+        #endregion
     }
 }
