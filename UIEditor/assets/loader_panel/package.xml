@@ -3,5 +3,5 @@
   <resources>
     <component id="oxm00" name="loader_panel.xml" path="/panel/" exported="true"/>
   </resources>
-  <publish name="loader_panel" path="..\Client\Assets\Resources\UI\loader_panel"/>
+  <publish name="loader_panel" path="..\Client\Assets\Resources\UI\loader_panel" extractAlpha="true"/>
 </packageDescription>

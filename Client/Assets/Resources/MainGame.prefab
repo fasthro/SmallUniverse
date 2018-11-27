@@ -170,6 +170,7 @@ GameObject:
   - component: {fileID: 4241746013816198}
   - component: {fileID: 20795869480728684}
   - component: {fileID: 114629116516241804}
+  - component: {fileID: 45885468375744514}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -393,8 +394,8 @@ Camera:
   m_GameObject: {fileID: 1920974832628520}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -425,6 +426,14 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!45 &45885468375744514
+Skybox:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1920974832628520}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 0}
 --- !u!81 &81099148719750272
 AudioListener:
   m_ObjectHideFlags: 1
@@ -711,6 +720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb41bb7589c34474bbb149ed61fdfd61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skybox: {fileID: 45885468375744514}
   heroCamera: {fileID: 114405618471161550}
 --- !u!114 &114629116516241804
 MonoBehaviour:

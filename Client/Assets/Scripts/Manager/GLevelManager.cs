@@ -50,7 +50,9 @@ namespace SmallUniverse.Manager
 
             // 环境相关
             environment = new LevelEnvironment();
-
+            // 天空盒
+            Game.gameCamera.SetSkybox(environment.skybox);
+            
             levelInfo.OnGroudLoadCompletedHandler += OnGroudLoadCompletedHandler;
             levelInfo.InitEnvironment(environment);
         }

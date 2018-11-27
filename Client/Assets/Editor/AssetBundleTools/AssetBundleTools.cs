@@ -22,6 +22,9 @@ namespace SmallUniverse.GameEditor
             SetAssetBundleNameToLevelPrefab();
             SetAssetBundleNameToLevelScene();
 
+            // skybox
+            SetAssetBundleNameToSkybox();
+
             // hero
             SetAssetBundleNameToHero();
 
@@ -119,6 +122,28 @@ namespace SmallUniverse.GameEditor
                 for (int k = 0; k < filePaths.Length; k++)
                 {
                     SetAssetBundleName(filePaths[k], "weapon/" + weaponName);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 设置 天空盒 bundle name
+        /// </summary>
+        private static void SetAssetBundleNameToSkybox()
+        {
+            string rootDir = Path.Combine(Application.dataPath, "Art/Skybox");
+            if (!Directory.Exists(rootDir))
+                return;
+
+            string[] skyboxDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
+            for (int i = 0; i < skyboxDirs.Length; i++)
+            {
+                var skyboxDir = skyboxDirs[i];
+                var skyboxName = PathUtils.GetPathSection(skyboxDir, -1);
+                string[] filePaths = Directory.GetFiles(skyboxDir, "*.mat", SearchOption.TopDirectoryOnly);
+                for (int k = 0; k < filePaths.Length; k++)
+                {
+                    SetAssetBundleName(filePaths[k], "skybox/" + skyboxName);
                 }
             }
         }

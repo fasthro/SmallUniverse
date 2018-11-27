@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 2004763978
+CRC: 271924467
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -22,4 +22,22 @@ AssetBundleManifest:
       Dependencies: {}
     Info_6:
       Name: weapon/scifirifle
+      Dependencies: {}
+    Info_7:
+      Name: skybox/space_nebula_bluered
+      Dependencies: {}
+    Info_8:
+      Name: skybox/space_nebula_deepblack
+      Dependencies: {}
+    Info_9:
+      Name: skybox/space_nebula_green
+      Dependencies: {}
+    Info_10:
+      Name: skybox/space_nebula_numinousglow
+      Dependencies: {}
+    Info_11:
+      Name: skybox/space_nebula_orangeblue
+      Dependencies: {}
+    Info_12:
+      Name: skybox/space_nebula_red
       Dependencies: {}

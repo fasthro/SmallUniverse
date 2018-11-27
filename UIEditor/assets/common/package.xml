@@ -93,5 +93,5 @@
     <component id="cj4k3f" name="attack_joy.xml" path="/component/joystick/" exported="true"/>
     <component id="cj4k3g" name="skill_joy.xml" path="/component/joystick/" exported="true"/>
   </resources>
-  <publish name="common" path="..\Client\Assets\Resources\UI\common" maxAtlasSize="4096"/>
+  <publish name="common" path="..\Client\Assets\Resources\UI\common" maxAtlasSize="4096" extractAlpha="true"/>
 </packageDescription>

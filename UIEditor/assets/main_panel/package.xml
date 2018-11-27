@@ -3,5 +3,5 @@
   <resources>
     <component id="kahw0" name="main_panel.xml" path="/panel/" exported="true"/>
   </resources>
-  <publish name="main_panel" path="..\Client\Assets\Resources\UI\main_panel"/>
+  <publish name="main_panel" path="..\Client\Assets\Resources\UI\main_panel" extractAlpha="true"/>
 </packageDescription>

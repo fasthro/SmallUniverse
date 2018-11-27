@@ -1,0 +1,20 @@
+ManifestFileVersion: 0
+CRC: 3299990112
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 63962c601759bd0c4ccdc0fc7cbc47db
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: ad2c05b8876f9b151dbabc095aa47606
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 89
+  Script: {instanceID: 0}
+Assets:
+- Assets/Art/Skybox/Space_Nebula_BlueRed/Space_Nebula_BlueRed.mat
+Dependencies: []
