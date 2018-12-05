@@ -68,6 +68,18 @@ namespace SmallUniverse
             }
         }
 
+        // game pool
+        private static GamePool m_gamePool = null;
+        public static GamePool gamePool {
+            get {
+                if (m_gamePool == null)
+                {
+                    m_gamePool = mainGame.transform.Find("GamePool").GetComponent<GamePool>();
+                }
+                return m_gamePool;
+            }
+        }
+
         // hero
         private static Hero m_hero = null;
         public static Hero hero{

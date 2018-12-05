@@ -20,10 +20,18 @@ namespace SmallUniverse
         Decoration,       // 装饰品
     }
 
+    // 动画类型
     public enum LevelAnimationType
     {
         None,               // 无
         Volatility,         // 波动
+    }
+
+    // 门的状态
+    public enum LevelDoorState
+    {
+        Open,              // 开启
+        Close,             // 关闭
     }
 
     public class LevelInfo : MonoBehaviour
@@ -96,11 +104,6 @@ namespace SmallUniverse
             {
                 OnGroudLoadCompletedHandler(area);
             }
-        }
-
-        public void PlayerAreaAnimation()
-        {
-            m_areas[0].ground.PlayAnimation();
         }
 
         /// <summary>

@@ -9,27 +9,25 @@ namespace SmallUniverse
     public class LevelDoor : MonoBehaviour
     {
 		// 区域
-        private LevelArea area;
-		private SecurityElement xml;
-        private LevelGrid grid;
-        
-        // 障碍物
-        private NavMeshObstacle mavmeshObstacle;
+        private LevelArea m_area;
+		private SecurityElement m_xml;
+        private LevelGrid m_grid;
+
  		public void Initialize(LevelArea _area, SecurityElement _xml)
         {
-            xml = _xml;
-            area = _area;
+            m_xml = _xml;
+            m_area = _area;
 
             GameObject go = new GameObject();
             go.name = "gird";
             go.transform.parent = transform;
             
-            grid = go.AddComponent<LevelGrid>();
-            grid.assetName = xml.Attribute("asset_name");
-            grid.bundleName = xml.Attribute("bundle_name");
-            grid.position = new Vector3(int.Parse(xml.Attribute("pos_x")), int.Parse(xml.Attribute("pos_y")), int.Parse(xml.Attribute("pos_z")));
-            grid.rotationAngle = new Vector3(int.Parse(xml.Attribute("angle_x")), int.Parse(xml.Attribute("angle_y")), int.Parse(xml.Attribute("angle_z")));
-            grid.function = LevelFunctionType.Door;
+            m_grid = go.AddComponent<LevelGrid>();
+            m_grid.assetName = m_xml.Attribute("asset_name");
+            m_grid.bundleName = m_xml.Attribute("bundle_name");
+            m_grid.position = new Vector3(int.Parse(m_xml.Attribute("pos_x")), int.Parse(m_xml.Attribute("pos_y")), int.Parse(m_xml.Attribute("pos_z")));
+            m_grid.rotationAngle = new Vector3(int.Parse(m_xml.Attribute("angle_x")), int.Parse(m_xml.Attribute("angle_y")), int.Parse(m_xml.Attribute("angle_z")));
+            m_grid.function = LevelFunctionType.Door;
         }
         
         /// <summary>
@@ -37,23 +35,22 @@ namespace SmallUniverse
         /// </summary>
         public void LoadDoor()
         {
-            grid.LoadAsset();
+            m_grid.LoadAsset();
         }
 
         /// <summary>
         /// 开门
         /// </summary>
-        public void Open()
+        public void SetState(LevelDoorState state)
         {
-            
-        }
-
-        /// <summary>
-        /// 关门
-        /// </summary>
-        public void Close()
-        {
-            
+            if(state == LevelDoorState.Open)
+            {
+                m_grid.gameObject.SetActive(false);
+            }
+            else if(state == LevelDoorState.Close)
+            {
+                m_grid.gameObject.SetActive(true);
+            }
         }
     }
 }

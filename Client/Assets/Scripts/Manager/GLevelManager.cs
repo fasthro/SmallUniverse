@@ -55,6 +55,10 @@ namespace SmallUniverse.Manager
             
             levelInfo.OnGroudLoadCompletedHandler += OnGroudLoadCompletedHandler;
             levelInfo.InitEnvironment(environment);
+
+            // pool test
+            var prefab = LevelAsset.GetGameObject("weapon/scifirifle", "SciFiRifle");
+            Game.gamePool.CreatePoolContainer("weapon/scifirifle/SciFiRifle", prefab);
         }
 
         /// <summary>

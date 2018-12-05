@@ -22,6 +22,14 @@ namespace SmallUniverse
         public List<LevelPoint> monsterPoints;
         // 门
         public List<LevelDoor> doors;
+        // 门的状态
+        private LevelDoorState m_doorState;
+        public LevelDoorState doorState
+        {
+            get{
+                return m_doorState;
+            }
+        }
 
         public void Initialize(LevelInfo levelInfo, int index, SecurityElement xml)
         {
@@ -71,7 +79,7 @@ namespace SmallUniverse
         }
 
         // 初始化门
-        public void InitializeDoors(Transform root, SecurityElement _xml)
+        private void InitializeDoors(Transform root, SecurityElement _xml)
         {
             doors = new List<LevelDoor>();
             if (_xml.Children != null)
@@ -94,11 +102,14 @@ namespace SmallUniverse
             // 地面
             ground.InitEnvironment(environment);
 
-            // 门
+            // 加载门
             for (int i = 0; i < doors.Count; i++)
             {
                 doors[i].LoadDoor();
             }
+
+            // 门初始化的时候为关闭
+            SetDoorState(LevelDoorState.Close);
         }
 
         /// <summary>
@@ -107,6 +118,19 @@ namespace SmallUniverse
         public void OnGroudLoadCompleted()
         {
             m_levelInfo.OnGroudLoadCompleted(this);
+        }
+
+        /// <summary>
+        /// 设置门的状态
+        /// </summary>
+        /// <param name="state"></param>
+        public void SetDoorState(LevelDoorState state)
+        {
+            m_doorState = state;
+            for (int i = 0; i < doors.Count; i++)
+            {
+                doors[i].SetState(state);
+            }
         }
 
         /// <summary>

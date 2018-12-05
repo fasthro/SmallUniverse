@@ -30,7 +30,6 @@ namespace SmallUniverse
 
         protected override void OnTouchStart(JoyGesture gesture)
         {
-
         }
 
         protected override void OnTouchUp(JoyGesture gesture)
@@ -45,7 +44,11 @@ namespace SmallUniverse
 
         protected override void OnKeyDown()
         {
-
+            var go = Game.gamePool.Spawn("weapon/scifirifle/SciFiRifle");
+            if(go.GetComponent<PoolExample>() == null)
+            {
+                go.AddComponent<PoolExample>();
+            }
         }
     }
 }

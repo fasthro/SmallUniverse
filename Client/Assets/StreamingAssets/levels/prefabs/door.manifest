@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 4269856311
+CRC: 1925503798
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 79c97b8a8c4614c35050a59c128249ea
+    Hash: 28126118774fc080b9f1b3fcf3086cb0
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 9b4f1593cdf7a1ab33da9444111cb398
+    Hash: 45c9b69c77924a25c1261b14f0a2ab65
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -24,6 +24,8 @@ ClassTypes:
 - Class: 43
   Script: {instanceID: 0}
 - Class: 48
+  Script: {instanceID: 0}
+- Class: 208
   Script: {instanceID: 0}
 Assets:
 - Assets/Levels/Prefabs/Door/test_063a.prefab

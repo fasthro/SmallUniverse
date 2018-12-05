@@ -152,15 +152,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4192244162947534, guid: ca76331bc0b8a4447b48394d88affb08, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 8.875
-      objectReference: {fileID: 0}
-    - target: {fileID: 45885468375744514, guid: ca76331bc0b8a4447b48394d88affb08,
-        type: 2}
-      propertyPath: m_CustomSkybox
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca76331bc0b8a4447b48394d88affb08, type: 2}
   m_IsPrefabAsset: 0
