@@ -31,6 +31,9 @@ namespace SmallUniverse.GameEditor
             // weapon
             SetAssetBundleNameToWeapon();
 
+            // bullet
+            SetAssetBundleNameToBullet();
+
             Debug.Log("设置资源 assetBundleName 完成!");
         }
 
@@ -122,6 +125,29 @@ namespace SmallUniverse.GameEditor
                 for (int k = 0; k < filePaths.Length; k++)
                 {
                     SetAssetBundleName(filePaths[k], "weapon/" + weaponName);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 设置 bullet bundle name
+        /// </summary>
+        private static void SetAssetBundleNameToBullet()
+        {
+            string rootDir = Path.Combine(Application.dataPath, "Art/Bullet");
+            if (!Directory.Exists(rootDir))
+                return;
+
+            string[] bulletDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
+            for (int i = 0; i < bulletDirs.Length; i++)
+            {
+                var bulletDir = bulletDirs[i];
+                var prefabDir = Path.Combine(bulletDir, "Prefab");
+                var bulletName = PathUtils.GetPathSection(bulletDir, -1);
+                string[] filePaths = Directory.GetFiles(prefabDir, "*.prefab", SearchOption.TopDirectoryOnly);
+                for (int k = 0; k < filePaths.Length; k++)
+                {
+                    SetAssetBundleName(filePaths[k], "bullet/" + bulletName);
                 }
             }
         }

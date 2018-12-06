@@ -21,7 +21,7 @@ namespace SmallUniverse
         AttackEnd,
     }
 
-    public class ActorBase : MonoBehaviour
+    public abstract class ActorBase : MonoBehaviour
     {
         public ActorGameObject actorGameObject;
         public ActorAttribute attribute;
@@ -29,6 +29,7 @@ namespace SmallUniverse
         protected ActorAnimationEvent m_animationEvent;
         protected Rigidbody m_rigidbody;
         protected NavMeshAgent m_navMeshAgent;
+        protected WeaponBase m_weapon;
 
         // 是否已经出生
         protected bool m_isBorn;

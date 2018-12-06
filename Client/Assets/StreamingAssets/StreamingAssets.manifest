@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 78952043
+CRC: 2569343783
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -40,4 +40,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_12:
       Name: skybox/space_nebula_red
+      Dependencies: {}
+    Info_13:
+      Name: bullet/test
       Dependencies: {}

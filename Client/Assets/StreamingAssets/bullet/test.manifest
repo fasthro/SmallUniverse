@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3359530917
+CRC: 2434889440
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d8752db2cd4a6f93a4bdc989cf78f26f
+    Hash: 60fea7d6a3c751f9595d59c7c9afcb9e
   TypeTreeHash:
     serializedVersion: 2
-    Hash: a21da418a276645689d04848c459947f
+    Hash: e67aab325f4e09817e52c9c91873c35b
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -17,8 +17,6 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 23
   Script: {instanceID: 0}
-- Class: 28
-  Script: {instanceID: 0}
 - Class: 33
   Script: {instanceID: 0}
 - Class: 43
@@ -26,9 +24,11 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 - Class: 114
-  Script: {fileID: 11500000, guid: df8bb06b98587904db84c55fdf1c31a3, type: 3}
+  Script: {fileID: 11500000, guid: 87ccedff844d8ed4d99766a3d8f612d0, type: 3}
 - Class: 115
   Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
 Assets:
-- Assets/Art/Weapon/SciFiRifle/Prefab/SciFiRifle.prefab
+- Assets/Art/Bullet/Test/Prefab/Test.prefab
 Dependencies: []

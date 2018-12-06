@@ -42,6 +42,8 @@ namespace SmallUniverse
             weaponGo.transform.parent = actorGameObject.WeaponBone;
             weaponGo.transform.localPosition = Vector3.zero;
             weaponGo.transform.localRotation = Quaternion.Euler(90, 0, 0);
+            
+            m_weapon = weaponGo.GetComponent<WeaponBase>();
         }
 
         public override void Move(Vector3 move, float delta)
@@ -55,6 +57,10 @@ namespace SmallUniverse
             actorState = ActorState.Attack;
             m_animator.SetFloat(ActorAnimatorParameters.AttackSpeed.ToString(), attribute.GetAttribute(ActorAttributeType.AttackSpeed));
             m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), true);
+
+            // 发射子弹
+            var gun = m_weapon as Gun;
+            Game.gamePool.Spawn<Bullet>("bullet/test/test").Spawn(gun.firePoint.position, actorGameObject.transform.forward);
         }
 
         public override void StopAttack()

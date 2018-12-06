@@ -57,8 +57,8 @@ namespace SmallUniverse.Manager
             levelInfo.InitEnvironment(environment);
 
             // pool test
-            var prefab = LevelAsset.GetGameObject("weapon/scifirifle", "SciFiRifle");
-            Game.gamePool.CreatePoolContainer("weapon/scifirifle/SciFiRifle", prefab);
+            var prefab = LevelAsset.GetGameObject("bullet/test", "Test");
+            Game.gamePool.CreatePoolContainer("bullet/test/test", prefab);
         }
 
         /// <summary>

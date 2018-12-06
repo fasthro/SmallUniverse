@@ -49,6 +49,23 @@ namespace SmallUniverse
         }
 
         /// <summary>
+        /// poolContainer 获取对象
+        /// </summary>
+        /// <param name="containerId">对象池容器id(资源路径)</param>
+        /// <param name="parent"></param>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        public T Spawn<T>(string containerId, Transform parent = null, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion()) where T : class
+        {
+            var obj = Spawn(containerId, parent, position, rotation);
+            if(obj != null)
+            {
+                return obj.GetComponent<T>();
+            }
+            return null;
+        }
+
+        /// <summary>
         /// poolContainer 回收对象
         /// </summary>
         /// <param name="go">回收的对象</param>
