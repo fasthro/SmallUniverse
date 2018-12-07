@@ -8,6 +8,12 @@ namespace SmallUniverse
     public class LevelAsset
     {
         private static Dictionary<string, LevelAssetBundle> bundles = new Dictionary<string, LevelAssetBundle>();
+        
+        public static GameObject GetGameObject(string assetPath)
+        {
+            var ap =  AssetPath.Get(assetPath);
+            return GetGameObject(ap.bundleName, ap.assetName);
+        }
 
         public static GameObject GetGameObject(string bundleName, string assetName)
         {

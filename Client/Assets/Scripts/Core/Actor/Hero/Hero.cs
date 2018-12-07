@@ -5,12 +5,12 @@ using SmallUniverse.Behaviour;
 
 namespace SmallUniverse
 {
-    public class Hero : ActorBase 
+    public class Hero : ActorBase
     {
         public static Hero Create(string heroName, string resName)
         {
             GameObject go = new GameObject();
-            go.name = "Hero_" + heroName ;
+            go.name = "Hero_" + heroName;
             var hero = go.AddComponent<Hero>();
             hero.Initialize(heroName, resName);
             return hero;
@@ -19,7 +19,7 @@ namespace SmallUniverse
         private void Initialize(string heroName, string resName)
         {
             base.InitActorData();
-            
+
             GameObject prefab = LevelAsset.GetGameObject("hero/" + heroName, resName);
             var heroGo = GameObject.Instantiate<GameObject>(prefab);
             heroGo.transform.parent = transform;
@@ -42,8 +42,9 @@ namespace SmallUniverse
             weaponGo.transform.parent = actorGameObject.WeaponBone;
             weaponGo.transform.localPosition = Vector3.zero;
             weaponGo.transform.localRotation = Quaternion.Euler(90, 0, 0);
-            
+
             m_weapon = weaponGo.GetComponent<WeaponBase>();
+            m_weapon.Initialize(this);
         }
 
         public override void Move(Vector3 move, float delta)
@@ -53,14 +54,15 @@ namespace SmallUniverse
 
         public override void Attack(SkillData skillData)
         {
-            base.Attack(skillData);
-            actorState = ActorState.Attack;
-            m_animator.SetFloat(ActorAnimatorParameters.AttackSpeed.ToString(), attribute.GetAttribute(ActorAttributeType.AttackSpeed));
-            m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), true);
+            if (actorState != ActorState.Attack)
+            {
+                base.Attack(skillData);
+                actorState = ActorState.Attack;
+                m_animator.SetFloat(ActorAnimatorParameters.AttackSpeed.ToString(), attribute.GetAttribute(ActorAttributeType.AttackSpeed));
+                m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), true);
 
-            // 发射子弹
-            var gun = m_weapon as Gun;
-            Game.gamePool.Spawn<Bullet>("bullet/test/test").Spawn(gun.firePoint.position, actorGameObject.transform.forward);
+                m_weapon.Attack();
+            }
         }
 
         public override void StopAttack()
@@ -75,7 +77,7 @@ namespace SmallUniverse
 
         void OnAnimationEndHandler()
         {
-            if(actorState == ActorState.Attack)
+            if (actorState == ActorState.Attack)
             {
                 actorState = ActorState.AttackEnd;
             }
@@ -83,13 +85,13 @@ namespace SmallUniverse
 
         protected override void UpdateState()
         {
-            if(actorState == ActorState.None)
+            if (actorState == ActorState.None)
             {
                 m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), false);
             }
-            else if(actorState == ActorState.AttackEnd)
+            else if (actorState == ActorState.AttackEnd)
             {
-                if(m_attackInput)
+                if (m_attackInput)
                 {
                     Attack(m_skillData);
                 }

@@ -55,10 +55,6 @@ namespace SmallUniverse.Manager
             
             levelInfo.OnGroudLoadCompletedHandler += OnGroudLoadCompletedHandler;
             levelInfo.InitEnvironment(environment);
-
-            // pool test
-            var prefab = LevelAsset.GetGameObject("bullet/test", "Test");
-            Game.gamePool.CreatePoolContainer("bullet/test/test", prefab);
         }
 
         /// <summary>

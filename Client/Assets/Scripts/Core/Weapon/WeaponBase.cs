@@ -4,14 +4,28 @@ using UnityEngine;
 
 namespace SmallUniverse
 {
-	public enum WeaponType
-	{
-		Gun,
-	}
+    public enum WeaponType
+    {
+        Gun,
+    }
 
     public abstract class WeaponBase : MonoBehaviour
     {
-		// 武器类型
-		public WeaponType weaponType;
+      // 武器类型
+			public WeaponType weaponType;
+
+			// actor
+			protected ActorBase m_actor;
+
+			public virtual void Initialize(ActorBase actor)
+			{
+					m_actor = actor;
+			}
+
+			public virtual void Attack()
+			{
+
+			}
+			
     }
 }

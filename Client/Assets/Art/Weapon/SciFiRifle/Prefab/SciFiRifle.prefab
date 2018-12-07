@@ -121,7 +121,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df8bb06b98587904db84c55fdf1c31a3, type: 3}
+  m_Script: {fileID: 11500000, guid: cbca43a5498d9144f824766082ebac41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponType: 0
   firePoint: {fileID: 4219298469691314}
+  bulletAssetPath: Bullet/Test/Test
