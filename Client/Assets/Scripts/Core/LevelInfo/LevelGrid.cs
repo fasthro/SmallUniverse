@@ -45,7 +45,7 @@ namespace SmallUniverse
             gameObject.layer = layer;
         }
 
-        public void LoadAsset()
+        public void LoadAsset(bool isShow = true)
         {
             var prefab = LevelAsset.GetGameObject(bundleName, assetName);
             m_gridGameObject = GameObject.Instantiate<GameObject>(prefab);
@@ -54,6 +54,7 @@ namespace SmallUniverse
             m_gridTransform.parent = transform;
             m_gridTransform.localEulerAngles = rotationAngle;
             m_gridGameObject.AddComponent<BoxCollider>();
+            gameObject.GetComponentInChildren<MeshRenderer>().enabled = isShow;
             animation = m_gridGameObject.AddComponent<LevelGridAnimation>();
 
             GameUtils.SetGameObjectLayer(m_gridGameObject, layer);

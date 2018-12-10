@@ -101,11 +101,17 @@ namespace SmallUniverse
             {
                 while (m_gridEnumerator.MoveNext())
                 {
-                    m_gridEnumerator.Current.Value.LoadAsset();
+                    var isShow = !environment.animationEnabled;
+                    m_gridEnumerator.Current.Value.LoadAsset(isShow);
                 }
             }
 
             m_area.OnGroudLoadCompleted();
+
+            if(environment.animationEnabled)
+            {
+                PlayAnimation();
+            }
         }    
 
         #region Grid Animation

@@ -145,6 +145,8 @@ namespace SmallUniverse
         public virtual void StopAttack()
         {
             m_attackInput = false;
+            actorState = ActorState.None;
+            m_weapon.StopAttack();
         }
 
         /// <summary>

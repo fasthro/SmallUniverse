@@ -6,7 +6,9 @@ namespace SmallUniverse
 {
     public enum BulletType
     {
-        Bullet,
+        Normal,          // 普通子弹
+        Spray,           // 喷射子弹
+        Line,            // 线子弹
     }
 
     public abstract class BulletBase : MonoBehaviour
@@ -18,81 +20,93 @@ namespace SmallUniverse
         public float speed;
         // 生命时间
         public float lifeTime;
-
+        // 枪口效果资源路径
+        public string muzzleAssetPath;
+        // 影响效果资源路径
+        public string impactAssetPath;
         #endregion
 
         #region public
+
+        // 子弹发射位置 
         [HideInInspector]
-        public Vector3 firePosition;   // 子弹发射位置 
-                                   
+        public Vector3 firePosition;
+        // 子弹发射方向                            
         [HideInInspector]
-        public Vector3 fireDirection;  // 子弹发射方向                            
-        
+        public Quaternion fireRotation;
+        // 是否已经出生
+        //[HideInInspector]
+        protected bool IsSpawn;
+        // 是否已经回收
+        //[HideInInspector]
+        protected bool IsDespawn;
         #endregion
 
-        #region private
         // 生命时间
         protected float m_lifeTime;
-        // 是否死亡
-        public bool m_isLive;
-        // 是否已经出生 
-        public bool m_isSpawn;
-
-        #endregion
 
         public virtual void Initialize()
         {
-           
+            IsSpawn = false;
+            IsDespawn = false;
         }
 
         public virtual void Spawn()
         {
-            m_isSpawn = true;
-            m_isLive = false;
-            m_lifeTime = 0;
+            if (!IsSpawn)
+            {
+                IsSpawn = true;
+                IsDespawn = false;
+                m_lifeTime = 0;
+            }
         }
 
-        protected virtual void Despawn()
+        public virtual void Despawn()
         {
-            m_isLive = true;
-            m_lifeTime = 0;
-            m_isSpawn = false;
-            
-            // 放入缓存池回收
-            Game.gamePool.Despawn(gameObject);
+            if (IsSpawn && !IsDespawn)
+            {
+                IsDespawn = true;
+                m_lifeTime = 0;
+
+                // 缓存池回收
+                gameObject.Despawn();
+            }
         }
 
-        protected virtual void OnUpdate()
+        /// <summary>
+        /// 设置子弹旋转
+        /// </summary>
+        public virtual void SetRotation(Quaternion rotation)
         {
-            
-        }
-
-        void Update()
-        {
-            OnUpdate();
+            transform.rotation = rotation;
         }
 
         /// <summary>
         /// 设置子弹位置
         /// </summary>
-        /// <param name="pos"></param>
-        /// <returns></returns>
-        protected void SetPosition(Vector3 pos)
+        public virtual void SetPosition(Vector3 position)
         {
-            transform.position = pos;
+            transform.position = position;
         }
 
-        Quaternion m_rotation = new Quaternion();
-
-        /// <summary>
-        /// 设置子弹朝向
-        /// </summary>
-        /// <param name="dir"></param>
-        /// <returns></returns>
-        protected void SetRotation(Vector3 dir)
+        protected virtual void OnAwake()
         {
-            m_rotation.SetLookRotation(dir);
-            transform.rotation = m_rotation;
+
+        }
+
+        protected virtual void OnUpdate()
+        {
+
+        }
+
+        void Awake()
+        {
+            OnAwake();
+        }
+
+        void Update()
+        {
+            OnUpdate();
         }
     }
 }

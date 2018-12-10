@@ -17,7 +17,7 @@ namespace SmallUniverse.GameEditor
         {
             // 清理无用asset bundle name
             AssetDatabase.RemoveUnusedAssetBundleNames();
-            
+
             // level
             SetAssetBundleNameToLevelPrefab();
             SetAssetBundleNameToLevelScene();
@@ -33,6 +33,9 @@ namespace SmallUniverse.GameEditor
 
             // bullet
             SetAssetBundleNameToBullet();
+
+            // effect
+            SetAssetBundleNameToEffect();
 
             Debug.Log("设置资源 assetBundleName 完成!");
         }
@@ -153,6 +156,32 @@ namespace SmallUniverse.GameEditor
         }
 
         /// <summary>
+        /// 设置 effect bundle name
+        /// </summary>
+        private static void SetAssetBundleNameToEffect()
+        {
+            string rootDir = Path.Combine(Application.dataPath, "Art/Effect");
+            if (!Directory.Exists(rootDir))
+                return;
+
+            string[] effectDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
+            for (int i = 0; i < effectDirs.Length; i++)
+            {
+                var effectDir = effectDirs[i];
+                var prefabDir = Path.Combine(effectDir, "Prefab");
+                if (Directory.Exists(prefabDir))
+                {
+                    var effectName = PathUtils.GetPathSection(effectDir, -1);
+                    string[] filePaths = Directory.GetFiles(prefabDir, "*.prefab", SearchOption.TopDirectoryOnly);
+                    for (int k = 0; k < filePaths.Length; k++)
+                    {
+                        SetAssetBundleName(filePaths[k], "effect/" + effectName);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// 设置 天空盒 bundle name
         /// </summary>
         private static void SetAssetBundleNameToSkybox()
@@ -196,6 +225,6 @@ namespace SmallUniverse.GameEditor
                 import.assetBundleName = bundleName;
             }
         }
-        
+
     }
 }

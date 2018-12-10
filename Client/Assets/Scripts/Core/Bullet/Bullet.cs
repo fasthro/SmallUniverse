@@ -10,16 +10,13 @@ namespace SmallUniverse
         {
             base.Spawn();
 
-            // 发射位置
-            SetPosition(firePosition);
-
-            // 发射方向
-            SetRotation(fireDirection);
+            transform.position = firePosition;
+            transform.rotation = fireRotation;
         }
 
         protected override void OnUpdate()
         {
-            if (!m_isSpawn || m_isLive)
+            if (!IsSpawn || IsDespawn)
                 return;
 
             if (m_lifeTime >= lifeTime)

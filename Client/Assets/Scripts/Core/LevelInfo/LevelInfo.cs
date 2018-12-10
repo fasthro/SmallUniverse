@@ -98,8 +98,6 @@ namespace SmallUniverse
         /// </summary>
         public void OnGroudLoadCompleted(LevelArea area)
         {
-            area.ground.PlayAnimation();
-            
             if(OnGroudLoadCompletedHandler != null)
             {
                 OnGroudLoadCompletedHandler(area);

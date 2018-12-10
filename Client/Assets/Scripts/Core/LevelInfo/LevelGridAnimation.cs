@@ -66,16 +66,14 @@ namespace SmallUniverse
             if (m_end || !m_ready)
                 return;
 
-            m_waitTime -= Time.deltaTime;
             if (m_waitTime <= 0)
             {
                 if(!m_meshRender.enabled)
                     m_meshRender.enabled = true;
 
-                m_currentTime += Time.deltaTime;
                 if (m_currentTime < m_totalTime)
                 {
-                    Vector3 sport = m_curve.Evaluate(m_currentTime / m_totalTime) * m_offset;
+                    Vector3 sport = m_curve.Evaluate(m_currentTime / m_totalTime) * m_offset * -1;
                     gameObject.transform.position = m_position + sport;
                 }
                 else
@@ -84,7 +82,9 @@ namespace SmallUniverse
                     m_end = true;
                     gameObject.transform.position = m_targetPosition;
                 }
+                m_currentTime += Time.deltaTime;
             }
+            m_waitTime -= Time.deltaTime;
         }
     }
 }

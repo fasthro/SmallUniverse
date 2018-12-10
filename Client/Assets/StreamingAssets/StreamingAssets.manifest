@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 3623912700
+CRC: 3036610425
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -42,5 +42,32 @@ AssetBundleManifest:
       Name: skybox/space_nebula_red
       Dependencies: {}
     Info_13:
-      Name: bullet/test
+      Name: effect/lightning gun
+      Dependencies: {}
+    Info_14:
+      Name: effect/pulsewave
+      Dependencies: {}
+    Info_15:
+      Name: effect/rail gun
+      Dependencies: {}
+    Info_16:
+      Name: effect/sniper
+      Dependencies: {}
+    Info_17:
+      Name: effect/solo gun
+      Dependencies: {}
+    Info_18:
+      Name: effect/warp jump
+      Dependencies: {}
+    Info_19:
+      Name: bullet/flame
+      Dependencies: {}
+    Info_20:
+      Name: bullet/laser
+      Dependencies: {}
+    Info_21:
+      Name: bullet/plasma
+      Dependencies: {}
+    Info_22:
+      Name: bullet/pulse
       Dependencies: {}

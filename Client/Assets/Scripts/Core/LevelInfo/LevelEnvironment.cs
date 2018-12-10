@@ -10,6 +10,7 @@ namespace SmallUniverse
         public string skybox = "Space_Nebula_Red";
 
         #region ground animation param
+        public bool animationEnabled = true;
         // 动画等待间隔时长
         public float animationWaitTime = 0.05f;
         // 动画总时长

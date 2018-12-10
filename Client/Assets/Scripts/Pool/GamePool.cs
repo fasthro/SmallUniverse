@@ -19,7 +19,8 @@ namespace SmallUniverse
         /// </summary>
         /// <param name="containerId">对象池容器id(资源路径)</param>
         /// <param name="prefab"></param>
-        public void CreatePoolContainer(string containerId, GameObject prefab)
+        /// <return></return>
+        public PoolContainer CreatePoolContainer(string containerId, GameObject prefab)
         {
             if (!pools.ContainsKey(containerId))
             {
@@ -28,7 +29,9 @@ namespace SmallUniverse
                 PoolContainer container = containerGo.AddComponent<PoolContainer>();
                 container.Initialize(containerId, prefab);
                 pools.Add(containerId, container);
+                return container;
             }
+            return null;
         }
 
         /// <summary>
@@ -44,7 +47,13 @@ namespace SmallUniverse
             {
                 return pools[containerId].Spawn(parent, position, rotation);
             }
-            Debug.LogError("Game pool spawn gameObject Out of the pools! [ " + containerId + "]");
+
+            var prefab = LevelAsset.GetGameObject(containerId);
+            if(prefab != null)
+            {
+                return CreatePoolContainer(containerId, prefab).Spawn(parent, position, rotation);
+            }
+            Debug.LogError("Game pool spawn gameObject null! [ " + containerId + "]");
             return null;
         }
 

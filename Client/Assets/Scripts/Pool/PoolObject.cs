@@ -6,9 +6,11 @@ namespace SmallUniverse
 {
     public class PoolObject : MonoBehaviour
     {
-		// pool container id
-		public string containerId;
-		// object id
-		public int id;
+        // pool container id
+				[HideInInspector]
+        public string containerId;
+        // object id
+				[HideInInspector]
+        public int id;
     }
 }

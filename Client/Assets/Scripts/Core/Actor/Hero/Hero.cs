@@ -33,11 +33,14 @@ namespace SmallUniverse
 
             m_animationEvent.OnEndHandler -= OnAnimationEndHandler;
             m_animationEvent.OnEndHandler += OnAnimationEndHandler;
+
+            m_animationEvent.OnAttackHandler -= OnAnimationAttackHandler;
+            m_animationEvent.OnAttackHandler += OnAnimationAttackHandler;
         }
 
         public override void LoadWeapon()
         {
-            GameObject prefab = LevelAsset.GetGameObject("weapon/scifirifle", "SciFiRifle");
+            GameObject prefab = LevelAsset.GetGameObject("weapon/scifirifle", "SciFiRifle_Line");
             var weaponGo = GameObject.Instantiate<GameObject>(prefab);
             weaponGo.transform.parent = actorGameObject.WeaponBone;
             weaponGo.transform.localPosition = Vector3.zero;
@@ -45,11 +48,6 @@ namespace SmallUniverse
 
             m_weapon = weaponGo.GetComponent<WeaponBase>();
             m_weapon.Initialize(this);
-        }
-
-        public override void Move(Vector3 move, float delta)
-        {
-            base.Move(move, delta);
         }
 
         public override void Attack(SkillData skillData)
@@ -60,19 +58,7 @@ namespace SmallUniverse
                 actorState = ActorState.Attack;
                 m_animator.SetFloat(ActorAnimatorParameters.AttackSpeed.ToString(), attribute.GetAttribute(ActorAttributeType.AttackSpeed));
                 m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), true);
-
-                m_weapon.Attack();
             }
-        }
-
-        public override void StopAttack()
-        {
-            base.StopAttack();
-        }
-
-        public override void BeAttack(AttackData attackData)
-        {
-            base.BeAttack(attackData);
         }
 
         void OnAnimationEndHandler()
@@ -80,6 +66,14 @@ namespace SmallUniverse
             if (actorState == ActorState.Attack)
             {
                 actorState = ActorState.AttackEnd;
+            }
+        }
+
+        void OnAnimationAttackHandler()
+        {
+            if (actorState == ActorState.Attack)
+            {
+               m_weapon.Attack();
             }
         }
 
