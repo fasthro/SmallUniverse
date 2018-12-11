@@ -15,12 +15,18 @@ namespace SmallUniverse
         public bool uvAnimate;
         // UV 动画速度
         public Vector2 uvAnimateSpeed;
+        // 开始点资源路径
+        public string beginPointAssetPath;
+        // 结束点资源路径
+        public string endPointAssetPath;
 
         #endregion
 
         private LineRenderer m_lineRenderer;
         private float m_length;
         private float m_uvAnimateSpeed;
+        private Transform m_begin;
+        private Transform m_end;
 
         protected override void OnAwake()
         {
@@ -35,6 +41,20 @@ namespace SmallUniverse
             transform.rotation = fireRotation;
 
             m_length = length;
+
+            // begin effect
+            if(m_begin == null && !string.IsNullOrEmpty(beginPointAssetPath))
+            {
+                m_begin = Game.gamePool.Spawn(beginPointAssetPath, gameObject.transform).transform;
+                m_begin.localPosition = Vector3.zero;
+            }
+
+            // end effect
+            if(m_end == null && !string.IsNullOrEmpty(endPointAssetPath))
+            {
+                m_end = Game.gamePool.Spawn(endPointAssetPath, gameObject.transform).transform;
+                m_end.localPosition = Vector3.zero;
+            }
         }
 
         
@@ -58,6 +78,11 @@ namespace SmallUniverse
             }
 
             m_lineRenderer.SetPosition(1, new Vector3(0f, 0f, m_length));
+
+            if(m_end != null)
+            {
+               m_end.position = transform.position + transform.forward * m_length;
+            }
         }
     }
 }
