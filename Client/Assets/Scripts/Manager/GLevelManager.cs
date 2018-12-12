@@ -36,10 +36,10 @@ namespace SmallUniverse.Manager
         {
         }
 
-        public void InitLevel(string levelName, string heroName, string heroResName)
+        public void InitLevel(string levelName, string heroAssetPath)
         {
             levelInfo = LevelInfo.Create(levelName);
-            hero = Hero.Create(heroName, heroResName);
+            hero = Hero.Create(heroAssetPath);
             heroCamera = Game.gameCamera.heroCamera;
 
             // 默认区域索引

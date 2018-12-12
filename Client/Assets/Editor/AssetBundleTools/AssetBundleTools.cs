@@ -9,6 +9,18 @@ namespace SmallUniverse.GameEditor
 {
     public class AssetBundleTools
     {
+        public class BundleName
+        {
+            public string assetPath;
+            public string bundlePath;
+
+            public BundleName(string assetPath, string bundlePath)
+            {
+                this.assetPath = assetPath;
+                this.bundlePath = bundlePath + "/";
+            }
+        }
+
         /// <summary>
         /// 设置资源asset bundle name
         /// </summary>
@@ -18,24 +30,23 @@ namespace SmallUniverse.GameEditor
             // 清理无用asset bundle name
             AssetDatabase.RemoveUnusedAssetBundleNames();
 
+            // 标准资源
+            BundleName[] standards = new BundleName[]
+            {
+                new BundleName("Art/Heros", "heros"),
+                new BundleName("Art/Monsters", "monsters"),
+                new BundleName("Art/Weapons", "weapons"),
+                new BundleName("Art/Bullets", "bullets"),
+                new BundleName("Art/Effects", "effects"),
+            };
+            SetAssetBundleNameToStandard(standards);
+
             // level
             SetAssetBundleNameToLevelPrefab();
             SetAssetBundleNameToLevelScene();
 
             // skybox
             SetAssetBundleNameToSkybox();
-
-            // hero
-            SetAssetBundleNameToHero();
-
-            // weapon
-            SetAssetBundleNameToWeapon();
-
-            // bullet
-            SetAssetBundleNameToBullet();
-
-            // effect
-            SetAssetBundleNameToEffect();
 
             Debug.Log("设置资源 assetBundleName 完成!");
         }
@@ -87,95 +98,29 @@ namespace SmallUniverse.GameEditor
         }
 
         /// <summary>
-        /// 设置 hero bundle name
+        /// 设置标准资源 bundle name
         /// </summary>
-        private static void SetAssetBundleNameToHero()
+        private static void SetAssetBundleNameToStandard(BundleName[] standards)
         {
-            string rootDir = Path.Combine(Application.dataPath, "Art/Hero");
-            if (!Directory.Exists(rootDir))
-                return;
-
-            string[] heroDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
-            for (int i = 0; i < heroDirs.Length; i++)
+            for (int i = 0; i < standards.Length; i++)
             {
-                var herolDir = heroDirs[i];
-                var prefabDir = Path.Combine(herolDir, "Prefab");
-                var heroName = PathUtils.GetPathSection(herolDir, -1);
-                string[] filePaths = Directory.GetFiles(prefabDir, "*.prefab", SearchOption.TopDirectoryOnly);
-                for (int k = 0; k < filePaths.Length; k++)
+                string rootDir = Path.Combine(Application.dataPath, standards[i].assetPath);
+                if (Directory.Exists(rootDir))
                 {
-                    SetAssetBundleName(filePaths[k], "hero/" + heroName);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 设置 weapon bundle name
-        /// </summary>
-        private static void SetAssetBundleNameToWeapon()
-        {
-            string rootDir = Path.Combine(Application.dataPath, "Art/Weapon");
-            if (!Directory.Exists(rootDir))
-                return;
-
-            string[] weaponDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
-            for (int i = 0; i < weaponDirs.Length; i++)
-            {
-                var weaponlDir = weaponDirs[i];
-                var prefabDir = Path.Combine(weaponlDir, "Prefab");
-                var weaponName = PathUtils.GetPathSection(weaponlDir, -1);
-                string[] filePaths = Directory.GetFiles(prefabDir, "*.prefab", SearchOption.TopDirectoryOnly);
-                for (int k = 0; k < filePaths.Length; k++)
-                {
-                    SetAssetBundleName(filePaths[k], "weapon/" + weaponName);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 设置 bullet bundle name
-        /// </summary>
-        private static void SetAssetBundleNameToBullet()
-        {
-            string rootDir = Path.Combine(Application.dataPath, "Art/Bullet");
-            if (!Directory.Exists(rootDir))
-                return;
-
-            string[] bulletDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
-            for (int i = 0; i < bulletDirs.Length; i++)
-            {
-                var bulletDir = bulletDirs[i];
-                var prefabDir = Path.Combine(bulletDir, "Prefab");
-                var bulletName = PathUtils.GetPathSection(bulletDir, -1);
-                string[] filePaths = Directory.GetFiles(prefabDir, "*.prefab", SearchOption.TopDirectoryOnly);
-                for (int k = 0; k < filePaths.Length; k++)
-                {
-                    SetAssetBundleName(filePaths[k], "bullet/" + bulletName);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 设置 effect bundle name
-        /// </summary>
-        private static void SetAssetBundleNameToEffect()
-        {
-            string rootDir = Path.Combine(Application.dataPath, "Art/Effect");
-            if (!Directory.Exists(rootDir))
-                return;
-
-            string[] effectDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
-            for (int i = 0; i < effectDirs.Length; i++)
-            {
-                var effectDir = effectDirs[i];
-                var prefabDir = Path.Combine(effectDir, "Prefab");
-                if (Directory.Exists(prefabDir))
-                {
-                    var effectName = PathUtils.GetPathSection(effectDir, -1);
-                    string[] filePaths = Directory.GetFiles(prefabDir, "*.prefab", SearchOption.TopDirectoryOnly);
-                    for (int k = 0; k < filePaths.Length; k++)
+                    string[] heroDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
+                    for (int k = 0; k < heroDirs.Length; k++)
                     {
-                        SetAssetBundleName(filePaths[k], "effect/" + effectName);
+                        var dir = heroDirs[k];
+                        var prefabDir = Path.Combine(dir, "Prefabs");
+                        if (Directory.Exists(prefabDir))
+                        {
+                            var name = PathUtils.GetPathSection(dir, -1);
+                            string[] filePaths = Directory.GetFiles(prefabDir, "*.prefab", SearchOption.TopDirectoryOnly);
+                            for (int m = 0; m < filePaths.Length; m++)
+                            {
+                                SetAssetBundleName(filePaths[m], standards[i].bundlePath + name);
+                            }
+                        }
                     }
                 }
             }
@@ -186,7 +131,7 @@ namespace SmallUniverse.GameEditor
         /// </summary>
         private static void SetAssetBundleNameToSkybox()
         {
-            string rootDir = Path.Combine(Application.dataPath, "Art/Skybox");
+            string rootDir = Path.Combine(Application.dataPath, "Art/Skyboxs");
             if (!Directory.Exists(rootDir))
                 return;
 
@@ -198,7 +143,7 @@ namespace SmallUniverse.GameEditor
                 string[] filePaths = Directory.GetFiles(skyboxDir, "*.mat", SearchOption.TopDirectoryOnly);
                 for (int k = 0; k < filePaths.Length; k++)
                 {
-                    SetAssetBundleName(filePaths[k], "skybox/" + skyboxName);
+                    SetAssetBundleName(filePaths[k], "skyboxs/" + skyboxName);
                 }
             }
         }

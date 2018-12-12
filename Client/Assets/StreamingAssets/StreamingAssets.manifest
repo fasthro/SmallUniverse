@@ -1,73 +1,82 @@
 ManifestFileVersion: 0
-CRC: 3368219349
+CRC: 258332031
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: levels/prefabs/door
+      Name: heros/soldier
       Dependencies: {}
     Info_1:
-      Name: levels/prefabs/ground
+      Name: monsters/toon_bat
       Dependencies: {}
     Info_2:
-      Name: levels/prefabs/player
+      Name: monsters/toon_cactus_monster
       Dependencies: {}
     Info_3:
-      Name: levels/scenes/level_001
+      Name: monsters/toon_death_knight
       Dependencies: {}
     Info_4:
-      Name: hero/yuka
+      Name: monsters/toon_dragon
       Dependencies: {}
     Info_5:
-      Name: hero/yurowm
+      Name: monsters/toon_ghost
       Dependencies: {}
     Info_6:
-      Name: weapon/scifirifle
+      Name: monsters/toon_plant_monster
       Dependencies: {}
     Info_7:
-      Name: skybox/space_nebula_bluered
+      Name: monsters/toon_rock_golem
       Dependencies: {}
     Info_8:
-      Name: skybox/space_nebula_deepblack
+      Name: monsters/toon_skeleton_archer
       Dependencies: {}
     Info_9:
-      Name: skybox/space_nebula_green
+      Name: monsters/toon_skeleton_knight
       Dependencies: {}
     Info_10:
-      Name: skybox/space_nebula_numinousglow
+      Name: monsters/toon_skeleton_mage
       Dependencies: {}
     Info_11:
-      Name: skybox/space_nebula_orangeblue
+      Name: levels/prefabs/door
       Dependencies: {}
     Info_12:
-      Name: skybox/space_nebula_red
+      Name: levels/prefabs/ground
       Dependencies: {}
     Info_13:
-      Name: effect/lightning gun
+      Name: levels/prefabs/player
       Dependencies: {}
     Info_14:
-      Name: effect/pulsewave
+      Name: levels/scenes/level_001
       Dependencies: {}
     Info_15:
-      Name: effect/rail gun
+      Name: skyboxs/space_nebula_bluered
       Dependencies: {}
     Info_16:
-      Name: effect/sniper
+      Name: skyboxs/space_nebula_deepblack
       Dependencies: {}
     Info_17:
-      Name: effect/solo gun
+      Name: skyboxs/space_nebula_green
       Dependencies: {}
     Info_18:
-      Name: effect/warp jump
+      Name: skyboxs/space_nebula_numinousglow
       Dependencies: {}
     Info_19:
-      Name: bullet/flame
+      Name: skyboxs/space_nebula_orangeblue
       Dependencies: {}
     Info_20:
-      Name: bullet/laser
+      Name: skyboxs/space_nebula_red
       Dependencies: {}
     Info_21:
-      Name: bullet/plasma
+      Name: weapons/rifle
       Dependencies: {}
     Info_22:
-      Name: bullet/pulse
+      Name: bullets/flame
+      Dependencies: {}
+    Info_23:
+      Name: bullets/laser
+      Dependencies: {}
+    Info_24:
+      Name: bullets/plasma
+      Dependencies: {}
+    Info_25:
+      Name: bullets/pulse
       Dependencies: {}

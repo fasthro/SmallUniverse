@@ -17,7 +17,7 @@ namespace SmallUniverse
         public void SetSkybox(string skyName)
         {
             var resMgr = Game.GetManager<GResManager>();
-            var bundleName = "skybox/" + skyName.ToLower();
+            var bundleName = "skyboxs/" + skyName.ToLower();
             var bundle = resMgr.LoadAssetBundle(bundleName);
             var material = bundle.LoadAsset(skyName) as Material;
             skybox.material = material;

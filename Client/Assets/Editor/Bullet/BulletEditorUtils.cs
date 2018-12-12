@@ -28,7 +28,7 @@ namespace SmallUniverse.GameEditor
             string[] temps = path.Split('/');
             if (temps.Length == 3)
             {
-                string fp = Path.Combine(Application.dataPath, "Art/" + temps[0] + "/" + temps[1] + "/Prefab/" + temps[2] + ".prefab");
+                string fp = Path.Combine(Application.dataPath, "Art/" + temps[0] + "/" + temps[1] + "/Prefabs/" + temps[2] + ".prefab");
                 if (File.Exists(fp))
                 {
                     return 1;

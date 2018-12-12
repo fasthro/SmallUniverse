@@ -7,20 +7,20 @@ namespace SmallUniverse
 {
     public class Hero : ActorBase
     {
-        public static Hero Create(string heroName, string resName)
+        public static Hero Create(string heroAssetPath)
         {
             GameObject go = new GameObject();
-            go.name = "Hero_" + heroName;
+            go.name = "Hero_" + heroAssetPath;
             var hero = go.AddComponent<Hero>();
-            hero.Initialize(heroName, resName);
+            hero.Initialize(heroAssetPath);
             return hero;
         }
 
-        private void Initialize(string heroName, string resName)
+        private void Initialize(string heroAssetPath)
         {
             base.InitActorData();
 
-            GameObject prefab = LevelAsset.GetGameObject("hero/" + heroName, resName);
+            GameObject prefab = LevelAsset.GetGameObject(heroAssetPath);
             var heroGo = GameObject.Instantiate<GameObject>(prefab);
             heroGo.transform.parent = transform;
             heroGo.SetActive(false);
@@ -40,7 +40,7 @@ namespace SmallUniverse
 
         public override void LoadWeapon()
         {
-            GameObject prefab = LevelAsset.GetGameObject("weapon/scifirifle", "SciFiRifle_Line");
+            GameObject prefab = LevelAsset.GetGameObject("Weapons/Rifle/Rifle_Line");
             var weaponGo = GameObject.Instantiate<GameObject>(prefab);
             weaponGo.transform.parent = actorGameObject.WeaponBone;
             weaponGo.transform.localPosition = Vector3.zero;
