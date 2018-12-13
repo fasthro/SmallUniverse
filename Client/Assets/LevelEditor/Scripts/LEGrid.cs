@@ -33,6 +33,60 @@ namespace SmallUniverse.GameEditor.LevelEditor
         // 格子功能
         public GridFunction function;
 
+        // box line
+        private LEBoxLine m_boxLine;
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        public void Initialize()
+        {
+            DrawBoxLineView(false);
+        }
+
+        /// <summary>
+        /// 画 box line
+        /// </summary>
+        /// <param name="drawing"></param>
+        /// <param name="color"></param>
+        public void DrawBoxLineView(bool drawing, Color color)
+        {
+            if (m_boxLine == null)
+            {
+                m_boxLine = gameObject.GetComponent<LEBoxLine>();
+                if(m_boxLine == null)
+                {
+                    m_boxLine = gameObject.AddComponent<LEBoxLine>();
+                }
+            }
+
+            m_boxLine.Draw(drawing);
+
+            if (drawing)
+            {
+                m_boxLine.SetColor(color);
+            }
+        }
+
+        /// <summary>
+        /// 画 box line
+        /// </summary>
+        /// <param name="drawing"></param>
+        public void DrawBoxLineView(bool drawing)
+        {
+            if (m_boxLine == null)
+            {
+                m_boxLine = gameObject.GetComponent<LEBoxLine>();
+                if(m_boxLine == null)
+                {
+                    m_boxLine = gameObject.AddComponent<LEBoxLine>();
+                }
+            }
+            
+            m_boxLine.Draw(drawing);
+        }
+
+
         #region rotate
         public void RotateX()
         {

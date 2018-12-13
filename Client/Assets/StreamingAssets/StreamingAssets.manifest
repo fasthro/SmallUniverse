@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 258332031
+CRC: 3970458164
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -42,41 +42,38 @@ AssetBundleManifest:
       Name: levels/prefabs/ground
       Dependencies: {}
     Info_13:
-      Name: levels/prefabs/player
-      Dependencies: {}
-    Info_14:
       Name: levels/scenes/level_001
       Dependencies: {}
-    Info_15:
+    Info_14:
       Name: skyboxs/space_nebula_bluered
       Dependencies: {}
-    Info_16:
+    Info_15:
       Name: skyboxs/space_nebula_deepblack
       Dependencies: {}
-    Info_17:
+    Info_16:
       Name: skyboxs/space_nebula_green
       Dependencies: {}
-    Info_18:
+    Info_17:
       Name: skyboxs/space_nebula_numinousglow
       Dependencies: {}
-    Info_19:
+    Info_18:
       Name: skyboxs/space_nebula_orangeblue
       Dependencies: {}
-    Info_20:
+    Info_19:
       Name: skyboxs/space_nebula_red
       Dependencies: {}
-    Info_21:
+    Info_20:
       Name: weapons/rifle
       Dependencies: {}
-    Info_22:
+    Info_21:
       Name: bullets/flame
       Dependencies: {}
-    Info_23:
+    Info_22:
       Name: bullets/laser
       Dependencies: {}
-    Info_24:
+    Info_23:
       Name: bullets/plasma
       Dependencies: {}
-    Info_25:
+    Info_24:
       Name: bullets/pulse
       Dependencies: {}

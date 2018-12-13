@@ -72,6 +72,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
                         var grid = gridRoot.GetComponent<LEGrid>();
                         if (grid != null)
                         {
+                            grid.Initialize();
                             AddGrid(grid.position, areaName, grid);
                         }
                     }

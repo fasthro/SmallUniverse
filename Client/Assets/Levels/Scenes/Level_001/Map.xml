@@ -6,11 +6,11 @@
 	</ground>
 
 	<player>
-	<grid bundle_name='levels/prefabs/player' asset_name='test_060' pos_x='-1' pos_y='1' pos_z='-1' angle_x='0' angle_y='90' angle_z='360' ></grid>
+	<grid bundle_name='levels/prefabs/player' asset_name='player' pos_x='-1' pos_y='1' pos_z='-1' angle_x='0' angle_y='0' angle_z='0' ></grid>
 	</player>
 
 	<monster>
-	
+	<grid bundle_name='levels/prefabs/monster' asset_name='monster' pos_x='3' pos_y='1' pos_z='-1' angle_x='0' angle_y='0' angle_z='0' ></grid><grid bundle_name='levels/prefabs/monster' asset_name='monster' pos_x='6' pos_y='1' pos_z='-1' angle_x='0' angle_y='0' angle_z='0' ></grid><grid bundle_name='levels/prefabs/monster' asset_name='monster' pos_x='9' pos_y='1' pos_z='-1' angle_x='0' angle_y='0' angle_z='0' ></grid>
 	</monster>
 
 	<door>
@@ -38,7 +38,7 @@
 	</player>
 
 	<monster>
-	
+	<grid bundle_name='levels/prefabs/monster' asset_name='monster' pos_x='15' pos_y='1' pos_z='1' angle_x='0' angle_y='0' angle_z='0' ></grid><grid bundle_name='levels/prefabs/monster' asset_name='monster' pos_x='17' pos_y='1' pos_z='0' angle_x='0' angle_y='0' angle_z='0' ></grid><grid bundle_name='levels/prefabs/monster' asset_name='monster' pos_x='15' pos_y='1' pos_z='-4' angle_x='0' angle_y='0' angle_z='0' ></grid><grid bundle_name='levels/prefabs/monster' asset_name='monster' pos_x='17' pos_y='1' pos_z='-3' angle_x='0' angle_y='0' angle_z='0' ></grid><grid bundle_name='levels/prefabs/monster' asset_name='monster' pos_x='22' pos_y='1' pos_z='2' angle_x='0' angle_y='0' angle_z='0' ></grid><grid bundle_name='levels/prefabs/monster' asset_name='monster' pos_x='22' pos_y='1' pos_z='-3' angle_x='0' angle_y='0' angle_z='0' ></grid><grid bundle_name='levels/prefabs/monster' asset_name='monster' pos_x='19' pos_y='1' pos_z='-2' angle_x='0' angle_y='0' angle_z='0' ></grid><grid bundle_name='levels/prefabs/monster' asset_name='monster' pos_x='21' pos_y='1' pos_z='-1' angle_x='0' angle_y='0' angle_z='0' ></grid>
 	</monster>
 
 	<door>

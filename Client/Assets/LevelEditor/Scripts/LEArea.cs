@@ -61,7 +61,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
         public Vector3Int e_animationStartPosition;
 
         // 动画开始格子标识
-        private GameObject m_animationStartGridFlag;
+        private LEGrid m_animationStartGrid;
         #endregion
         /// <summary>
         /// 初始化
@@ -86,10 +86,15 @@ namespace SmallUniverse.GameEditor.LevelEditor
                 var grid = trans.GetComponent<LEGrid>();
 
                 if (grid != null)
+                {
+                    grid.Initialize();
                     grids.Add(key, grid);
+                }
             }
 
             showing = true;
+
+            m_animationStartGrid = null;
         }
 
         /// <summary>
@@ -159,10 +164,12 @@ namespace SmallUniverse.GameEditor.LevelEditor
 
                 if (grid.function == GridFunction.Player)
                 {
+                    grid.DrawBoxLineView(true, Color.green);
                     players.Add(key, grid);
                 }
                 else if (grid.function == GridFunction.Monster)
                 {
+                    grid.DrawBoxLineView(true, Color.red);
                     monsters.Add(key, grid);
                 }
                 else if (grid.function == GridFunction.Door)
@@ -217,6 +224,33 @@ namespace SmallUniverse.GameEditor.LevelEditor
             }
         }
         #endregion
+        
+        /// <summary>
+        ///  设置动画起始点格子
+        /// </summary>
+        public void SetAnimationStartGrid(LEGrid grid)
+        {
+            if (m_animationStartGrid != null)
+            {
+                if (grid != null)
+                {
+                    if (!m_animationStartGrid.key.Equals(grid.key))
+                    {
+                        m_animationStartGrid.DrawBoxLineView(false);
+                    }
+                }
+                else
+                {
+                    m_animationStartGrid.DrawBoxLineView(false);
+                }
+            }
+
+            if (grid != null)
+            {
+                grid.DrawBoxLineView(true, Color.green);
+                m_animationStartGrid = grid;
+            }
+        }
 
         /// <summary>
         ///  计算区域描述

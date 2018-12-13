@@ -606,6 +606,7 @@ namespace SmallUniverse.GameEditor.LevelEditor
                             GUI.color = m_guiColor;
                             EditorGUILayout.EndHorizontal();
                         }
+                        area.SetAnimationStartGrid(startGrid);
                         EditorGUILayout.EndVertical();
                     }
 
