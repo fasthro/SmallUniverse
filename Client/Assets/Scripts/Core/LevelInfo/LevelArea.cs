@@ -26,10 +26,25 @@ namespace SmallUniverse
         private LevelDoorState m_doorState;
         public LevelDoorState doorState
         {
-            get{
+            get
+            {
                 return m_doorState;
             }
         }
+
+        #region hero
+        // hero transform
+        private Transform m_heroTransform;
+
+        // hero position
+        private Vector3 m_heroPosition;
+
+        // hero 所在的格子
+        private LevelGrid m_heroInGrid;
+
+        // hero in area state
+        private LevelStateMachine m_heroInAreaState;
+        #endregion
 
         public void Initialize(LevelInfo levelInfo, int index, SecurityElement xml)
         {
@@ -39,7 +54,9 @@ namespace SmallUniverse
 
             playerPoints = new List<LevelPoint>();
             monsterPoints = new List<LevelPoint>();
-            
+
+            m_heroInAreaState = LevelStateMachine.Exit;
+
             Transform root = null;
 
             foreach (SecurityElement xmlChild in m_xml.Children)
@@ -112,13 +129,110 @@ namespace SmallUniverse
             SetDoorState(LevelDoorState.Close);
         }
 
-        /// <summary>
-        /// 地面加载完毕
+        #region  hero
+
+        // <summary>
+        /// 设置 hero transform
         /// </summary>
-        public void OnGroudLoadCompleted()
+        /// <param name="heroTransform"></param>
+        public void SetHeroTransform(Transform heroTransform)
         {
-            m_levelInfo.OnGroudLoadCompleted(this);
+            m_heroTransform = heroTransform;
         }
+
+        // <summary>
+        /// 检查 hero 是否在此区域内
+        /// </summary>
+        public bool CheckHeroInArea()
+        {
+            if (m_heroTransform != null)
+            {
+                var hp = m_heroTransform.position;
+                m_heroPosition.x = (int)hp.x;
+                m_heroPosition.y = (int)hp.y;
+                m_heroPosition.z = (int)hp.z;
+
+                m_heroInGrid = ground.GetGrid(m_heroPosition);
+            }
+            else
+            {
+                m_heroInGrid = null;
+            }
+            return m_heroInGrid != null;
+        }
+
+        // <summary>
+        /// 检查 hero 在此区域状态
+        /// </summary>
+        public void CheckHeroInAreaState()
+        {
+            bool inArea = CheckHeroInArea();
+            if (inArea)
+            {
+                if(m_heroInAreaState == LevelStateMachine.Exit)
+                {
+                    OnEnterArea();
+                }
+                
+                if(m_heroInAreaState == LevelStateMachine.Enter)
+                {
+                    OnStayArea();
+                }
+            }
+            else
+            {
+                if(m_heroInAreaState == LevelStateMachine.Stay)
+                {
+                   OnExitArea();
+                }
+            }
+        }
+
+        #endregion
+
+        public void OnUpdate()
+        {
+            CheckHeroInAreaState();
+        }
+
+        #region event
+
+        // <summary>
+        /// 区域加载完毕
+        /// </summary>
+        public void OnLoadedArea()
+        {
+            m_levelInfo.OnLoadedArea(this);
+        }
+
+        // <summary>
+        /// 进入区域
+        /// </summary>
+        public void OnEnterArea()
+        {
+            m_heroInAreaState = LevelStateMachine.Enter;
+            m_levelInfo.OnEnterArea(this);
+        }
+
+        // <summary>
+        /// 保持在区域
+        /// </summary>
+        public void OnStayArea()
+        {
+            m_heroInAreaState = LevelStateMachine.Stay;
+            m_levelInfo.OnStayArea(this);
+        }
+
+        // <summary>
+        /// 离开区域
+        /// </summary>
+        public void OnExitArea()
+        {
+            m_heroInAreaState = LevelStateMachine.Exit;
+            m_levelInfo.OnExitArea(this);
+        }
+
+        #endregion
 
         /// <summary>
         /// 设置门的状态

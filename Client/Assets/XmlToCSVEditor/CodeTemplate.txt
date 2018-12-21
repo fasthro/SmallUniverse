@@ -1,0 +1,10 @@
+// Generate By @XmlToCSV
+using UnityEngine;
+
+namespace SmallUniverse.CSVData
+{
+    public class [CLASS_NAME]
+    {
+[VARS_CODE]
+    }
+}

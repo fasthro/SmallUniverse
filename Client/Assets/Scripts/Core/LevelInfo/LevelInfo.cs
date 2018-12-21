@@ -34,11 +34,33 @@ namespace SmallUniverse
         Close,             // 关闭
     }
 
+    // 通用状态
+    public enum LevelStateMachine
+    {
+        Enter,
+        Stay,
+        Exit,
+    }
+
     public class LevelInfo : MonoBehaviour
     {
-        // 区域地面加载完成
-        public delegate void GroudLoadCompletedHandler(LevelArea area);
-        public event GroudLoadCompletedHandler OnGroudLoadCompletedHandler;
+        #region event define
+
+        // 区域加载完成
+        public delegate void LoadedAreaHandler(LevelArea area);
+        public event LoadedAreaHandler OnLoadedAreaHandler;
+
+        // 进入/保持/离开区域
+        public delegate void EnterAreaHandler(LevelArea area);
+        public delegate void StayAreaHandler(LevelArea area);
+        public delegate void ExitAreaHandler(LevelArea area);
+        public event EnterAreaHandler OnEnterAreaHandler;
+        public event StayAreaHandler OnStayAreaHandler;
+        public event ExitAreaHandler OnExitAreaHandler;
+
+        #endregion
+
+        #region base
 
         // 关卡名称
         private string m_levelName;
@@ -51,6 +73,15 @@ namespace SmallUniverse
 
         // navMesh Surface
         private NavMeshSurface m_navMeshSurface;
+
+        #endregion
+        
+        // hero transform
+        private Transform m_heroTransform;
+
+        #region public
+        
+        #endregion
 
         /// <summary>
         /// 创建关卡信息
@@ -83,45 +114,6 @@ namespace SmallUniverse
                 area.Initialize(this, areaIndex, xmlChild);
                 m_areas[areaIndex - 1] = area;
             }
-        }
-
-        public void InitEnvironment(LevelEnvironment environment)
-        {
-            for (int i = 0; i < m_areas.Length; i++)
-            {
-                m_areas[i].InitEnvironment(environment);
-            }
-        }
-
-        // <summary>
-        /// 区域地面加载完毕
-        /// </summary>
-        public void OnGroudLoadCompleted(LevelArea area)
-        {
-            if(OnGroudLoadCompletedHandler != null)
-            {
-                OnGroudLoadCompletedHandler(area);
-            }
-        }
-
-        /// <summary>
-        /// 获取当前区域内玩家出生点
-        /// </summary>
-        public List<LevelPoint> GetPlayerPoints(int areaIndex)
-        {
-            if (areaIndex <= m_areaCount)
-                return m_areas[areaIndex - 1].playerPoints;
-            return new List<LevelPoint>();
-        }
-
-        /// <summary>
-        /// 获取当前区域内怪物出生点
-        /// </summary>
-        public List<LevelPoint> GetMonsterPoints(int areaIndex)
-        {
-            if (areaIndex <= m_areaCount)
-                return m_areas[areaIndex - 1].monsterPoints;
-            return new List<LevelPoint>();
         }
 
         /// <summary>
@@ -163,6 +155,110 @@ namespace SmallUniverse
 
             resMgr.UnLoadAssetBundle(bundleName);
         }
+
+        void Update()
+        {
+            for (int i = 0; i < m_areas.Length; i++)
+            {
+                m_areas[i].OnUpdate();
+            }
+        }
+
+        // <summary>
+        /// 初始化关卡环境
+        /// </summary>
+        public void InitEnvironment(LevelEnvironment environment)
+        {
+            for (int i = 0; i < m_areas.Length; i++)
+            {
+                m_areas[i].InitEnvironment(environment);
+            }
+        }
+
+        // <summary>
+        /// 设置 hero transform
+        /// </summary>
+        /// <param name="heroTransform"></param>
+        public void SetHeroTransform(Transform heroTransform)
+        {
+            m_heroTransform = heroTransform;
+            for (int i = 0; i < m_areas.Length; i++)
+            {
+                m_areas[i].SetHeroTransform(heroTransform);
+            }
+        }
+
+        #region event
+        
+        // <summary>
+        /// 区域加载完毕
+        /// </summary>
+        public void OnLoadedArea(LevelArea area)
+        {
+            if(OnLoadedAreaHandler != null)
+            {
+                OnLoadedAreaHandler(area);
+            }
+        }
+
+        // <summary>
+        /// 进入区域
+        /// </summary>
+        public void OnEnterArea(LevelArea area)
+        {
+            if(OnEnterAreaHandler != null)
+            {
+                OnEnterAreaHandler(area);
+            }
+        }
+
+        // <summary>
+        /// 保持在此区域
+        /// </summary>
+        public void OnStayArea(LevelArea area)
+        {
+            if(OnStayAreaHandler != null)
+            {
+                OnStayAreaHandler(area);
+            }
+        }
+
+        // <summary>
+        /// 离开区域加载
+        /// </summary>
+        public void OnExitArea(LevelArea area)
+        {
+            if(OnExitAreaHandler != null)
+            {
+                OnExitAreaHandler(area);
+            }
+        }
+
+        #endregion
+
+        #region point
+
+        /// <summary>
+        /// 获取当前区域内Hero出生点
+        /// </summary>
+        public List<LevelPoint> GetHeroPoints(int areaIndex)
+        {
+            if (areaIndex <= m_areaCount)
+                return m_areas[areaIndex - 1].playerPoints;
+            return new List<LevelPoint>();
+        }
+
+        /// <summary>
+        /// 获取当前区域内怪物出生点
+        /// </summary>
+        public List<LevelPoint> GetMonsterPoints(int areaIndex)
+        {
+            if (areaIndex <= m_areaCount)
+                return m_areas[areaIndex - 1].monsterPoints;
+            return new List<LevelPoint>();
+        }
+
+        #endregion
     }
 }
 

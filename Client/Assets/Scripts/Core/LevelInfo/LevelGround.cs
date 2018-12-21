@@ -106,7 +106,7 @@ namespace SmallUniverse
                 }
             }
 
-            m_area.OnGroudLoadCompleted();
+            m_area.OnLoadedArea();
 
             if(environment.animationEnabled)
             {
@@ -182,6 +182,21 @@ namespace SmallUniverse
             return arounds;
         }
         #endregion
+        
+        /// <summary>
+        /// 获取格子
+        /// </summary>
+        /// <param name="position"></param>
+        public LevelGrid GetGrid(Vector3 position)
+        {
+            string id = LevelGrid.GetId(position);
+            LevelGrid grid = null;
+            if(m_map.TryGetValue(id, out grid))
+            {
+                return grid;
+            }
+            return null;
+        }
     }
 }
 

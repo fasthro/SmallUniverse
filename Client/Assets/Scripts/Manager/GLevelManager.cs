@@ -53,22 +53,32 @@ namespace SmallUniverse.Manager
             // 天空盒
             Game.gameCamera.SetSkybox(environment.skybox);
             
-            levelInfo.OnGroudLoadCompletedHandler += OnGroudLoadCompletedHandler;
+            // event
+            levelInfo.OnLoadedAreaHandler += OnLoadedAreaHandler;
+            levelInfo.OnEnterAreaHandler += OnEnterAreaHandler;
+            levelInfo.OnStayAreaHandler += OnStayAreaHandler;
+            levelInfo.OnExitAreaHandler += OnExitAreaHandler;
+
+            // init
             levelInfo.InitEnvironment(environment);
         }
 
+        #region  event
         /// <summary>
-        /// 区域地面加载完成
+        /// 区域加载完成
         /// </summary>
-        private void OnGroudLoadCompletedHandler(LevelArea area)
+        private void OnLoadedAreaHandler(LevelArea area)
         {
-            Debug.Log("OnGroudLoadCompletedHandler -> area.index : " + area.index);
-            
+            Debug.Log("OnLoadedAreaHandler - > " + area.index);
+
             if (area.index == 1)
             {
-                var points = levelInfo.GetPlayerPoints(areaIndex);
+                var points = levelInfo.GetHeroPoints(areaIndex);
                 // 玩家出生
                 hero.Born(points[0]);
+                
+                // 关卡设置hero transform
+                levelInfo.SetHeroTransform(hero.actorGameObject.transform);
 
                 // 设置相机
                 heroCamera.SetLookAt(hero.actorGameObject.transform);
@@ -77,6 +87,32 @@ namespace SmallUniverse.Manager
                 Game.virtualJoy.Initialize();
             }
         }
+
+        /// <summary>
+        /// 进入区域
+        /// </summary>
+        private void OnEnterAreaHandler(LevelArea area)
+        {
+            Debug.Log("OnEnterAreaHandler - > " + area.index);
+        }
+
+        /// <summary>
+        /// 保持在区域
+        /// </summary>
+        private void OnStayAreaHandler(LevelArea area)
+        {
+            Debug.Log("OnStayAreaHandler - > " + area.index);
+        }
+
+        /// <summary>
+        /// 离开区域
+        /// </summary>
+        private void OnExitAreaHandler(LevelArea area)
+        {
+            Debug.Log("OnExitAreaHandler - > " + area.index);
+        }
+
+        #endregion
     }
 }
 
