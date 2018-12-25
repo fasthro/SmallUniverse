@@ -7,12 +7,11 @@ namespace SmallUniverse
     {
         // 关卡id
         public int id;
-        // 区域索引
-        public int areaIndex;
-        // 怪Id
-        public int monsterId;
-        // 出生点
-        public Vector3 bornPosition;
 
+        // 关卡场景配置
+        public string scene;
+
+        // 天空盒
+        public string skybox;
     }
 }

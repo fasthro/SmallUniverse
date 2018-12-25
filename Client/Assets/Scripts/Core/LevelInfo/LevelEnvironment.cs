@@ -6,9 +6,6 @@ namespace SmallUniverse
 {
     public class LevelEnvironment
     {
-        // 天空盒
-        public string skybox = "Space_Nebula_Red";
-
         #region ground animation param
         public bool animationEnabled = true;
         // 动画等待间隔时长

@@ -48,11 +48,13 @@
    ss:DefaultRowHeight="13.5">
    <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="156.75"/>
    <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="130.5"/>
-   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="141.75"/>
+   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="220.5"/>
+   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="99.75"/>
+   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="75"/>
    <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">关卡id</Data></Cell>
-    <Cell><Data ss:Type="String">关卡场景配置</Data></Cell>
-    <Cell><Data ss:Type="String">天空盒</Data></Cell>
+    <Cell><Data ss:Type="String">怪id</Data></Cell>
+    <Cell><Data ss:Type="String">怪名称</Data></Cell>
+    <Cell><Data ss:Type="String">怪模型</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
@@ -61,13 +63,13 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">id</Data></Cell>
-    <Cell><Data ss:Type="String">scene</Data></Cell>
-    <Cell><Data ss:Type="String">skybox</Data></Cell>
+    <Cell><Data ss:Type="String">name</Data></Cell>
+    <Cell><Data ss:Type="String">art</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">100001</Data></Cell>
-    <Cell ss:StyleID="s63"><Data ss:Type="String">Level_001</Data></Cell>
-    <Cell><Data ss:Type="String">Space_Nebula_Red</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">Monster</Data></Cell>
+    <Cell><Data ss:Type="String">Monsters/Toon_Bat/Toon_Bat_Pink</Data></Cell>
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
@@ -87,8 +89,8 @@
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>10</ActiveRow>
-     <ActiveCol>1</ActiveCol>
+     <ActiveRow>3</ActiveRow>
+     <ActiveCol>2</ActiveCol>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>

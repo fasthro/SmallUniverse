@@ -12,8 +12,6 @@ namespace SmallUniverse
     {
 		private Dictionary<Type, CSV> m_map;
 
-        private AssetBundle m_bundle;
-
         void Awake()
         {
             m_map = new Dictionary<Type, CSV>();
@@ -45,14 +43,17 @@ namespace SmallUniverse
             string className = type.Name;
             string csvName = className.Substring("CSV_".Length);
             string bundleName = "csv/" + csvName.ToLower();
-            if(m_bundle == null)
-            {
-                m_bundle = Game.GetManager<GResManager>().LoadAssetBundle(bundleName);
-            }
-            var textAsset = m_bundle.LoadAsset(csvName + ".csv") as TextAsset;
+            
+            var bundle = Game.GetManager<GResManager>().LoadAssetBundle(bundleName);
+            var textAsset = bundle.LoadAsset(csvName + ".csv") as TextAsset;
+            
             CSV csv = new CSV();
             csv.LoadCSV<T>(textAsset.text.TrimEnd('\n'));
             m_map.Add(type, csv);
+
+            bundle.Unload(true);
+            bundle = null;
+
             return csv;
         }
     }

@@ -7,20 +7,24 @@ namespace SmallUniverse
 {
     public class Hero : ActorBase
     {
-        public static Hero Create(string heroAssetPath)
+        private CSV_Hero m_dataCSV;
+
+        public static Hero Create(int heroId)
         {
             GameObject go = new GameObject();
-            go.name = "Hero_" + heroAssetPath;
+            go.name = "Hero_" + heroId;
             var hero = go.AddComponent<Hero>();
-            hero.Initialize(heroAssetPath);
+            hero.Initialize(heroId);
             return hero;
         }
 
-        private void Initialize(string heroAssetPath)
+        private void Initialize(int heroId)
         {
             base.InitActorData();
 
-            GameObject prefab = LevelAsset.GetGameObject(heroAssetPath);
+            m_dataCSV = Game.gameCSV.GetData<CSV_Hero>(heroId);
+
+            GameObject prefab = LevelAsset.GetGameObject(m_dataCSV.art);
             var heroGo = GameObject.Instantiate<GameObject>(prefab);
             heroGo.transform.parent = transform;
             heroGo.SetActive(false);
@@ -40,7 +44,7 @@ namespace SmallUniverse
 
         public override void LoadWeapon()
         {
-            GameObject prefab = LevelAsset.GetGameObject("Weapons/Rifle/Rifle_Line");
+            GameObject prefab = LevelAsset.GetGameObject("Weapons/Rifle/Rifle");
             var weaponGo = GameObject.Instantiate<GameObject>(prefab);
             weaponGo.transform.parent = actorGameObject.WeaponBone;
             weaponGo.transform.localPosition = Vector3.zero;

@@ -47,7 +47,7 @@ namespace SmallUniverse.GameEditor.XmlEditor
                     index++;
                 }
             }
-
+            
             describeData = CreateXmlData(rowElements[0]);
             typeData = CreateXmlData(rowElements[1]);
             keyData = CreateXmlData(rowElements[2]);
@@ -106,7 +106,8 @@ namespace SmallUniverse.GameEditor.XmlEditor
             {
                 vars += GetVarStr(i);
             }
-
+            vars = vars.TrimEnd('\n');
+            
             string template = GetCodeTemplate();
             template = template.Replace("[CLASS_NAME]", className);
             template = template.Replace("[VARS_CODE]", vars);
@@ -117,7 +118,7 @@ namespace SmallUniverse.GameEditor.XmlEditor
         private string GetVarStr(int index)
         {
             string content = string.Format("        // {0}\n", describeData.values[index]);
-            content += string.Format("        public {0} {1};\n", GetTypeStr(typeData.values[index]), keyData.values[index]);
+            content += string.Format("        public {0} {1};\n\n", GetTypeStr(typeData.values[index]), keyData.values[index]);
             return content;
         }
 

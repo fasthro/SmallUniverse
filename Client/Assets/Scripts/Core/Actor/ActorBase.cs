@@ -30,7 +30,7 @@ namespace SmallUniverse
         protected Rigidbody m_rigidbody;
         protected NavMeshAgent m_navMeshAgent;
         protected WeaponBase m_weapon;
-
+        
         // 是否已经出生
         protected bool m_isBorn;
         public bool IsBorn
