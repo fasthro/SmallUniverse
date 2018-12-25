@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 3970458164
+CRC: 321217468
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -76,4 +76,13 @@ AssetBundleManifest:
       Dependencies: {}
     Info_24:
       Name: bullets/pulse
+      Dependencies: {}
+    Info_25:
+      Name: levels/prefabs/monster
+      Dependencies: {}
+    Info_26:
+      Name: levels/prefabs/player
+      Dependencies: {}
+    Info_27:
+      Name: csv/level
       Dependencies: {}

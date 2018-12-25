@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using FairyGUI.Utils;
 
 namespace FairyGUI
@@ -112,6 +111,9 @@ namespace FairyGUI
 				_end = frameCount - 1;
 			if (_endAt == -1 || _endAt > frameCount - 1)
 				_endAt = frameCount - 1;
+
+			if (_frame < 0 || _frame > frameCount - 1)
+				_frame = frameCount - 1;
 
 			graphics.texture = texture;
 			OnSizeChanged(true, true);
@@ -449,6 +451,8 @@ namespace FairyGUI
 				_requireUpdateMesh = false;
 				DrawFrame();
 			}
+			else
+				graphics.ClearMesh();
 		}
 	}
 }

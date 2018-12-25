@@ -183,6 +183,12 @@ namespace FairyGUI
 				Object.DontDestroyOnLoad(gameObject);
 			gameObject.hideFlags = DisplayOptions.hideFlags;
 			gameObject.SetActive(false);
+
+#if FAIRYGUI_TEST
+			DisplayObjectInfo info = gameObject.AddComponent<DisplayObjectInfo>();
+			info.displayObject = this;
+#endif
+
 			_ownsGameObject = true;
 		}
 
@@ -938,7 +944,7 @@ namespace FairyGUI
 				}
 				paintingGraphics.material = _paintingMaterial;
 
-					if (this is Container)
+				if (this is Container)
 				{
 					((Container)this).SetChildrenLayer(CaptureCamera.hiddenLayer);
 					((Container)this).UpdateBatchingFlags();
@@ -1208,7 +1214,7 @@ namespace FairyGUI
 				direction = this.cachedTransform.InverseTransformDirection(direction);
 				float distOnLine = Vector3.Dot(Vector3.zero - localPoint, Vector3.forward) / Vector3.Dot(direction, Vector3.forward);
 				if (float.IsInfinity(distOnLine))
-					return new Vector2(0, 0);
+					return Vector2.zero;
 
 				localPoint = localPoint + direction * distOnLine;
 			}
@@ -1279,18 +1285,18 @@ namespace FairyGUI
 			}
 			else
 			{
-				Rect result = Rect.MinMaxRect(float.MaxValue, float.MaxValue, float.MinValue, float.MinValue);
+				Vector4 vec4 = new Vector4(float.MaxValue, float.MaxValue, float.MinValue, float.MinValue);
 
-				TransformRectPoint(rect.xMin, rect.yMin, targetSpace, ref result);
-				TransformRectPoint(rect.xMax, rect.yMin, targetSpace, ref result);
-				TransformRectPoint(rect.xMin, rect.yMax, targetSpace, ref result);
-				TransformRectPoint(rect.xMax, rect.yMax, targetSpace, ref result);
+				TransformRectPoint(rect.xMin, rect.yMin, targetSpace, ref vec4);
+				TransformRectPoint(rect.xMax, rect.yMin, targetSpace, ref vec4);
+				TransformRectPoint(rect.xMin, rect.yMax, targetSpace, ref vec4);
+				TransformRectPoint(rect.xMax, rect.yMax, targetSpace, ref vec4);
 
-				return result;
+				return Rect.MinMaxRect(vec4.x, vec4.y, vec4.z, vec4.w);
 			}
 		}
 
-		protected void TransformRectPoint(float px, float py, DisplayObject targetSpace, ref Rect rect)
+		protected void TransformRectPoint(float px, float py, DisplayObject targetSpace, ref Vector4 vec4)
 		{
 			Vector2 v = this.cachedTransform.TransformPoint(px, -py, 0);
 			if (targetSpace != null)
@@ -1298,10 +1304,10 @@ namespace FairyGUI
 				v = targetSpace.cachedTransform.InverseTransformPoint(v);
 				v.y = -v.y;
 			}
-			if (rect.xMin > v.x) rect.xMin = v.x;
-			if (rect.xMax < v.x) rect.xMax = v.x;
-			if (rect.yMin > v.y) rect.yMin = v.y;
-			if (rect.yMax < v.y) rect.yMax = v.y;
+			if (vec4.x > v.x) vec4.x = v.x;
+			if (vec4.z < v.x) vec4.z = v.x;
+			if (vec4.y > v.y) vec4.y = v.y;
+			if (vec4.w < v.y) vec4.w = v.y;
 		}
 
 		/// <summary>
@@ -1349,7 +1355,7 @@ namespace FairyGUI
 					if (paintingTexture == null || paintingTexture.width != textureWidth || paintingTexture.height != textureHeight)
 					{
 						if (paintingTexture != null)
-							paintingTexture.Dispose(true);
+							paintingTexture.Dispose();
 						if (textureWidth > 0 && textureHeight > 0)
 						{
 							paintingTexture = new NTexture(CaptureCamera.CreateRenderTexture(textureWidth, textureHeight, UIConfig.depthSupportForPaintingMode));
@@ -1473,20 +1479,32 @@ namespace FairyGUI
 			if (paintingGraphics != null)
 			{
 				if (paintingGraphics.texture != null)
-					paintingGraphics.texture.Dispose(true);
+					paintingGraphics.texture.Dispose();
 				if (_paintingMaterial != null)
-					Material.Destroy(_paintingMaterial);
+					Object.Destroy(_paintingMaterial);
 
 				paintingGraphics.Dispose();
 				if (paintingGraphics.gameObject != this.gameObject)
 				{
 					if (Application.isPlaying)
-						GameObject.Destroy(paintingGraphics.gameObject);
+						Object.Destroy(paintingGraphics.gameObject);
 					else
-						GameObject.DestroyImmediate(paintingGraphics.gameObject);
+						Object.DestroyImmediate(paintingGraphics.gameObject);
 				}
 			}
 			DestroyGameObject();
 		}
+	}
+
+	/// <summary>
+	/// 
+	/// </summary>
+	public class DisplayObjectInfo : MonoBehaviour
+	{
+		/// <summary>
+		/// 
+		/// </summary>
+		[System.NonSerialized]
+		public DisplayObject displayObject;
 	}
 }

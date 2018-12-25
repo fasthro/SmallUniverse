@@ -61,11 +61,13 @@ namespace SmallUniverse.GameEditor.XmlEditor
             }
 
             string csv = string.Empty;
-
+            csv += workSheetList[0].keyData.ToCSV();
+            csv += workSheetList[0].typeData.ToCSV();
             for (int i = 0; i < workSheetList.Count; i++)
             {
                 csv += workSheetList[i].ToCSV();
             }
+            csv = csv.TrimEnd('\n');
 
             WriteFile(csvPath, csv);
         }

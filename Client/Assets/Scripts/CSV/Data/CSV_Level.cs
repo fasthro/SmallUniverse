@@ -1,12 +1,12 @@
 ﻿// Generate By @XmlToCSV
 using UnityEngine;
 
-namespace SmallUniverse.CSVData
+namespace SmallUniverse
 {
-    public class CSV_LevelMonster
+    public class CSV_Level : CSVDataBase
     {
         // 关卡id
-        public int levelId;
+        public int id;
         // 区域索引
         public int areaIndex;
         // 怪Id

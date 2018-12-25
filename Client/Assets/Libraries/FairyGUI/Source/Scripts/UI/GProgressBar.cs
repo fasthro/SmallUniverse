@@ -109,13 +109,19 @@ namespace FairyGUI
 		/// <param name="duration"></param>
 		public GTweener TweenValue(double value, float duration)
 		{
-			double oldValule = _value;
-			_value = value;
-
+			double oldValule;
 			if (_tweening)
-				GTween.Kill(this, TweenPropType.Progress, false);
+			{
+				GTweener twener = GTween.GetTween(this, TweenPropType.Progress);
+				oldValule = twener.value.d;
+				twener.Kill(false);
+			}
+			else
+				oldValule = _value;
+
+			_value = value;
 			_tweening = true;
-			return GTween.To(oldValule, _value, duration)
+			return GTween.ToDouble(oldValule, _value, duration)
 				.SetEase(EaseType.Linear)
 				.SetTarget(this, TweenPropType.Progress)
 				.OnComplete(() => { _tweening = false; });
@@ -133,11 +139,29 @@ namespace FairyGUI
 				switch (_titleType)
 				{
 					case ProgressTitleType.Percent:
-						_titleObject.text = Mathf.RoundToInt(percent * 100) + "%";
+#if RTL_TEXT_SUPPORT
+						if (RTLSupport.BaseDirection == RTLSupport.DirectionType.RTL)
+						{
+							_titleObject.text = "%" + Mathf.FloorToInt(percent * 100);
+						}
+						else
+							_titleObject.text = Mathf.FloorToInt(percent * 100) + "%";
+#else
+						_titleObject.text = Mathf.FloorToInt(percent * 100) + "%";
+#endif
 						break;
 
 					case ProgressTitleType.ValueAndMax:
+#if RTL_TEXT_SUPPORT
+						if (RTLSupport.BaseDirection == RTLSupport.DirectionType.RTL)
+						{
+							_titleObject.text = Math.Round(max) + "/" + Math.Round(newValue);
+						}
+						else
+							_titleObject.text = Math.Round(newValue) + "/" + Math.Round(max);
+#else
 						_titleObject.text = Math.Round(newValue) + "/" + Math.Round(max);
+#endif
 						break;
 
 					case ProgressTitleType.Value:
@@ -206,19 +230,12 @@ namespace FairyGUI
 			InvalidateBatchingState(true);
 		}
 
-		override public void ConstructFromXML(XML cxml)
+		override protected void ConstructExtension(ByteBuffer buffer)
 		{
-			base.ConstructFromXML(cxml);
+			buffer.Seek(0, 6);
 
-			XML xml = cxml.GetNode("ProgressBar");
-
-			string str;
-			str = xml.GetAttribute("titleType");
-			if (str != null)
-				_titleType = FieldTypes.ParseProgressTitleType(str);
-			else
-				_titleType = ProgressTitleType.Percent;
-			_reverse = xml.GetAttributeBool("reverse", false);
+			_titleType = (ProgressTitleType)buffer.ReadByte();
+			_reverse = buffer.ReadBool();
 
 			_titleObject = GetChild("title") as GTextField;
 			_barObjectH = GetChild("bar");
@@ -239,16 +256,24 @@ namespace FairyGUI
 			}
 		}
 
-		override public void Setup_AfterAdd(XML cxml)
+		override public void Setup_AfterAdd(ByteBuffer buffer, int beginPos)
 		{
-			base.Setup_AfterAdd(cxml);
+			base.Setup_AfterAdd(buffer, beginPos);
 
-			XML xml = cxml.GetNode("ProgressBar");
-			if (xml != null)
+			if (!buffer.Seek(beginPos, 6))
 			{
-				_value = xml.GetAttributeInt("value");
-				_max = xml.GetAttributeInt("max");
+				Update(_value);
+				return;
 			}
+
+			if ((ObjectType)buffer.ReadByte() != packageItem.objectType)
+			{
+				Update(_value);
+				return;
+			}
+
+			_value = buffer.ReadInt();
+			_max = buffer.ReadInt();
 
 			Update(_value);
 		}

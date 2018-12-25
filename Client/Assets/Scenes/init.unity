@@ -120,11 +120,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114014816692015320, guid: ca76331bc0b8a4447b48394d88affb08,
-        type: 2}
-      propertyPath: levelGridCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4140411629761054, guid: ca76331bc0b8a4447b48394d88affb08, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -156,74 +151,6 @@ Prefab:
     - target: {fileID: 4140411629761054, guid: ca76331bc0b8a4447b48394d88affb08, type: 2}
       propertyPath: m_RootOrder
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4192244162947534, guid: ca76331bc0b8a4447b48394d88affb08, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 8.875
-      objectReference: {fileID: 0}
-    - target: {fileID: 114014816692015320, guid: ca76331bc0b8a4447b48394d88affb08,
-        type: 2}
-      propertyPath: levelGridCurve.m_Curve.Array.data[0].inSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114014816692015320, guid: ca76331bc0b8a4447b48394d88affb08,
-        type: 2}
-      propertyPath: levelGridCurve.m_Curve.Array.data[0].outSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114014816692015320, guid: ca76331bc0b8a4447b48394d88affb08,
-        type: 2}
-      propertyPath: levelGridCurve.m_Curve.Array.data[1].inSlope
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114014816692015320, guid: ca76331bc0b8a4447b48394d88affb08,
-        type: 2}
-      propertyPath: levelGridCurve.m_Curve.Array.data[1].outSlope
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114014816692015320, guid: ca76331bc0b8a4447b48394d88affb08,
-        type: 2}
-      propertyPath: levelGridCurve.m_Curve.Array.data[1].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114014816692015320, guid: ca76331bc0b8a4447b48394d88affb08,
-        type: 2}
-      propertyPath: levelGridCurve.m_Curve.Array.data[1].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114014816692015320, guid: ca76331bc0b8a4447b48394d88affb08,
-        type: 2}
-      propertyPath: levelGridCurve.m_Curve.Array.data[2].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114014816692015320, guid: ca76331bc0b8a4447b48394d88affb08,
-        type: 2}
-      propertyPath: levelGridCurve.m_Curve.Array.data[2].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114014816692015320, guid: ca76331bc0b8a4447b48394d88affb08,
-        type: 2}
-      propertyPath: levelGridCurve.m_Curve.Array.data[2].inSlope
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114014816692015320, guid: ca76331bc0b8a4447b48394d88affb08,
-        type: 2}
-      propertyPath: levelGridCurve.m_Curve.Array.data[2].outSlope
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114014816692015320, guid: ca76331bc0b8a4447b48394d88affb08,
-        type: 2}
-      propertyPath: levelGridCurve.m_Curve.Array.data[2].inWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 114014816692015320, guid: ca76331bc0b8a4447b48394d88affb08,
-        type: 2}
-      propertyPath: levelGridCurve.m_Curve.Array.data[2].outWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 1524994187022886, guid: ca76331bc0b8a4447b48394d88affb08, type: 2}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca76331bc0b8a4447b48394d88affb08, type: 2}

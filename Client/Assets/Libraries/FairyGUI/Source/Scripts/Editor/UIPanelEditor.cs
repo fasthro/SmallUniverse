@@ -14,6 +14,7 @@ namespace FairyGUIEditor
 	{
 		SerializedProperty packageName;
 		SerializedProperty componentName;
+		SerializedProperty packagePath;
 		SerializedProperty renderMode;
 		SerializedProperty renderCamera;
 		SerializedProperty sortingOrder;
@@ -33,6 +34,7 @@ namespace FairyGUIEditor
 		{
 			packageName = serializedObject.FindProperty("packageName");
 			componentName = serializedObject.FindProperty("componentName");
+			packagePath = serializedObject.FindProperty("packagePath");
 			renderMode = serializedObject.FindProperty("renderMode");
 			renderCamera = serializedObject.FindProperty("renderCamera");
 			sortingOrder = serializedObject.FindProperty("sortingOrder");
@@ -88,6 +90,11 @@ namespace FairyGUIEditor
 				EditorWindow.GetWindow<PackagesWindow>(true, "Select a UI Component").SetSelection(packageName.stringValue, componentName.stringValue);
 			EditorGUILayout.EndHorizontal();
 
+			EditorGUILayout.BeginHorizontal();
+			EditorGUILayout.PrefixLabel("Package Path");
+			EditorGUILayout.LabelField(packagePath.stringValue, (GUIStyle)"helpbox");
+			EditorGUILayout.EndHorizontal();
+
 			EditorGUILayout.PropertyField(renderMode);
 			if ((RenderMode)renderMode.enumValueIndex != RenderMode.ScreenSpaceOverlay)
 				EditorGUILayout.PropertyField(renderCamera);
@@ -97,7 +104,9 @@ namespace FairyGUIEditor
 			EditorGUILayout.PropertyField(hitTestMode);
 			EditorGUILayout.PropertyField(touchDisabled);
 			EditorGUILayout.PropertyField(setNativeChildrenOrder);
+			EditorGUILayout.Separator();
 			EditorGUILayout.LabelField("UI Transform", (GUIStyle)"OL Title");
+			EditorGUILayout.Separator();
 			EditorGUI.BeginChangeCheck();
 			EditorGUILayout.PropertyField(position);
 			EditorGUILayout.PropertyField(rotation);

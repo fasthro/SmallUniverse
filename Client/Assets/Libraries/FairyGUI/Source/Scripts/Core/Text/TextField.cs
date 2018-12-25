@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using FairyGUI.Utils;
@@ -19,7 +18,10 @@ namespace FairyGUI
 		bool _wordWrap;
 		bool _singleLine;
 		bool _html;
-		bool _rtl;
+#if RTL_TEXT_SUPPORT
+		RTLSupport.DirectionType _textDirection = RTLSupport.DirectionType.UNKNOW;
+#endif
+		int _maxWidth;
 
 		int _stroke;
 		Color _strokeColor;
@@ -38,6 +40,7 @@ namespace FairyGUI
 		float _fontSizeScale;
 		float _renderScale;
 		string _parsedText;
+		bool _updatingSize; //防止重复调用BuildLines
 
 		RichTextField _richTextField;
 
@@ -45,8 +48,10 @@ namespace FairyGUI
 		const int GUTTER_Y = 2;
 		static float[] STROKE_OFFSET = new float[]
 		{
-			 -1f, 0f, 1f, 0f,
-			0f, -1f, 0f, 1f
+			 -1, 0, 1, 0,
+			0, -1, 0, 1,
+			-1, -1, 1, -1,
+			-1, 1, 1, 1
 		};
 		static float[] BOLD_OFFSET = new float[]
 		{
@@ -309,6 +314,25 @@ namespace FairyGUI
 			}
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		public int maxWidth
+		{
+			get { return _maxWidth; }
+			set
+			{
+				if (_maxWidth != value)
+				{
+					_maxWidth = value;
+					_textChanged = true;
+				}
+			}
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
 		public List<HtmlElement> htmlElements
 		{
 			get
@@ -320,6 +344,9 @@ namespace FairyGUI
 			}
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public List<LineInfo> lines
 		{
 			get
@@ -331,6 +358,9 @@ namespace FairyGUI
 			}
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public List<CharPosition> charPositions
 		{
 			get
@@ -345,6 +375,9 @@ namespace FairyGUI
 			}
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public RichTextField richTextField
 		{
 			get { return _richTextField; }
@@ -383,6 +416,14 @@ namespace FairyGUI
 			}
 			else
 				return false;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public bool HasCharacter(char ch)
+		{
+			return _font.HasCharacter(ch);
 		}
 
 		/// <summary>
@@ -501,6 +542,9 @@ namespace FairyGUI
 					}
 				}
 			}
+
+			if ((_font is DynamicFont) && DynamicFont.textRebuildFlag)
+				graphics.texture = _font.mainTexture;
 		}
 
 		void BuildLines()
@@ -508,6 +552,7 @@ namespace FairyGUI
 			_textChanged = false;
 			_requireUpdateMesh = true;
 			_renderScale = UIContentScaler.scaleFactor;
+			_fontSizeScale = 1;
 
 			Cleanup();
 
@@ -520,15 +565,116 @@ namespace FairyGUI
 				_lines.Add(emptyLine);
 
 				_textWidth = _textHeight = 0;
-				_fontSizeScale = 1;
+			}
+			else
+			{
+				ParseText();
+				BuildLines2();
 
-				BuildLinesFinal();
-
-				return;
+				if (_autoSize == AutoSizeType.Shrink)
+					DoShrink();
 			}
 
-			ParseText();
+			if (!_input && _autoSize == AutoSizeType.Both)
+			{
+				_updatingSize = true;
+				if (_richTextField != null)
+					_richTextField.SetSize(_textWidth, _textHeight);
+				else
+					SetSize(_textWidth, _textHeight);
+				_updatingSize = false;
+			}
+			else if (_autoSize == AutoSizeType.Height)
+			{
+				_updatingSize = true;
+				float h = _textHeight;
+				if (_input && h < _minHeight)
+					h = _minHeight;
+				if (_richTextField != null)
+					_richTextField.height = h;
+				else
+					this.height = h;
+				_updatingSize = false;
+			}
 
+			_yOffset = 0;
+			ApplyVertAlign();
+		}
+
+		void ParseText()
+		{
+#if RTL_TEXT_SUPPORT
+			_textDirection = RTLSupport.DetectTextDirection(_text);
+#endif
+			if (_html)
+			{
+				HtmlParser.inst.Parse(_text, _textFormat, _elements,
+					_richTextField != null ? _richTextField.htmlParseOptions : null);
+
+				_parsedText = string.Empty;
+			}
+			else
+				_parsedText = _text;
+
+			int elementCount = _elements.Count;
+			if (elementCount == 0)
+			{
+#if RTL_TEXT_SUPPORT
+				if (_textDirection != RTLSupport.DirectionType.UNKNOW)
+					_parsedText = RTLSupport.DoMapping(_parsedText);
+#endif
+
+				bool flag = _input || _richTextField != null && _richTextField.emojies != null;
+				if (!flag)
+				{
+					//检查文本中是否有需要转换的字符，如果没有，节省一个new StringBuilder的操作。
+					int cnt = _parsedText.Length;
+					for (int i = 0; i < cnt; i++)
+					{
+						char ch = _parsedText[i];
+						if (ch == '\r' || ch == '\t' || char.IsHighSurrogate(ch))
+						{
+							flag = true;
+							break;
+						}
+					}
+				}
+
+				if (flag)
+				{
+					StringBuilder buffer = new StringBuilder();
+					ParseText(buffer, _parsedText, -1);
+					elementCount = _elements.Count;
+					_parsedText = buffer.ToString();
+				}
+			}
+			else
+			{
+				StringBuilder buffer = new StringBuilder();
+				int i = 0;
+				while (i < elementCount)
+				{
+					HtmlElement element = _elements[i];
+					element.charIndex = buffer.Length;
+					if (element.type == HtmlElementType.Text)
+					{
+#if RTL_TEXT_SUPPORT
+						if (_textDirection != RTLSupport.DirectionType.UNKNOW)
+							element.text = RTLSupport.DoMapping(element.text);
+#endif
+						i = ParseText(buffer, element.text, i);
+						elementCount = _elements.Count;
+					}
+					else if (element.isEntity)
+						buffer.Append(' ');
+					i++;
+				}
+				_parsedText = buffer.ToString();
+			}
+		}
+
+		void BuildLines2()
+		{
 			int letterSpacing = _textFormat.letterSpacing;
 			int lineSpacing = _textFormat.lineSpacing - 1;
 			float rectWidth = _contentRect.width - GUTTER_X * 2;
@@ -543,14 +689,24 @@ namespace FairyGUI
 			bool wrap;
 			if (_input)
 			{
-#if !RTL_TEXT_SUPPORT
+#if RTL_TEXT_SUPPORT
+				if (_textDirection == RTLSupport.DirectionType.UNKNOW)
+					letterSpacing++;
+#else
 				letterSpacing++;
 #endif
 				wrap = !_singleLine;
 			}
 			else
+			{
 				wrap = _wordWrap && !_singleLine;
-			_fontSizeScale = 1;
+				if (_maxWidth > 0)
+				{
+					wrap = true;
+					rectWidth = _maxWidth - GUTTER_X * 2;
+				}
+			}
+			_textWidth = _textHeight = 0;
 
 			RequestText();
 
@@ -580,8 +736,8 @@ namespace FairyGUI
 					}
 					else
 					{
-						IHtmlObject htmlObject = null;
-						if (_richTextField != null)
+						IHtmlObject htmlObject = element.htmlObject;
+						if (_richTextField != null && htmlObject == null)
 						{
 							element.space = (int)(rectWidth - line.width - 4);
 							htmlObject = _richTextField.htmlPageContext.CreateObject(_richTextField, element);
@@ -621,7 +777,7 @@ namespace FairyGUI
 					}
 					else if (wordPossible && (ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch >= '0' && ch <= '9' || ch == '.'
 #if RTL_TEXT_SUPPORT
-						|| (_rtl && RTLSupport.IsArabicLetter(ch))
+						|| (_textDirection != RTLSupport.DirectionType.UNKNOW && RTLSupport.IsArabicLetter(ch))
 #endif
 					))
 					{
@@ -715,7 +871,7 @@ namespace FairyGUI
 						wordPossible = false;
 					}
 
-					newLine.charIndex = (short)(line.charIndex + line.charCount);
+					newLine.charIndex = line.charIndex + line.charCount;
 					if (line.width > _textWidth)
 						_textWidth = line.width;
 
@@ -750,99 +906,54 @@ namespace FairyGUI
 
 			_textWidth = Mathf.CeilToInt(_textWidth);
 			_textHeight = Mathf.CeilToInt(_textHeight);
-			if (_autoSize == AutoSizeType.Shrink && _textWidth > rectWidth)
-			{
-				_fontSizeScale = rectWidth / _textWidth;
-				_textWidth = rectWidth;
-				_textHeight = Mathf.CeilToInt(_textHeight * _fontSizeScale);
-
-				//调整各行的大小
-				int lineCount = _lines.Count;
-				for (int i = 0; i < lineCount; ++i)
-				{
-					line = _lines[i];
-					line.y *= _fontSizeScale;
-					line.y2 *= _fontSizeScale;
-					line.height *= _fontSizeScale;
-					line.width *= _fontSizeScale;
-					line.textHeight *= _fontSizeScale;
-				}
-			}
-			else
-				_fontSizeScale = 1;
-
-			BuildLinesFinal();
 		}
 
-		void ParseText()
+		void DoShrink()
 		{
-#if RTL_TEXT_SUPPORT
-			_rtl = RTLSupport.ContainsArabicLetters(_text);
-#endif
-			if (_html)
+			if (_lines.Count > 1 && _textHeight > _contentRect.height)
 			{
-				HtmlParser.inst.Parse(_text, _textFormat, _elements,
-					_richTextField != null ? _richTextField.htmlParseOptions : null);
+				//多行的情况，涉及到自动换行，得用二分法查找最合适的比例，会消耗多一点计算资源
+				int low = 0;
+				int high = _textFormat.size;
 
-				_parsedText = string.Empty;
-			}
-			else
-				_parsedText = _text;
+				//先尝试猜测一个比例
+				_fontSizeScale = Mathf.Sqrt(_contentRect.height / _textHeight);
+				int cur = Mathf.FloorToInt(_fontSizeScale * _textFormat.size);
 
-			int elementCount = _elements.Count;
-			if (elementCount == 0)
-			{
-#if RTL_TEXT_SUPPORT
-				if (_rtl)
-					_parsedText = RTLSupport.Convert(_parsedText);
-#endif
-
-				bool flag = _input || _richTextField != null && _richTextField.emojies != null;
-				if (!flag)
+				while (true)
 				{
-					//检查文本中是否有需要转换的字符，如果没有，节省一个new StringBuilder的操作。
-					int cnt = _parsedText.Length;
-					for (int i = 0; i < cnt; i++)
+					LineInfo.Return(_lines);
+					BuildLines2();
+
+					if (_textWidth > _contentRect.width || _textHeight > _contentRect.height)
+						high = cur;
+					else
+						low = cur;
+					if (high - low > 1 || high != low && cur == high)
 					{
-						char ch = _parsedText[i];
-						if (ch == '\r' || ch == '\t' || char.IsHighSurrogate(ch))
-						{
-							flag = true;
-							break;
-						}
+						cur = low + (high - low) / 2;
+						_fontSizeScale = (float)cur / _textFormat.size;
 					}
-				}
-
-				if (flag)
-				{
-					StringBuilder buffer = new StringBuilder();
-					ParseText(buffer, _parsedText, -1);
-					elementCount = _elements.Count;
-					_parsedText = buffer.ToString();
+					else
+						break;
 				}
 			}
-			else
+			else if (_textWidth > _contentRect.width)
 			{
-				StringBuilder buffer = new StringBuilder();
-				int i = 0;
-				while (i < elementCount)
+				_fontSizeScale = _contentRect.width / _textWidth;
+
+				LineInfo.Return(_lines);
+				BuildLines2();
+
+				if (_textWidth > _contentRect.width) //如果还超出，缩小一点再来一次
 				{
-					HtmlElement element = _elements[i];
-					element.charIndex = buffer.Length;
-					if (element.type == HtmlElementType.Text)
-					{
-#if RTL_TEXT_SUPPORT
-						if (_rtl)
-							element.text = RTLSupport.Convert(element.text);
-#endif
-						i = ParseText(buffer, element.text, i);
-						elementCount = _elements.Count;
-					}
-					else if (element.isEntity)
-						buffer.Append(' ');
-					i++;
+					int size = Mathf.FloorToInt(_textFormat.size * _fontSizeScale);
+					size--;
+					_fontSizeScale = (float)size / _textFormat.size;
+
+					LineInfo.Return(_lines);
+					BuildLines2();
 				}
-				_parsedText = buffer.ToString();
 			}
 		}
 
@@ -916,35 +1027,6 @@ namespace FairyGUI
 			return elementIndex;
 		}
 
-		bool _updatingSize; //防止重复调用BuildLines
-		void BuildLinesFinal()
-		{
-			if (!_input && _autoSize == AutoSizeType.Both)
-			{
-				_updatingSize = true;
-				if (_richTextField != null)
-					_richTextField.SetSize(_textWidth, _textHeight);
-				else
-					SetSize(_textWidth, _textHeight);
-				_updatingSize = false;
-			}
-			else if (_autoSize == AutoSizeType.Height)
-			{
-				_updatingSize = true;
-				float h = _textHeight;
-				if (_input && h < _minHeight)
-					h = _minHeight;
-				if (_richTextField != null)
-					_richTextField.height = h;
-				else
-					this.height = h;
-				_updatingSize = false;
-			}
-
-			_yOffset = 0;
-			ApplyVertAlign();
-		}
-
 		static List<Vector3> sCachedVerts = new List<Vector3>();
 		static List<Vector2> sCachedUVs = new List<Vector2>();
 		static List<Color32> sCachedCols = new List<Color32>();
@@ -978,15 +1060,19 @@ namespace FairyGUI
 			Color32 color = format.color;
 			Color32[] gradientColor = format.gradientColor;
 			bool boldVertice = format.bold && (_font.customBold || (format.italic && _font.customBoldAndItalic));
-#if !RTL_TEXT_SUPPORT
+
 			if (_input)
+			{
+#if RTL_TEXT_SUPPORT
+				if (_textDirection == RTLSupport.DirectionType.UNKNOW)
+					letterSpacing++;
+#else
 				letterSpacing++;
 #endif
+			}
+
 			if (_charPositions != null)
 				_charPositions.Clear();
-
-			if (_fontSizeScale != 1) //不为1，表示在Shrink的作用下，字体变小了，所以要重新请求
-				RequestText();
 
 			Vector3 v0 = Vector3.zero, v1 = Vector3.zero;
 			Vector2 u0, u1, u2, u3;
@@ -1031,7 +1117,7 @@ namespace FairyGUI
 				else
 					lineAlign = format.align;
 #if RTL_TEXT_SUPPORT
-				if (_rtl)
+				if (_textDirection == RTLSupport.DirectionType.RTL)
 				{
 					if (lineAlign == AlignType.Center)
 						xIndent = (int)((rectWidth + line.width) / 2);
@@ -1040,7 +1126,7 @@ namespace FairyGUI
 					else
 						xIndent = Mathf.Ceil(line.width) + GUTTER_X * 2;
 
-					if (_input && xIndent > rectWidth)
+					if (xIndent > rectWidth)
 						xIndent = rectWidth;
 
 					charX = xIndent - GUTTER_X;
@@ -1055,17 +1141,34 @@ namespace FairyGUI
 					else
 						xIndent = 0;
 
-					if (_input && xIndent < 0)
+					if (xIndent < 0)
 						xIndent = 0;
 
 					charX = GUTTER_X + xIndent;
 				}
 
+#if RTL_TEXT_SUPPORT
+				string strLine = "";
+				int charCount = line.charCount;
+				if (_textDirection != RTLSupport.DirectionType.UNKNOW)
+				{
+					strLine = _parsedText.Substring(line.charIndex, line.charCount);
+					if (_textDirection == RTLSupport.DirectionType.RTL)
+						strLine = RTLSupport.ConvertLineR(strLine);
+					else
+						strLine = RTLSupport.ConvertLineL(strLine);
+					charCount = strLine.Length;
+				}
+				for (int j = 0; j < charCount; j++)
+				{
+					int charIndex = line.charIndex + j;
+					char ch = _textDirection != RTLSupport.DirectionType.UNKNOW ? strLine[j] : _parsedText[charIndex];
+#else
 				for (int j = 0; j < line.charCount; j++)
 				{
 					int charIndex = line.charIndex + j;
 					char ch = _parsedText[charIndex];
-
+#endif
 					while (element != null && charIndex == element.charIndex)
 					{
 						if (element.type == HtmlElementType.Text)
@@ -1100,8 +1203,10 @@ namespace FairyGUI
 							IHtmlObject htmlObj = element.htmlObject;
 							if (htmlObj != null)
 							{
-								if (_rtl)
+#if RTL_TEXT_SUPPORT
+								if (_textDirection == RTLSupport.DirectionType.RTL)
 									charX -= htmlObj.width - 2;
+#endif
 
 								if (_charPositions != null)
 								{
@@ -1119,10 +1224,12 @@ namespace FairyGUI
 								else
 									element.status &= 254;
 
-								if (_rtl)
+#if RTL_TEXT_SUPPORT
+								if (_textDirection == RTLSupport.DirectionType.RTL)
 									charX -= letterSpacing;
 								else
-									charX += htmlObj.width + letterSpacing + 2;
+#endif
+								charX += htmlObj.width + letterSpacing + 2;
 							}
 						}
 
@@ -1142,7 +1249,7 @@ namespace FairyGUI
 					if (_font.GetGlyph(ch, glyph))
 					{
 #if RTL_TEXT_SUPPORT
-						if (_rtl)
+						if (_textDirection == RTLSupport.DirectionType.RTL)
 						{
 							if (lineClipped || clipped && (rectWidth < 7 || charX != (xIndent - GUTTER_X)) && charX < GUTTER_X - 0.5f) //超出区域，剪裁
 							{
@@ -1315,7 +1422,7 @@ namespace FairyGUI
 							_charPositions.Add(cp);
 						}
 #if RTL_TEXT_SUPPORT
-						if (_rtl)
+						if (_textDirection == RTLSupport.DirectionType.RTL)
 						{
 							charX -= letterSpacing;
 						}
@@ -1339,12 +1446,12 @@ namespace FairyGUI
 						}
 
 #if RTL_TEXT_SUPPORT
-						if (_rtl)
+						if (_textDirection == RTLSupport.DirectionType.RTL)
 						{
 							charX -= letterSpacing;
 						}
-#endif
 						else
+#endif
 						{
 							charX += letterSpacing;
 						}
@@ -1364,15 +1471,32 @@ namespace FairyGUI
 				_charPositions.Add(cp);
 			}
 
-			bool hasShadow = _shadowOffset.x != 0 || _shadowOffset.y != 0;
-			if ((_stroke != 0 || hasShadow) && _font.canOutline)
+			int count = vertList.Count;
+			if (count > 65000)
 			{
-				int count = vertList.Count;
-				int allocCount = count;
-				if (_stroke != 0)
-					allocCount += count * 4;
-				if (hasShadow)
-					allocCount += count;
+				Debug.LogWarning("Text is too large. A mesh may not have more than 65000 vertices.");
+				vertList.RemoveRange(65000, count - 65000);
+				count = 65000;
+			}
+
+			bool hasShadow = _shadowOffset.x != 0 || _shadowOffset.y != 0;
+			int allocCount = count;
+			int drawDirs = 0;
+			if (_stroke != 0)
+			{
+				drawDirs = UIConfig.enhancedTextOutlineEffect ? 8 : 4;
+				allocCount += count * drawDirs;
+			}
+			if (hasShadow)
+				allocCount += count;
+			if (allocCount > 65000)
+			{
+				Debug.LogWarning("Text is too large. Outline/shadow effect cannot be completed.");
+				allocCount = count;
+			}
+
+			if (allocCount != count && _font.canOutline)
+			{
 				graphics.Alloc(allocCount);
 
 				Vector3[] vertBuf = graphics.vertices;
@@ -1396,8 +1520,8 @@ namespace FairyGUI
 				Color32 strokeColor = _strokeColor;
 				if (_stroke != 0)
 				{
-					start = allocCount - count * 5;
-					for (int j = 0; j < 4; j++)
+					start = allocCount - count * (drawDirs + 1);
+					for (int j = 0; j < drawDirs; j++)
 					{
 						for (int i = 0; i < count; i++)
 						{
@@ -1433,7 +1557,6 @@ namespace FairyGUI
 			}
 			else
 			{
-				int count = vertList.Count;
 				graphics.Alloc(count);
 				vertList.CopyTo(0, graphics.vertices, 0, count);
 				uvList.CopyTo(0, graphics.uv, 0, count);
@@ -1467,7 +1590,9 @@ namespace FairyGUI
 			_textWidth = 0;
 			_textHeight = 0;
 			_parsedText = string.Empty;
-			_rtl = false;
+#if RTL_TEXT_SUPPORT
+			_textDirection = RTLSupport.DirectionType.UNKNOW;
+#endif
 			if (_charPositions != null)
 				_charPositions.Clear();
 		}
@@ -1525,7 +1650,7 @@ namespace FairyGUI
 			/// <summary>
 			/// 行首的字符索引
 			/// </summary>
-			public short charIndex;
+			public int charIndex;
 
 			/// <summary>
 			/// 行包括的字符个数

@@ -91,7 +91,6 @@ namespace FairyGUI
 		int _virtualListChanged; //1-content changed, 2-size changed
 		bool _eventLocked;
 		uint itemInfoVer; //用来标志item是否在本次处理中已经被重用了
-		uint enterCounter; //因为HandleScroll是会重入的，这个用来避免极端情况下的死锁
 
 		class ItemInfo
 		{
@@ -1163,21 +1162,21 @@ namespace FairyGUI
 					throw new Exception("Invalid child index: " + index + ">" + _virtualItems.Count);
 
 				if (_loop)
-					index = Mathf.FloorToInt(_firstIndex / _numItems) * _numItems + index;
+					index = Mathf.FloorToInt((float)_firstIndex / _numItems) * _numItems + index;
 
 				Rect rect;
 				ItemInfo ii = _virtualItems[index];
 				if (_layout == ListLayoutType.SingleColumn || _layout == ListLayoutType.FlowHorizontal)
 				{
 					float pos = 0;
-					for (int i = 0; i < index; i += _curLineItemCount)
+					for (int i = _curLineItemCount - 1; i < index; i += _curLineItemCount)
 						pos += _virtualItems[i].size.y + _lineGap;
 					rect = new Rect(0, pos, _itemSize.x, ii.size.y);
 				}
 				else if (_layout == ListLayoutType.SingleRow || _layout == ListLayoutType.FlowVertical)
 				{
 					float pos = 0;
-					for (int i = 0; i < index; i += _curLineItemCount)
+					for (int i = _curLineItemCount - 1; i < index; i += _curLineItemCount)
 						pos += _virtualItems[i].size.x + _columnGap;
 					rect = new Rect(pos, 0, ii.size.x, _itemSize.y);
 				}
@@ -1754,15 +1753,37 @@ namespace FairyGUI
 			if (_eventLocked)
 				return;
 
-			enterCounter = 0;
 			if (_layout == ListLayoutType.SingleColumn || _layout == ListLayoutType.FlowHorizontal)
 			{
-				HandleScroll1(forceUpdate);
+				int enterCounter = 0;
+				while (HandleScroll1(forceUpdate))
+				{
+					//可能会因为ITEM资源改变导致ITEM大小发生改变，所有出现最后一页填不满的情况，这时要反复尝试填满。
+					enterCounter++;
+					forceUpdate = false;
+					if (enterCounter > 20)
+					{
+						Debug.Log("FairyGUI: list will never be filled as the item renderer function always returns a different size.");
+						break;
+					}
+				}
+
 				HandleArchOrder1();
 			}
 			else if (_layout == ListLayoutType.SingleRow || _layout == ListLayoutType.FlowVertical)
 			{
-				HandleScroll2(forceUpdate);
+				int enterCounter = 0;
+				while (HandleScroll2(forceUpdate))
+				{
+					enterCounter++;
+					forceUpdate = false;
+					if (enterCounter > 20)
+					{
+						Debug.Log("FairyGUI: list will never be filled as the item renderer function always returns a different size.");
+						break;
+					}
+				}
+
 				HandleArchOrder2();
 			}
 			else
@@ -1773,15 +1794,8 @@ namespace FairyGUI
 			_boundsChanged = false;
 		}
 
-		void HandleScroll1(bool forceUpdate)
+		bool HandleScroll1(bool forceUpdate)
 		{
-			enterCounter++;
-			if (enterCounter > 3)
-			{
-				Debug.Log("FairyGUI: list will never be filled as the item renderer function always returns a different size.");
-				return;
-			}
-
 			float pos = scrollPane.scrollingPosY;
 			float max = pos + scrollPane.viewHeight;
 			bool end = max == scrollPane.contentHeight;//这个标志表示当前需要滚动到最末，无论内容变化大小
@@ -1789,14 +1803,14 @@ namespace FairyGUI
 			//寻找当前位置的第一条项目
 			int newFirstIndex = GetIndexOnPos1(ref pos, forceUpdate);
 			if (newFirstIndex == _firstIndex && !forceUpdate)
-				return;
+				return false;
 
 			int oldFirstIndex = _firstIndex;
 			_firstIndex = newFirstIndex;
 			int curIndex = newFirstIndex;
 			bool forward = oldFirstIndex > newFirstIndex;
-			int oldCount = this.numChildren;
-			int lastIndex = oldFirstIndex + oldCount - 1;
+			int childCount = this.numChildren;
+			int lastIndex = oldFirstIndex + childCount - 1;
 			int reuseIndex = forward ? lastIndex : oldFirstIndex;
 			float curX = 0, curY = pos;
 			bool needRender;
@@ -1921,7 +1935,7 @@ namespace FairyGUI
 				curIndex++;
 			}
 
-			for (int i = 0; i < oldCount; i++)
+			for (int i = 0; i < childCount; i++)
 			{
 				ItemInfo ii = _virtualItems[oldFirstIndex + i];
 				if (ii.updateFlag != itemInfoVer && ii.obj != null)
@@ -1933,22 +1947,25 @@ namespace FairyGUI
 				}
 			}
 
+			childCount = _children.Count;
+			for (int i = 0; i < childCount; i++)
+			{
+				GObject obj = _virtualItems[newFirstIndex + i].obj;
+				if (_children[i] != obj)
+					SetChildIndex(obj, i);
+			}
+
 			if (deltaSize != 0 || firstItemDeltaSize != 0)
 				this.scrollPane.ChangeContentSizeOnScrolling(0, deltaSize, 0, firstItemDeltaSize);
 
 			if (curIndex > 0 && this.numChildren > 0 && this.container.y < 0 && GetChildAt(0).y > -this.container.y)//最后一页没填满！
-				HandleScroll1(false);
+				return true;
+			else
+				return false;
 		}
 
-		void HandleScroll2(bool forceUpdate)
+		bool HandleScroll2(bool forceUpdate)
 		{
-			enterCounter++;
-			if (enterCounter > 3)
-			{
-				Debug.Log("FairyGUI: list will never be filled as the item renderer function always returns a different size.");
-				return;
-			}
-
 			float pos = scrollPane.scrollingPosX;
 			float max = pos + scrollPane.viewWidth;
 			bool end = pos == scrollPane.contentWidth;//这个标志表示当前需要滚动到最末，无论内容变化大小
@@ -1956,14 +1973,14 @@ namespace FairyGUI
 			//寻找当前位置的第一条项目
 			int newFirstIndex = GetIndexOnPos2(ref pos, forceUpdate);
 			if (newFirstIndex == _firstIndex && !forceUpdate)
-				return;
+				return false;
 
 			int oldFirstIndex = _firstIndex;
 			_firstIndex = newFirstIndex;
 			int curIndex = newFirstIndex;
 			bool forward = oldFirstIndex > newFirstIndex;
-			int oldCount = this.numChildren;
-			int lastIndex = oldFirstIndex + oldCount - 1;
+			int childCount = this.numChildren;
+			int lastIndex = oldFirstIndex + childCount - 1;
 			int reuseIndex = forward ? lastIndex : oldFirstIndex;
 			float curX = pos, curY = 0;
 			bool needRender;
@@ -2087,7 +2104,7 @@ namespace FairyGUI
 				curIndex++;
 			}
 
-			for (int i = 0; i < oldCount; i++)
+			for (int i = 0; i < childCount; i++)
 			{
 				ItemInfo ii = _virtualItems[oldFirstIndex + i];
 				if (ii.updateFlag != itemInfoVer && ii.obj != null)
@@ -2099,11 +2116,21 @@ namespace FairyGUI
 				}
 			}
 
+			childCount = _children.Count;
+			for (int i = 0; i < childCount; i++)
+			{
+				GObject obj = _virtualItems[newFirstIndex + i].obj;
+				if (_children[i] != obj)
+					SetChildIndex(obj, i);
+			}
+
 			if (deltaSize != 0 || firstItemDeltaSize != 0)
 				this.scrollPane.ChangeContentSizeOnScrolling(deltaSize, 0, firstItemDeltaSize, 0);
 
 			if (curIndex > 0 && this.numChildren > 0 && this.container.x < 0 && GetChildAt(0).x > -this.container.x)//最后一页没填满！
-				HandleScroll2(false);
+				return true;
+			else
+				return false;
 		}
 
 		void HandleScroll3(bool forceUpdate)
@@ -2732,180 +2759,115 @@ namespace FairyGUI
 			InvalidateBatchingState(true);
 		}
 
-		override public void Setup_BeforeAdd(XML xml)
+		override public void Setup_BeforeAdd(ByteBuffer buffer, int beginPos)
 		{
-			base.Setup_BeforeAdd(xml);
+			base.Setup_BeforeAdd(buffer, beginPos);
 
-			string str;
-			string[] arr;
+			buffer.Seek(beginPos, 5);
 
-			str = xml.GetAttribute("layout");
-			if (str != null)
-				_layout = FieldTypes.ParseListLayoutType(str);
-			else
-				_layout = ListLayoutType.SingleColumn;
+			_layout = (ListLayoutType)buffer.ReadByte();
+			selectionMode = (ListSelectionMode)buffer.ReadByte();
+			_align = (AlignType)buffer.ReadByte();
+			_verticalAlign = (VertAlignType)buffer.ReadByte();
+			_lineGap = buffer.ReadShort();
+			_columnGap = buffer.ReadShort();
+			_lineCount = buffer.ReadShort();
+			_columnCount = buffer.ReadShort();
+			_autoResizeItem = buffer.ReadBool();
+			_childrenRenderOrder = (ChildrenRenderOrder)buffer.ReadByte();
+			_apexIndex = buffer.ReadShort();
 
-			str = xml.GetAttribute("selectionMode");
-			if (str != null)
-				selectionMode = FieldTypes.ParseListSelectionMode(str);
-			else
-				selectionMode = ListSelectionMode.Single;
+			if (buffer.ReadBool())
+			{
+				_margin.top = buffer.ReadInt();
+				_margin.bottom = buffer.ReadInt();
+				_margin.left = buffer.ReadInt();
+				_margin.right = buffer.ReadInt();
+			}
 
-			OverflowType overflow;
-			str = xml.GetAttribute("overflow");
-			if (str != null)
-				overflow = FieldTypes.ParseOverflowType(str);
-			else
-				overflow = OverflowType.Visible;
-
-			str = xml.GetAttribute("margin");
-			if (str != null)
-				_margin.Parse(str);
-
-			str = xml.GetAttribute("align");
-			if (str != null)
-				_align = FieldTypes.ParseAlign(str);
-
-			str = xml.GetAttribute("vAlign");
-			if (str != null)
-				_verticalAlign = FieldTypes.ParseVerticalAlign(str);
-
+			OverflowType overflow = (OverflowType)buffer.ReadByte();
 			if (overflow == OverflowType.Scroll)
 			{
-				ScrollType scroll;
-				str = xml.GetAttribute("scroll");
-				if (str != null)
-					scroll = FieldTypes.ParseScrollType(str);
-				else
-					scroll = ScrollType.Vertical;
-
-				ScrollBarDisplayType scrollBarDisplay;
-				str = xml.GetAttribute("scrollBar");
-				if (str != null)
-					scrollBarDisplay = FieldTypes.ParseScrollBarDisplayType(str);
-				else
-					scrollBarDisplay = ScrollBarDisplayType.Default;
-
-				int scrollBarFlags = xml.GetAttributeInt("scrollBarFlags");
-
-				Margin scrollBarMargin = new Margin();
-				str = xml.GetAttribute("scrollBarMargin");
-				if (str != null)
-					scrollBarMargin.Parse(str);
-
-				string vtScrollBarRes = null;
-				string hzScrollBarRes = null;
-				arr = xml.GetAttributeArray("scrollBarRes");
-				if (arr != null)
-				{
-					vtScrollBarRes = arr[0];
-					hzScrollBarRes = arr[1];
-				}
-
-				string headerRes = null;
-				string footerRes = null;
-				arr = xml.GetAttributeArray("ptrRes");
-				if (arr != null)
-				{
-					headerRes = arr[0];
-					footerRes = arr[1];
-				}
-
-				SetupScroll(scrollBarMargin, scroll, scrollBarDisplay, scrollBarFlags, vtScrollBarRes, hzScrollBarRes, headerRes, footerRes);
+				int savedPos = buffer.position;
+				buffer.Seek(beginPos, 7);
+				SetupScroll(buffer);
+				buffer.position = savedPos;
 			}
 			else
-			{
 				SetupOverflow(overflow);
+
+			if (buffer.ReadBool())
+			{
+				int i1 = buffer.ReadInt();
+				int i2 = buffer.ReadInt();
+				this.clipSoftness = new Vector2(i1, i2);
 			}
 
-			arr = xml.GetAttributeArray("clipSoftness");
-			if (arr != null)
-				this.clipSoftness = new Vector2(int.Parse(arr[0]), int.Parse(arr[1]));
+			buffer.Seek(beginPos, 8);
 
-			_lineGap = xml.GetAttributeInt("lineGap");
-			_columnGap = xml.GetAttributeInt("colGap");
-			int c = xml.GetAttributeInt("lineItemCount");
-			if (_layout == ListLayoutType.FlowHorizontal)
-				_columnCount = c;
-			else if (_layout == ListLayoutType.FlowVertical)
-				_lineCount = c;
-			else if (_layout == ListLayoutType.Pagination)
+			defaultItem = buffer.ReadS();
+			int itemCount = buffer.ReadShort();
+			for (int i = 0; i < itemCount; i++)
 			{
-				_columnCount = c;
-				_lineCount = xml.GetAttributeInt("lineItemCount2");
-			}
-			defaultItem = xml.GetAttribute("defaultItem");
+				int nextPos = buffer.ReadShort();
+				nextPos += buffer.position;
 
-			if (_layout == ListLayoutType.SingleRow || _layout == ListLayoutType.SingleColumn)
-				_autoResizeItem = xml.GetAttributeBool("autoItemSize", true);
-			else
-				_autoResizeItem = xml.GetAttributeBool("autoItemSize", false);
-
-			str = xml.GetAttribute("renderOrder");
-			if (str != null)
-			{
-				_childrenRenderOrder = FieldTypes.ParseChildrenRenderOrder(str);
-				if (_childrenRenderOrder == ChildrenRenderOrder.Arch)
-					_apexIndex = xml.GetAttributeInt("apex", 0);
-			}
-
-			XMLList.Enumerator et = xml.GetEnumerator("item");
-			while (et.MoveNext())
-			{
-				XML ix = et.Current;
-				string url = ix.GetAttribute("url");
-				if (string.IsNullOrEmpty(url))
+				string str = buffer.ReadS();
+				if (str == null)
 				{
-					url = defaultItem;
-					if (string.IsNullOrEmpty(url))
+					str = defaultItem;
+					if (string.IsNullOrEmpty(str))
+					{
+						buffer.position = nextPos;
 						continue;
+					}
 				}
 
-				GObject obj = GetFromPool(url);
+				GObject obj = GetFromPool(str);
 				if (obj != null)
 				{
 					AddChild(obj);
-					str = ix.GetAttribute("title");
+					str = buffer.ReadS();
 					if (str != null)
 						obj.text = str;
-					str = ix.GetAttribute("icon");
-					if (str != null)
-						obj.icon = str;
-					str = ix.GetAttribute("name");
-					if (str != null)
-						obj.name = str;
-					str = ix.GetAttribute("selectedIcon");
-					if (str != null && (obj is GButton))
-						(obj as GButton).selectedIcon = str;
-					str = ix.GetAttribute("selectedTitle");
+					str = buffer.ReadS();
 					if (str != null && (obj is GButton))
 						(obj as GButton).selectedTitle = str;
+					str = buffer.ReadS();
+					if (str != null)
+						obj.icon = str;
+					str = buffer.ReadS();
+					if (str != null && (obj is GButton))
+						(obj as GButton).selectedIcon = str;
+					str = buffer.ReadS();
+					if (str != null)
+						obj.name = str;
 					if (obj is GComponent)
 					{
-						arr = ix.GetAttributeArray("controllers");
-						if (arr != null)
+						int cnt = buffer.ReadShort();
+						for (int j = 0; j < cnt; j++)
 						{
-							for (int i = 0; i < arr.Length; i += 2)
-							{
-								Controller cc = (obj as GComponent).GetController(arr[i]);
-								if (cc != null)
-									cc.selectedPageId = arr[i + 1];
-							}
+							Controller cc = (obj as GComponent).GetController(buffer.ReadS());
+							str = buffer.ReadS();
+							if (cc != null)
+								cc.selectedPageId = str;
 						}
 					}
 				}
+
+				buffer.position = nextPos;
 			}
 		}
 
-		override public void Setup_AfterAdd(XML xml)
+		override public void Setup_AfterAdd(ByteBuffer buffer, int beginPos)
 		{
-			base.Setup_AfterAdd(xml);
+			base.Setup_AfterAdd(buffer, beginPos);
 
-			string str;
+			buffer.Seek(beginPos, 6);
 
-			str = xml.GetAttribute("selectionController");
-			if (str != null)
-				_selectionController = parent.GetController(str);
+			int i = buffer.ReadShort();
+			if (i != -1)
+				_selectionController = parent.GetControllerAt(i);
 		}
 	}
 }

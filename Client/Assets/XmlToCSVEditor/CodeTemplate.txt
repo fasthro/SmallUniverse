@@ -1,9 +1,9 @@
 // Generate By @XmlToCSV
 using UnityEngine;
 
-namespace SmallUniverse.CSVData
+namespace SmallUniverse
 {
-    public class [CLASS_NAME]
+    public class [CLASS_NAME] : CSVDataBase
     {
 [VARS_CODE]
     }

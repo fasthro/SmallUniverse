@@ -138,7 +138,7 @@ namespace SmallUniverse.Manager
                 {
                     packages.Remove(pname);
 
-                    UIPackage.RemovePackage(pname, true);
+                    UIPackage.RemovePackage(pname);
                 }
             }
         }

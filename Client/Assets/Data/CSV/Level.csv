@@ -1,0 +1,3 @@
+﻿id,areaIndex,monsterId,bornPosition
+int,int,int,Vector3
+1,12,50,1|-1|6

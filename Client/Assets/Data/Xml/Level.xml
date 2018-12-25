@@ -63,7 +63,7 @@
     <Cell><Data ss:Type="String">Vector3</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">levelId</Data></Cell>
+    <Cell><Data ss:Type="String">id</Data></Cell>
     <Cell><Data ss:Type="String">areaIndex</Data></Cell>
     <Cell><Data ss:Type="String">monsterId</Data></Cell>
     <Cell><Data ss:Type="String">bornPosition</Data></Cell>
@@ -92,8 +92,8 @@
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>3</ActiveRow>
-     <ActiveCol>3</ActiveCol>
+     <ActiveRow>9</ActiveRow>
+     <ActiveCol>5</ActiveCol>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>

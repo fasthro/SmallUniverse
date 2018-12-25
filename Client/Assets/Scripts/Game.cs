@@ -80,6 +80,19 @@ namespace SmallUniverse
             }
         }
 
+        // game csv
+        private static GameCSV m_gameCSV = null;
+        public static GameCSV gameCSV {
+            get {
+                if (m_gameCSV == null)
+                {
+                    m_gameCSV = mainGame.transform.Find("GameCSV").GetComponent<GameCSV>();
+                }
+                return m_gameCSV;
+            }
+        }
+
+
         // hero
         private static Hero m_hero = null;
         public static Hero hero{

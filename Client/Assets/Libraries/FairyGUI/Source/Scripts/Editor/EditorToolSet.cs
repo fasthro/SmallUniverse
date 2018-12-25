@@ -96,21 +96,23 @@ namespace FairyGUIEditor
 			UIPackage.RemoveAllPackages();
 			FontManager.Clear();
 			NTexture.DisposeEmpty();
+			UIObjectFactory.Clear();
 
-			string[] ids = AssetDatabase.FindAssets("@sprites t:textAsset");
+			string[] ids = AssetDatabase.FindAssets("_fui t:textAsset");
 			int cnt = ids.Length;
 			for (int i = 0; i < cnt; i++)
 			{
 				string assetPath = AssetDatabase.GUIDToAssetPath(ids[i]);
-				int pos = assetPath.LastIndexOf("@");
+				int pos = assetPath.LastIndexOf("_fui");
 				if (pos == -1)
 					continue;
 
 				assetPath = assetPath.Substring(0, pos);
 				if (AssetDatabase.AssetPathToGUID(assetPath) != null)
 					UIPackage.AddPackage(assetPath,
-						(string name, string extension, System.Type type) =>
+						(string name, string extension, System.Type type, out DestroyMethod destroyMethod) =>
 						{
+							destroyMethod = DestroyMethod.Unload;
 							return AssetDatabase.LoadAssetAtPath(name + extension, type);
 						}
 					);
@@ -124,11 +126,6 @@ namespace FairyGUIEditor
 			for (int i = 0; i < cnt; i++)
 				packagesPopupContents[i] = new GUIContent(pkgs[i].name);
 			packagesPopupContents[cnt] = new GUIContent("Please Select");
-
-			UIConfig.ClearResourceRefs();
-			UIConfig[] configs = GameObject.FindObjectsOfType<UIConfig>();
-			foreach (UIConfig config in configs)
-				config.Load();
 
 			EMRenderSupport.Reload();
 		}

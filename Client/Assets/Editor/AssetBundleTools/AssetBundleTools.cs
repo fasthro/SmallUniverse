@@ -48,6 +48,9 @@ namespace SmallUniverse.GameEditor
             // skybox
             SetAssetBundleNameToSkybox();
 
+            // csv
+            SetAssetBundleNameToCSV();
+
             Debug.Log("设置资源 assetBundleName 完成!");
         }
 
@@ -147,6 +150,23 @@ namespace SmallUniverse.GameEditor
                 }
             }
         }
+
+        /// <summary>
+        /// 设置 csv bundle name
+        /// </summary>
+        private static void SetAssetBundleNameToCSV()
+        {
+            string rootDir = Path.Combine(Application.dataPath, "Data/CSV");
+            if (!Directory.Exists(rootDir))
+                return;
+
+            string[] filePaths = Directory.GetFiles(rootDir, "*.csv", SearchOption.TopDirectoryOnly);
+            for (int k = 0; k < filePaths.Length; k++)
+            {   
+                SetAssetBundleName(filePaths[k], "csv/" + Path.GetFileNameWithoutExtension(filePaths[k]));
+            }
+        }
+        
 
         /// <summary>
         /// 设置资源文件 bundle name

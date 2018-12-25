@@ -1,4 +1,5 @@
 {
+	"binaryFormat":true,
 	"codeGeneration":{
 		"classNamePrefix":"UI_",
 		"codePath":"",

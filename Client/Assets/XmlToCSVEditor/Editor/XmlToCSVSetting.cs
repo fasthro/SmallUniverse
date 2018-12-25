@@ -46,7 +46,7 @@ namespace SmallUniverse.GameEditor.XmlEditor
 
             string rootXmlPath = Path.Combine(Application.dataPath, "Data/Xml");
             string rootCSVPath = Path.Combine(Application.dataPath, "Data/CSV");
-            string rootCodePath = Path.Combine(Application.dataPath, "Scripts/Data");
+            string rootCodePath = Path.Combine(Application.dataPath, "Scripts/CSV/Data");
 
             Dictionary<string, string> fileMap = new Dictionary<string, string>();
 
