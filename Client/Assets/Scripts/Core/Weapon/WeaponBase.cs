@@ -22,7 +22,7 @@ namespace SmallUniverse
             m_actor = actor;
         }
 
-        public virtual void Attack()
+        public virtual void Attack(AttackData attackData, ActorBase target)
         {
 
         }

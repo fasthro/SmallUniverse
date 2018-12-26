@@ -27,20 +27,20 @@ namespace SmallUniverse
             base.Initialize(actor);
         }
 
-        public override void Attack()
+        public override void Attack(AttackData attackData, ActorBase target)
         {
             m_bulletRotation.SetLookRotation(m_actor.actorGameObject.transform.forward);
 
             switch (bulletType)
             {
                 case BulletType.Normal:
-                    FireNormalBullet();
+                    FireNormalBullet(attackData, target);
                     break;
                 case BulletType.Spray:
-                    FireBulletSpray();
+                    FireBulletSpray(attackData, target);
                     break;
                 case BulletType.Line:
-                    FireBulletLine();
+                    FireBulletLine(attackData, target);
                     break;
             }
 
@@ -72,19 +72,19 @@ namespace SmallUniverse
         /// <summary>
         /// 发射普通子弹
         /// </summary>
-        private void FireNormalBullet()
+        private void FireNormalBullet(AttackData attackData, ActorBase target)
         {
             m_bullet = Game.gamePool.Spawn<Bullet>(bulletAssetPath);
             m_bullet.Initialize();
             m_bullet.firePosition = firePoint.position;
             m_bullet.fireRotation = m_bulletRotation;
-            m_bullet.Spawn();
+            m_bullet.Spawn(attackData, target);
         }
 
         /// <summary>
         /// 发射 Spray 子弹
         /// </summary>
-        private void FireBulletSpray()
+        private void FireBulletSpray(AttackData attackData, ActorBase target)
         {
             if (m_bullet == null)
             {
@@ -92,14 +92,14 @@ namespace SmallUniverse
                 m_bullet.Initialize();
                 m_bullet.firePosition = firePoint.position;
                 m_bullet.fireRotation = m_bulletRotation;
-                m_bullet.Spawn();
+                m_bullet.Spawn(attackData, target);
             }
         }
 
         /// <summary>
         /// 发射 Line 子弹
         /// </summary>
-        private void FireBulletLine()
+        private void FireBulletLine(AttackData attackData, ActorBase target)
         {
             if (m_bullet == null)
             {
@@ -107,7 +107,7 @@ namespace SmallUniverse
                 m_bullet.Initialize();
                 m_bullet.firePosition = firePoint.position;
                 m_bullet.fireRotation = m_bulletRotation;
-                m_bullet.Spawn();
+                m_bullet.Spawn(attackData, target);
             }
         }
 

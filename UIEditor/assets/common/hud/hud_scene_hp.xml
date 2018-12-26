@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="200,12">
+  <displayList>
+    <component id="n0_10cmk" name="@bar" src="10cmk3l" fileName="hud/scene_hp/hero_scene_hp_bat.xml" xy="0,0" size="200,12">
+      <ProgressBar value="100" max="100"/>
+    </component>
+  </displayList>
+</component>

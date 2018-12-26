@@ -44,9 +44,6 @@ namespace SmallUniverse
         // 当前状态
         public ActorState actorState;
 
-        // 技能数据
-        protected SkillData m_skillData;
-
         // 目标方向
         protected Vector3 m_targetDir;
         // 移动方向
@@ -133,9 +130,8 @@ namespace SmallUniverse
         /// <summary>
         /// 攻击
         /// </summary>
-        public virtual void Attack(SkillData skillData)
+        public virtual void Attack()
         {
-            m_skillData = skillData;
             m_attackInput = true;
         }
 
@@ -145,8 +141,11 @@ namespace SmallUniverse
         public virtual void StopAttack()
         {
             m_attackInput = false;
-            actorState = ActorState.None;
-            m_weapon.StopAttack();
+            if(actorState != ActorState.Attack)
+            {
+                actorState = ActorState.None;
+                m_weapon.StopAttack();
+            }
         }
 
         /// <summary>

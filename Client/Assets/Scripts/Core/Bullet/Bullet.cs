@@ -6,9 +6,9 @@ namespace SmallUniverse
 {
     public class Bullet : BulletBase
     {
-        public override void Spawn()
+        public override void Spawn(AttackData attackData, ActorBase target)
         {
-            base.Spawn();
+            base.Spawn(attackData, target);
 
             transform.position = firePosition;
             transform.rotation = fireRotation;
@@ -16,7 +16,7 @@ namespace SmallUniverse
 
         protected override void OnUpdate()
         {
-            if (!IsSpawn || IsDespawn)
+            if (!m_isSpawn || m_isDespawn)
                 return;
 
             if (m_lifeTime >= lifeTime)
@@ -28,6 +28,32 @@ namespace SmallUniverse
                 m_lifeTime += Time.deltaTime;
                 transform.position += transform.forward * speed * Time.deltaTime;
             }
+        }
+
+        protected override void OnCollisionEnter(Collision collision)
+        {
+            if(m_isDamage)
+                return;
+
+            // 生成子弹效果
+            Game.gamePool.Spawn(impactAssetPath, null, collision.contacts[0].point, transform.rotation);
+
+            if (GameLayer.Compare(m_attackData.layer, GameLayer.HERO))
+            {
+                if (GameLayer.Compare(collision.gameObject.layer, GameLayer.MONSTER))
+                {
+                    CreateDamage(collision.gameObject.GetComponent<ActorGameObject>().GetActor());
+                }
+            }
+            else if (GameLayer.Compare(collision.gameObject.layer, GameLayer.MONSTER))
+            {
+                if (GameLayer.Compare(collision.gameObject.layer, GameLayer.HERO))
+                {
+                    CreateDamage(collision.gameObject.GetComponent<ActorGameObject>().GetActor());
+                }
+            }
+
+            Despawn();
         }
     }
 }

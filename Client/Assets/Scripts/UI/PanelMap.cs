@@ -7,6 +7,8 @@ namespace SmallUniverse.UI
         {
             switch (pname)
             {
+                case PanelName.HudPanel:
+                    return new HudPanel();
                 case PanelName.LoaderPanel:
                     return new LoaderPanel();
                 case PanelName.LoginPanel:
@@ -22,6 +24,8 @@ namespace SmallUniverse.UI
         {
             switch (pname)
             {
+                case PanelName.HudPanel:
+                    return new HudPanelView();
                 case PanelName.LoaderPanel:
                     return new LoaderPanelView();
                 case PanelName.LoginPanel:

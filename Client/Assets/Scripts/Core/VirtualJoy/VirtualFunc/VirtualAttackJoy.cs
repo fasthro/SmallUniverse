@@ -29,7 +29,7 @@ namespace SmallUniverse
 
         protected override void OnTouchStart(JoyGesture gesture)
         {
-            Game.hero.Attack(new SkillData());
+            Game.hero.Attack();
         }
 
 
@@ -45,7 +45,7 @@ namespace SmallUniverse
 
         protected override void OnKeyDown()
         {
-            Game.hero.Attack(new SkillData());
+            Game.hero.Attack();
         }
     }
 }

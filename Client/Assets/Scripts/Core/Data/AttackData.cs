@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace SmallUniverse
 {
-    public class SkillData
+    public class AttackData
     {
-
+        public int layer;
     }
 }

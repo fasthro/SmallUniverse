@@ -92,6 +92,10 @@
     <image id="cj4k3e" name="Colors.png" path="/"/>
     <component id="cj4k3f" name="attack_joy.xml" path="/component/joystick/" exported="true"/>
     <component id="cj4k3g" name="skill_joy.xml" path="/component/joystick/" exported="true"/>
+    <component id="10cmk3h" name="hud_scene_hp.xml" path="/hud/" exported="true"/>
+    <image id="10cmk3j" name="hp_bar_background.png" path="/hud/image/" scale="9grid" scale9grid="150,3,300,6"/>
+    <image id="10cmk3k" name="hp_bar_red.png" path="/hud/image/" scale="9grid" scale9grid="150,3,300,6"/>
+    <component id="10cmk3l" name="hero_scene_hp_bat.xml" path="/hud/scene_hp/"/>
   </resources>
   <publish name="common" path="..\Client\Assets\Resources\UI\common" maxAtlasSize="4096" extractAlpha="true"/>
 </packageDescription>

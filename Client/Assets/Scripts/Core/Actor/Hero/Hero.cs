@@ -54,11 +54,11 @@ namespace SmallUniverse
             m_weapon.Initialize(this);
         }
 
-        public override void Attack(SkillData skillData)
+        public override void Attack()
         {
             if (actorState != ActorState.Attack)
             {
-                base.Attack(skillData);
+                base.Attack();
                 actorState = ActorState.Attack;
                 m_animator.SetFloat(ActorAnimatorParameters.AttackSpeed.ToString(), attribute.GetAttribute(ActorAttributeType.AttackSpeed));
                 m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), true);
@@ -77,7 +77,9 @@ namespace SmallUniverse
         {
             if (actorState == ActorState.Attack)
             {
-               m_weapon.Attack();
+                var attackData = new AttackData();
+                attackData.layer = GameLayer.NameToLayer(GameLayer.HERO);
+               m_weapon.Attack(attackData, null);
             }
         }
 
@@ -91,7 +93,7 @@ namespace SmallUniverse
             {
                 if (m_attackInput)
                 {
-                    Attack(m_skillData);
+                    Attack();
                 }
                 else
                 {

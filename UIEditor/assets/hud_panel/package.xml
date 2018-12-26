@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="a867jsc7" jpegQuality="80" compressPNG="true">
+  <resources>
+    <component id="10cmk0" name="hud_panel.xml" path="/panel/" exported="true"/>
+  </resources>
+  <publish name="hud_panel" path="..\Client\Assets\Resources\UI\hud_panel"/>
+</packageDescription>

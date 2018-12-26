@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="600,12" extention="ProgressBar">
+  <displayList>
+    <image id="n0_10cmk" name="n0" src="10cmk3j" fileName="hud/image/hp_bar_background.png" xy="0,0" size="600,12">
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <image id="n1_10cmk" name="bar" src="10cmk3k" fileName="hud/image/hp_bar_red.png" xy="0,0" size="600,12"/>
+  </displayList>
+  <ProgressBar/>
+</component>

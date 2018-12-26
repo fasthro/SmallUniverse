@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="1136,640" opaque="false">
+  <displayList>
+    <component id="n0_kkxc" name="@move_joy" src="kkxcw" fileName="component/joystick/move_joy.xml" pkg="tqc2b6mi" xy="35,407" pivot="0.5,0.5"/>
+    <component id="n1_cj4k" name="@attack_joy" src="cj4k3f" fileName="component/joystick/attack_joy.xml" pkg="tqc2b6mi" xy="991,499"/>
+    <component id="n2_cj4k" name="@skill_3_joy" src="cj4k3g" fileName="component/joystick/skill_joy.xml" pkg="tqc2b6mi" xy="1045,388"/>
+    <component id="n3_cj4k" name="@skill_2_joy" src="cj4k3g" fileName="component/joystick/skill_joy.xml" pkg="tqc2b6mi" xy="911,429"/>
+    <component id="n4_cj4k" name="@skill_1_joy" src="cj4k3g" fileName="component/joystick/skill_joy.xml" pkg="tqc2b6mi" xy="871,549"/>
+  </displayList>
+</component>

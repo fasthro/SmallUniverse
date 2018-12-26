@@ -41,7 +41,7 @@ namespace SmallUniverse.UI
 
         private void OckBeginGame()
         {
-            Game.GetManager<GSceneManager>().LoadLevel(SceneType.MainScene);
+            Game.GetManager<GSceneManager>().LoadLevel(SceneType.BattleScene);
         }
     }
 }
