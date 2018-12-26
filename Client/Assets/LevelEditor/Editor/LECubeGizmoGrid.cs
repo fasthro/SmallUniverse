@@ -79,5 +79,21 @@ namespace SmallUniverse.GameEditor.LevelEditor
             
             SceneView.RepaintAll();
         }
+
+        /// <summary>
+        /// 画 position gizmo grid
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="quaternion"></param>
+        /// <param name="label"></param>
+        public static void DrawGizmoPosition(Vector3 position, Quaternion quaternion, string label)
+        {
+            Handles.PositionHandle(position, quaternion);
+
+            if(!string.IsNullOrEmpty(label))
+                Handles.Label(position, label);
+           
+            SceneView.RepaintAll();
+        }
     }
 }

@@ -30,7 +30,8 @@ namespace SmallUniverse.GameEditor.LevelEditor
             if (state == SelectorState.Selected)
             {
                 LECubeGizmoGrid.DrawSelector(position);
-
+                var label = string.Format("Position  : {0}\nRotation : {1}", grid.transform.position.ToString(), grid.transform.localEulerAngles.ToString());
+                LECubeGizmoGrid.DrawGizmoPosition(position, grid.transform.rotation, label);
                 DrawRotateToolbar(sceneView);
             }
             else
@@ -50,7 +51,6 @@ namespace SmallUniverse.GameEditor.LevelEditor
             GUI.skin = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Scene);
 
             var beginX = sceneView.position.width / 2 - (LESetting.SceneToolSize * 3 + LESetting.SceneTooIInterval * 2);
-
 
             // RotateX
             content = new GUIContent(LEWindow.IconConfig.GetIconTexture("iconRotateX"));
@@ -72,12 +72,6 @@ namespace SmallUniverse.GameEditor.LevelEditor
             {
                 grid.RotateZ();
             }
-
-            // position
-            GUI.BeginGroup(new Rect(beginX, LESetting.SceneTooIY + LESetting.SceneToolSize + 5f, LESetting.SceneToolSize * 3 + LESetting.SceneTooIInterval * 2, 40f));
-            GUI.Box(new Rect(0, 0, LESetting.SceneToolSize * 3 + LESetting.SceneTooIInterval * 2, 40f), "position");
-            GUI.Label(new Rect(20, 20, LESetting.SceneToolSize * 3 + LESetting.SceneTooIInterval * 2, 40f), string.Format("x:{0} y:{1}, z:{2}", position.x, position.y, position.z));
-            GUI.EndGroup();
 
             Handles.EndGUI();
         }

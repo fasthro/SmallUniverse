@@ -2741,6 +2741,7 @@ GameObject:
   m_Component:
   - component: {fileID: 230311296}
   - component: {fileID: 230311297}
+  - component: {fileID: 230311298}
   m_Layer: 0
   m_Name: x:11/y:1/z:-1/area:1
   m_TagString: Untagged
@@ -2784,6 +2785,23 @@ MonoBehaviour:
   position: {x: 11, y: 1, z: -1}
   rotationAngle: {x: 0, y: 0, z: 0}
   function: 3
+--- !u!114 &230311298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 230311295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb72cad0fad36cf44b6890dc116246cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: {x: 0, y: 0, z: 0}
+  size: {x: 1, y: 1, z: 1}
+  color:
+    serializedVersion: 2
+    rgba: 4278255360
+  permanentDrawing: 0
 --- !u!1 &237601961
 GameObject:
   m_ObjectHideFlags: 0
@@ -8891,7 +8909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9280c7041c1d2454aaec7fef5ac164a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GizmoGridEnabled: 0
+  GizmoGridEnabled: 1
   CentreGrid: 1
   BaseEnabled: 0
 --- !u!4 &671845272
@@ -21033,7 +21051,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1706182052}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
   m_LocalPosition: {x: 3, y: 1, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -21060,7 +21078,7 @@ MonoBehaviour:
     bundleName: levels/prefabs/monster
   area: 1
   position: {x: 3, y: 1, z: -1}
-  rotationAngle: {x: 0, y: 0, z: 0}
+  rotationAngle: {x: 0, y: 270, z: 0}
   function: 2
 --- !u!114 &1706182055
 MonoBehaviour:
@@ -21670,7 +21688,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1741237577}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
   m_LocalPosition: {x: 9, y: 1, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -21697,7 +21715,7 @@ MonoBehaviour:
     bundleName: levels/prefabs/monster
   area: 1
   position: {x: 9, y: 1, z: -1}
-  rotationAngle: {x: 0, y: 0, z: 0}
+  rotationAngle: {x: 0, y: 270, z: 0}
   function: 2
 --- !u!114 &1741237580
 MonoBehaviour:
@@ -22309,7 +22327,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1785467916}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: -0.7071068}
   m_LocalPosition: {x: 6, y: 1, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -22336,7 +22354,7 @@ MonoBehaviour:
     bundleName: levels/prefabs/monster
   area: 1
   position: {x: 6, y: 1, z: -1}
-  rotationAngle: {x: 0, y: 0, z: 0}
+  rotationAngle: {x: 0, y: 270, z: 0}
   function: 2
 --- !u!114 &1785467919
 MonoBehaviour:
@@ -28188,7 +28206,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2133870814}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.7071067, z: 0, w: -0.7071068}
   m_LocalPosition: {x: -1, y: 1, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -28215,7 +28233,7 @@ MonoBehaviour:
     bundleName: levels/prefabs/player
   area: 1
   position: {x: -1, y: 1, z: -1}
-  rotationAngle: {x: 0, y: 0, z: 0}
+  rotationAngle: {x: 0, y: 450, z: 0}
   function: 1
 --- !u!114 &2133870817
 MonoBehaviour:
