@@ -29,8 +29,11 @@ namespace SmallUniverse
         protected ActorAnimationEvent m_animationEvent;
         protected Rigidbody m_rigidbody;
         protected NavMeshAgent m_navMeshAgent;
+        // 武器
         protected WeaponBase m_weapon;
-        
+        // 生命条
+        protected UP_HudSceneHpBar m_hpBar;
+
         // 是否已经出生
         protected bool m_isBorn;
         public bool IsBorn
@@ -78,8 +81,6 @@ namespace SmallUniverse
         public void InitActorData()
         {
             attribute = ActorAttribute.Create();
-            attribute.SetAttribute(ActorAttributeType.MoveSpeed, 3);
-            attribute.SetAttribute(ActorAttributeType.AttackSpeed, 2);
         }
 
         /// <summary>
@@ -99,14 +100,29 @@ namespace SmallUniverse
 
             m_moveDir = actorGameObject.transform.forward;
 
-            // 加载武器
             LoadWeapon();
+            CreateHpBar();
         }
 
-        // 加载武器
+        /// <summary>
+        /// 加载武器
+        /// </summary>
         public virtual void LoadWeapon()
         {
 
+        }
+
+        /// <summary>
+        /// 创建生命条
+        /// </summary>
+        protected virtual void CreateHpBar()
+        {
+            // 创建hp ui
+            m_hpBar = new UP_HudSceneHpBar();
+            m_hpBar.SetAlign(UIPrefabAlign.CENTER);
+            m_hpBar.SetFollow(actorGameObject.headPoint);
+            m_hpBar.SetLookAt(Game.gameCamera.heroCamera.virtualCamera.transform);
+            m_hpBar.SetValue(attribute.GetAttribute(ActorAttributeType.Hp), attribute.GetAttribute(ActorAttributeType.HpMax));
         }
 
         /// <summary>
@@ -141,7 +157,7 @@ namespace SmallUniverse
         public virtual void StopAttack()
         {
             m_attackInput = false;
-            if(actorState != ActorState.Attack)
+            if (actorState != ActorState.Attack)
             {
                 actorState = ActorState.None;
                 m_weapon.StopAttack();

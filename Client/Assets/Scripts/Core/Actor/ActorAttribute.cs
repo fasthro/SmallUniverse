@@ -14,6 +14,8 @@ namespace SmallUniverse
 		MagicAttack,
 		Defense,
 		MagicDefense,
+		Hp,
+		HpMax,
 	}
 
     public class ActorAttribute
@@ -26,6 +28,8 @@ namespace SmallUniverse
 		private float m_magicAttack;
 		private float m_defense;
 		private float m_magicDefense;
+		private float m_hp;
+		private float m_hpMax;
 
 		public static ActorAttribute Create()
 		{
@@ -52,6 +56,10 @@ namespace SmallUniverse
 					return m_defense;
 				case ActorAttributeType.MagicDefense:
 					return m_magicDefense;
+				case ActorAttributeType.Hp:
+					return m_hp;
+				case ActorAttributeType.HpMax:
+					return m_hpMax;
 				default:
 					return 0;
 			}
@@ -84,6 +92,12 @@ namespace SmallUniverse
 					break;
 				case ActorAttributeType.MagicDefense:
 					m_magicDefense = value;
+					break;
+				case ActorAttributeType.Hp:
+					m_hp = value;
+					break;
+				case ActorAttributeType.HpMax:
+					m_hpMax = value;
 					break;
 			}
 		}

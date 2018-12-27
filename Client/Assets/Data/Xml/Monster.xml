@@ -43,33 +43,68 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="data">
-  <Table ss:ExpandedColumnCount="3" ss:ExpandedRowCount="4" x:FullColumns="1"
-   x:FullRows="1" ss:StyleID="s62" ss:DefaultColumnWidth="54"
+  <Table ss:ExpandedColumnCount="13" ss:ExpandedRowCount="4" x:FullColumns="1"
+   x:FullRows="1" ss:StyleID="s62" ss:DefaultColumnWidth="183.75"
    ss:DefaultRowHeight="13.5">
-   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="156.75"/>
-   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="130.5"/>
-   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="220.5"/>
-   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="99.75"/>
-   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="75"/>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">怪id</Data></Cell>
     <Cell><Data ss:Type="String">怪名称</Data></Cell>
     <Cell><Data ss:Type="String">怪模型</Data></Cell>
+    <Cell><Data ss:Type="String">移动速度</Data></Cell>
+    <Cell><Data ss:Type="String">攻击速度</Data></Cell>
+    <Cell><Data ss:Type="String">旋转速度</Data></Cell>
+    <Cell><Data ss:Type="String">范围</Data></Cell>
+    <Cell><Data ss:Type="String">物理攻击</Data></Cell>
+    <Cell><Data ss:Type="String">魔法攻击</Data></Cell>
+    <Cell><Data ss:Type="String">物理防御</Data></Cell>
+    <Cell><Data ss:Type="String">魔法防御</Data></Cell>
+    <Cell><Data ss:Type="String">初始生命</Data></Cell>
+    <Cell><Data ss:Type="String">最大生命</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
     <Cell><Data ss:Type="String">string</Data></Cell>
     <Cell><Data ss:Type="String">string</Data></Cell>
+    <Cell><Data ss:Type="String">float</Data></Cell>
+    <Cell><Data ss:Type="String">float</Data></Cell>
+    <Cell><Data ss:Type="String">float</Data></Cell>
+    <Cell><Data ss:Type="String">float</Data></Cell>
+    <Cell><Data ss:Type="String">float</Data></Cell>
+    <Cell><Data ss:Type="String">float</Data></Cell>
+    <Cell><Data ss:Type="String">float</Data></Cell>
+    <Cell><Data ss:Type="String">float</Data></Cell>
+    <Cell><Data ss:Type="String">float</Data></Cell>
+    <Cell><Data ss:Type="String">float</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">id</Data></Cell>
     <Cell><Data ss:Type="String">name</Data></Cell>
     <Cell><Data ss:Type="String">art</Data></Cell>
+    <Cell><Data ss:Type="String">moveSpeed</Data></Cell>
+    <Cell><Data ss:Type="String">attackSpeed</Data></Cell>
+    <Cell><Data ss:Type="String">rotationSpeed</Data></Cell>
+    <Cell><Data ss:Type="String">range</Data></Cell>
+    <Cell><Data ss:Type="String">attack</Data></Cell>
+    <Cell><Data ss:Type="String">magicAttack</Data></Cell>
+    <Cell><Data ss:Type="String">defense</Data></Cell>
+    <Cell><Data ss:Type="String">magicDefense</Data></Cell>
+    <Cell><Data ss:Type="String">hp</Data></Cell>
+    <Cell><Data ss:Type="String">hpMax</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">100001</Data></Cell>
     <Cell ss:StyleID="s63"><Data ss:Type="String">Monster</Data></Cell>
     <Cell><Data ss:Type="String">Monsters/Toon_Bat/Toon_Bat_Pink</Data></Cell>
+    <Cell><Data ss:Type="String">2</Data></Cell>
+    <Cell><Data ss:Type="String">1</Data></Cell>
+    <Cell><Data ss:Type="String">1</Data></Cell>
+    <Cell><Data ss:Type="String">1</Data></Cell>
+    <Cell><Data ss:Type="String">10</Data></Cell>
+    <Cell><Data ss:Type="String">5</Data></Cell>
+    <Cell><Data ss:Type="String">3</Data></Cell>
+    <Cell><Data ss:Type="String">3</Data></Cell>
+    <Cell><Data ss:Type="String">100</Data></Cell>
+    <Cell><Data ss:Type="String">100</Data></Cell>
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
@@ -89,7 +124,7 @@
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>3</ActiveRow>
+     <ActiveRow>18</ActiveRow>
      <ActiveCol>2</ActiveCol>
     </Pane>
    </Panes>

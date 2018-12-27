@@ -8,7 +8,7 @@ namespace SmallUniverse
     public class Hero : ActorBase
     {
         private CSV_Hero m_dataCSV;
-
+        
         public static Hero Create(int heroId)
         {
             GameObject go = new GameObject();
@@ -23,6 +23,18 @@ namespace SmallUniverse
             base.InitActorData();
 
             m_dataCSV = Game.gameCSV.GetData<CSV_Hero>(heroId);
+
+            // 设置属性
+            attribute.SetAttribute(ActorAttributeType.MoveSpeed, m_dataCSV.moveSpeed);
+            attribute.SetAttribute(ActorAttributeType.AttackSpeed, m_dataCSV.attackSpeed);
+            attribute.SetAttribute(ActorAttributeType.RotationSpeed, m_dataCSV.rotationSpeed);
+            attribute.SetAttribute(ActorAttributeType.Range, m_dataCSV.range);
+            attribute.SetAttribute(ActorAttributeType.Attack, m_dataCSV.attack);
+            attribute.SetAttribute(ActorAttributeType.MagicAttack, m_dataCSV.magicAttack);
+            attribute.SetAttribute(ActorAttributeType.Defense, m_dataCSV.defense);
+            attribute.SetAttribute(ActorAttributeType.MagicDefense, m_dataCSV.magicDefense);
+            attribute.SetAttribute(ActorAttributeType.Hp, m_dataCSV.hp);
+            attribute.SetAttribute(ActorAttributeType.HpMax, m_dataCSV.hpMax);
 
             GameObject prefab = LevelAsset.GetGameObject(m_dataCSV.art);
             var heroGo = GameObject.Instantiate<GameObject>(prefab);

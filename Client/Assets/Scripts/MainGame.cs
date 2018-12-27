@@ -8,8 +8,14 @@ using SmallUniverse.Manager;
 
 namespace SmallUniverse
 {
+    public delegate void OnUpdateHandler();
+    public delegate void OnLateUpdateHandler();
+
     public class MainGame : MonoBehaviour {
         
+        public event OnUpdateHandler OnUpdate;
+        public event OnLateUpdateHandler OnLateUpdate;
+
         void Awake()
         {
             InitGame();
@@ -53,6 +59,22 @@ namespace SmallUniverse
         public void OnEnterBattleScene()
         {
             
+        }
+
+        void Update()
+        {
+            if(OnUpdate != null)
+            {
+                OnUpdate();
+            }
+        }
+
+        void LateUpdate()
+        {
+            if(OnUpdate != null)
+            {
+                OnLateUpdate();
+            }
         }
     }
 }
