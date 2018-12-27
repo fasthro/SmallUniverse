@@ -46,7 +46,7 @@ namespace SmallUniverse
         {
             GameObject prefab = LevelAsset.GetGameObject("Weapons/Rifle/Rifle");
             var weaponGo = GameObject.Instantiate<GameObject>(prefab);
-            weaponGo.transform.parent = actorGameObject.WeaponBone;
+            weaponGo.transform.parent = actorGameObject.weaponPoint;
             weaponGo.transform.localPosition = Vector3.zero;
             weaponGo.transform.localRotation = Quaternion.Euler(90, 0, 0);
 

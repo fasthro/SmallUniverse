@@ -51,6 +51,9 @@ namespace SmallUniverse.GameEditor
             // csv
             SetAssetBundleNameToCSV();
 
+            // ui prefabs
+            SetAssetBundleNameToUIPrefabs();
+
             Debug.Log("设置资源 assetBundleName 完成!");
         }
 
@@ -164,6 +167,22 @@ namespace SmallUniverse.GameEditor
             for (int k = 0; k < filePaths.Length; k++)
             {   
                 SetAssetBundleName(filePaths[k], "csv/" + Path.GetFileNameWithoutExtension(filePaths[k]));
+            }
+        }
+
+        /// <summary>
+        /// 设置 ui prefabs
+        /// </summary>
+        private static void SetAssetBundleNameToUIPrefabs()
+        {
+            string rootDir = Path.Combine(Application.dataPath, "Art/UIPrefabs");
+            if (!Directory.Exists(rootDir))
+                return;
+
+            string[] filePaths = Directory.GetFiles(rootDir, "*.prefab", SearchOption.TopDirectoryOnly);
+            for (int k = 0; k < filePaths.Length; k++)
+            {   
+                SetAssetBundleName(filePaths[k], "uiprefabs/" + Path.GetFileNameWithoutExtension(filePaths[k]));
             }
         }
         

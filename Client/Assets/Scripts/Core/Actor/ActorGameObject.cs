@@ -6,7 +6,10 @@ namespace SmallUniverse
 {
     public class ActorGameObject : MonoBehaviour
     {
-        public Transform WeaponBone;
+        // 武器挂点
+        public Transform weaponPoint;
+        // 头上血条挂点
+        public Transform headPoint;
         
         // 角色实例
         private ActorBase m_actor;

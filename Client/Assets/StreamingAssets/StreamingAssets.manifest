@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1200787313
+CRC: 2579963976
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -91,4 +91,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_29:
       Name: csv/monster
+      Dependencies: {}
+    Info_30:
+      Name: uiprefabs/hud_scene_hp
       Dependencies: {}
