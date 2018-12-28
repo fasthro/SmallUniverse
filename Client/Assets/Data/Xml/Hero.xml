@@ -95,11 +95,11 @@
     <Cell ss:StyleID="s63"><Data ss:Type="String">10001</Data></Cell>
     <Cell ss:StyleID="s63"><Data ss:Type="String">Hero</Data></Cell>
     <Cell><Data ss:Type="String">Heros/Soldier/Soldier</Data></Cell>
-    <Cell><Data ss:Type="String">2</Data></Cell>
+    <Cell><Data ss:Type="String">3</Data></Cell>
     <Cell><Data ss:Type="String">1</Data></Cell>
     <Cell><Data ss:Type="String">1</Data></Cell>
     <Cell><Data ss:Type="String">1</Data></Cell>
-    <Cell><Data ss:Type="String">10</Data></Cell>
+    <Cell><Data ss:Type="String">100</Data></Cell>
     <Cell><Data ss:Type="String">5</Data></Cell>
     <Cell><Data ss:Type="String">3</Data></Cell>
     <Cell><Data ss:Type="String">3</Data></Cell>
@@ -121,11 +121,12 @@
     <VerticalResolution>600</VerticalResolution>
    </Print>
    <Selected/>
+   <LeftColumnVisible>3</LeftColumnVisible>
    <Panes>
     <Pane>
      <Number>3</Number>
      <ActiveRow>11</ActiveRow>
-     <ActiveCol>2</ActiveCol>
+     <ActiveCol>8</ActiveCol>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>

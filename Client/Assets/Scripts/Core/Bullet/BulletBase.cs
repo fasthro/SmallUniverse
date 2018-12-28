@@ -94,7 +94,7 @@ namespace SmallUniverse
         protected virtual void CreateDamage(ActorBase actor)
         {
             m_isDamage = true;
-            Debug.Log(actor.actorGameObject.name + " CreateDamage");
+            actor.BeAttack(m_attackData);
         }
         
         /// <summary>

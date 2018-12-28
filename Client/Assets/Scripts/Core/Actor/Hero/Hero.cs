@@ -9,6 +9,9 @@ namespace SmallUniverse
     {
         private CSV_Hero m_dataCSV;
         
+        // 是否连续攻击
+        private bool continuouAttack;
+        
         public static Hero Create(int heroId)
         {
             GameObject go = new GameObject();
@@ -45,72 +48,51 @@ namespace SmallUniverse
 
         public override void Born(LevelPoint point)
         {
-            base.Born(point);
-
-            m_animationEvent.OnEndHandler -= OnAnimationEndHandler;
-            m_animationEvent.OnEndHandler += OnAnimationEndHandler;
-
-            m_animationEvent.OnAttackHandler -= OnAnimationAttackHandler;
-            m_animationEvent.OnAttackHandler += OnAnimationAttackHandler;
-        }
-
-        public override void LoadWeapon()
-        {
-            GameObject prefab = LevelAsset.GetGameObject("Weapons/Rifle/Rifle");
-            var weaponGo = GameObject.Instantiate<GameObject>(prefab);
-            weaponGo.transform.parent = actorGameObject.weaponPoint;
-            weaponGo.transform.localPosition = Vector3.zero;
-            weaponGo.transform.localRotation = Quaternion.Euler(90, 0, 0);
-
-            m_weapon = weaponGo.GetComponent<WeaponBase>();
-            m_weapon.Initialize(this);
+            base.Born(point, true, true);
         }
 
         public override void Attack()
         {
-            if (actorState != ActorState.Attack)
+            if (actorState == ActorState.Attack)
             {
-                base.Attack();
-                actorState = ActorState.Attack;
-                m_animator.SetFloat(ActorAnimatorParameters.AttackSpeed.ToString(), attribute.GetAttribute(ActorAttributeType.AttackSpeed));
-                m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), true);
+                continuouAttack = true;
             }
+
+            if (actorState == ActorState.Attack || actorState == ActorState.Death)
+                return;
+
+            actorState = ActorState.Attack;
+            m_animator.SetFloat(ActorAnimatorParameters.AttackSpeed.ToString(), attribute.GetAttribute(ActorAttributeType.AttackSpeed));
+            m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), true);
         }
 
-        void OnAnimationEndHandler()
+        protected override void OnEndHandler()
         {
             if (actorState == ActorState.Attack)
             {
-                actorState = ActorState.AttackEnd;
-            }
-        }
-
-        void OnAnimationAttackHandler()
-        {
-            if (actorState == ActorState.Attack)
-            {
-                var attackData = new AttackData();
-                attackData.layer = GameLayer.NameToLayer(GameLayer.HERO);
-               m_weapon.Attack(attackData, null);
-            }
-        }
-
-        protected override void UpdateState()
-        {
-            if (actorState == ActorState.None)
-            {
-                m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), false);
-            }
-            else if (actorState == ActorState.AttackEnd)
-            {
-                if (m_attackInput)
+                actorState = ActorState.Idle;
+                if (continuouAttack)
                 {
                     Attack();
                 }
                 else
                 {
-                    actorState = ActorState.None;
+                    m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), false);
+                    m_weapon.StopAttack();
                 }
+                continuouAttack = false;
+            }
+        }
+
+        protected override void OnAttackHandler()
+        {
+            if (actorState == ActorState.Attack)
+            {
+                var attackData = new AttackData();
+                attackData.layer = GameLayer.NameToLayer(GameLayer.HERO);
+                attackData.attack = attribute.GetAttribute(ActorAttributeType.Attack);
+                attackData.magicAttack = attribute.GetAttribute(ActorAttributeType.MagicAttack);
+                m_weapon.Attack(attackData, null);
             }
         }
     }

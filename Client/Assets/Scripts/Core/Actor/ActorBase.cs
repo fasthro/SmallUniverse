@@ -17,8 +17,9 @@ namespace SmallUniverse
     public enum ActorState
     {
         None,
+        Idle,
         Attack,
-        AttackEnd,
+        Death,
     }
 
     public abstract class ActorBase : MonoBehaviour
@@ -32,17 +33,7 @@ namespace SmallUniverse
         // 武器
         protected WeaponBase m_weapon;
         // 生命条
-        protected UP_HudSceneHpBar m_hpBar;
-
-        // 是否已经出生
-        protected bool m_isBorn;
-        public bool IsBorn
-        {
-            get
-            {
-                return m_isBorn;
-            }
-        }
+        protected UP_HudSceneHpBar m_HPBar;
 
         // 当前状态
         public ActorState actorState;
@@ -54,33 +45,23 @@ namespace SmallUniverse
         // 当前朝向
         protected Vector3 m_lookDir;
 
-        // 是否输入攻击
-        protected bool m_attackInput;
-
-
-        void Update()
-        {
-            if (actorGameObject == null)
-                return;
-
-            OnUpdate();
-        }
-
-        void LateUpdate()
-        {
-            if (actorGameObject == null)
-                return;
-
-            OnLateUpdate();
-        }
-
-
         /// <summary>
         /// 初始化数据
         /// </summary>
         public void InitActorData()
         {
+            actorState = ActorState.None;
             attribute = ActorAttribute.Create();
+        }
+
+        protected virtual void OnEndHandler()
+        {
+        
+        }
+
+        protected virtual void OnAttackHandler()
+        {
+        
         }
 
         /// <summary>
@@ -88,41 +69,72 @@ namespace SmallUniverse
         /// </summary>
         public virtual void Born(LevelPoint point)
         {
-            m_isBorn = true;
+        
+        }
+
+        /// <summary>
+        /// 出生
+        /// </summary>
+        /// <param name="haveHPBar"></param>
+        /// <param name="haveWeapon"></param>
+        protected void Born(LevelPoint point, bool haveHPBar, bool haveWeapon)
+        {
+            actorState = ActorState.Idle;
+
             m_animator = actorGameObject.GetComponent<Animator>();
             m_animationEvent = actorGameObject.GetComponent<ActorAnimationEvent>();
             m_rigidbody = actorGameObject.GetComponent<Rigidbody>();
             m_navMeshAgent = actorGameObject.GetComponent<NavMeshAgent>();
+
+            // 注册事件
+            m_animationEvent.OnEndHandler -= OnEndHandler;
+            m_animationEvent.OnEndHandler += OnEndHandler;
+            m_animationEvent.OnAttackHandler -= OnAttackHandler;
+            m_animationEvent.OnAttackHandler += OnAttackHandler;
 
             actorGameObject.transform.position = point.position;
             actorGameObject.transform.localEulerAngles = point.rotationAngle;
             actorGameObject.gameObject.SetActive(true);
 
             m_moveDir = actorGameObject.transform.forward;
+ 
+            // HP Bar
+            if (haveHPBar)
+            {
+                m_HPBar = new UP_HudSceneHpBar();
+                m_HPBar.SetAlign(UIPrefabAlign.CENTER);
+                m_HPBar.SetFollow(actorGameObject.headPoint);
+                m_HPBar.SetLookAt(Game.gameCamera.heroCamera.virtualCamera.transform);
+                m_HPBar.SetValue(attribute.GetAttribute(ActorAttributeType.Hp), attribute.GetAttribute(ActorAttributeType.HpMax));
+            }
 
-            LoadWeapon();
-            CreateHpBar();
+            // weapon
+            if (haveWeapon)
+            {
+                GameObject prefab = LevelAsset.GetGameObject("Weapons/Rifle/Rifle");
+                var weaponGo = GameObject.Instantiate<GameObject>(prefab);
+                weaponGo.transform.parent = actorGameObject.weaponPoint;
+                weaponGo.transform.localPosition = Vector3.zero;
+                weaponGo.transform.localRotation = Quaternion.Euler(90, 0, 0);
+
+                m_weapon = weaponGo.GetComponent<WeaponBase>();
+                m_weapon.Initialize(this);
+            }
+
+            // 出生动画
+            m_animator.SetFloat(ActorAnimatorParameters.Speed.ToString(), 0);
         }
 
         /// <summary>
-        /// 加载武器
+        /// 死亡
         /// </summary>
-        public virtual void LoadWeapon()
+        public virtual void Death()
         {
+            if(actorState == ActorState.Death)
+                return;
 
-        }
-
-        /// <summary>
-        /// 创建生命条
-        /// </summary>
-        protected virtual void CreateHpBar()
-        {
-            // 创建hp ui
-            m_hpBar = new UP_HudSceneHpBar();
-            m_hpBar.SetAlign(UIPrefabAlign.CENTER);
-            m_hpBar.SetFollow(actorGameObject.headPoint);
-            m_hpBar.SetLookAt(Game.gameCamera.heroCamera.virtualCamera.transform);
-            m_hpBar.SetValue(attribute.GetAttribute(ActorAttributeType.Hp), attribute.GetAttribute(ActorAttributeType.HpMax));
+            actorState = ActorState.Death;
+            m_animator.SetBool(ActorAnimatorParameters.Death.ToString(), true);
         }
 
         /// <summary>
@@ -148,59 +160,63 @@ namespace SmallUniverse
         /// </summary>
         public virtual void Attack()
         {
-            m_attackInput = true;
+
         }
 
         /// <summary>
-        /// 停止攻击
+        /// 被攻击受伤
         /// </summary>
-        public virtual void StopAttack()
+        public virtual void BeAttack(AttackData attackData)
         {
-            m_attackInput = false;
-            if (actorState != ActorState.Attack)
+            float defense = attribute.GetAttribute(ActorAttributeType.Defense);
+            float damage = ((defense * 0.06f) / (1 + 0.06f * defense)) * attackData.attack;
+            float sub = attribute.GetAttribute(ActorAttributeType.Hp) - damage;
+            attribute.SetAttribute(ActorAttributeType.Hp, sub > 0 ? sub : 0);
+
+            // 死亡判断
+            if (sub <= 0)
             {
-                actorState = ActorState.None;
-                m_weapon.StopAttack();
+                Death();
+            }
+
+            // 设置血条显示
+            if (m_HPBar != null)
+            {
+                m_HPBar.SetValue(attribute.GetAttribute(ActorAttributeType.Hp), attribute.GetAttribute(ActorAttributeType.HpMax));
             }
         }
 
         /// <summary>
-        /// 被攻击
+        /// 摧毁自己
         /// </summary>
-        public virtual void BeAttack(AttackData attackData)
+        protected virtual void DestroySelf()
         {
-
-        }
-
-        /// <summary>
-        /// 角色方向
-        /// </summary>
-        public virtual void UpdateDirection()
-        {
-            actorGameObject.transform.rotation = Quaternion.LookRotation(m_moveDir, Vector3.up);
-        }
-
-        /// <summary>
-        /// 状态刷新
-        /// </summary>
-        protected virtual void UpdateState()
-        {
-
+            Destroy(gameObject);
         }
 
         protected virtual void OnUpdate()
         {
-            if (m_isBorn)
-            {
-                UpdateDirection();
-                UpdateState();
-            }
+            if (actorState == ActorState.None)
+                return;
+
+            actorGameObject.transform.rotation = Quaternion.LookRotation(m_moveDir, Vector3.up);
         }
 
         protected virtual void OnLateUpdate()
         {
+            if (actorState == ActorState.None)
+                return;
 
         }
 
+        void Update()
+        {
+            OnUpdate();
+        }
+
+        void LateUpdate()
+        {
+            OnLateUpdate();
+        }
     }
 }

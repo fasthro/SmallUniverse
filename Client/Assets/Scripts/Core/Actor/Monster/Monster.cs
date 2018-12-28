@@ -8,7 +8,9 @@ namespace SmallUniverse
     {
         private CSV_Monster m_dataCSV;
 
-		public static Monster Create(int monsterId)
+        private SkillBase m_skill;
+
+        public static Monster Create(int monsterId)
         {
             GameObject go = new GameObject();
             go.name = "Monster_" + monsterId;
@@ -17,7 +19,7 @@ namespace SmallUniverse
             return monster;
         }
 
-		private void Initialize(int monsterId)
+        private void Initialize(int monsterId)
         {
             base.InitActorData();
 
@@ -40,6 +42,63 @@ namespace SmallUniverse
             heroGo.transform.parent = transform;
             heroGo.SetActive(false);
             actorGameObject = heroGo.GetComponent<ActorGameObject>();
+        }
+
+        public override void Born(LevelPoint point)
+        {
+            base.Born(point, true, false);
+
+            m_skill = actorGameObject.GetComponent<SkillBase>();
+            m_skill.Initialize(this);
+        }
+
+        public override void Attack()
+        {
+            if (actorState == ActorState.Attack || actorState == ActorState.Death)
+                return;
+
+            actorState = ActorState.Attack;
+            m_animator.SetFloat(ActorAnimatorParameters.AttackSpeed.ToString(), attribute.GetAttribute(ActorAttributeType.AttackSpeed));
+            m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), true);
+        }
+
+        protected override void OnEndHandler()
+        {
+            if (actorState == ActorState.Attack)
+            {
+                actorState = ActorState.Idle;
+                m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), false);
+
+                if (m_weapon != null)
+                {
+                    m_weapon.StopAttack();
+                }
+
+            }
+            else if (actorState == ActorState.Death)
+            {
+                DestroySelf();
+            }
+        }
+
+        protected override void OnAttackHandler()
+        {
+            if (actorState == ActorState.Attack)
+            {
+                var attackData = new AttackData();
+                attackData.layer = GameLayer.NameToLayer(GameLayer.MONSTER);
+                attackData.attack = attribute.GetAttribute(ActorAttributeType.Attack);
+                attackData.magicAttack = attribute.GetAttribute(ActorAttributeType.MagicAttack);
+
+                if (m_weapon != null)
+                {
+                    m_weapon.Attack(attackData, null);
+                }
+                else
+                {
+                    m_skill.Attack(attackData, null);
+                }
+            }
         }
     }
 }

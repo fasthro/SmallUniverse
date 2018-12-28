@@ -32,15 +32,14 @@ namespace SmallUniverse
             Game.hero.Attack();
         }
 
-
         protected override void OnTouchUp(JoyGesture gesture)
         {
-            Game.hero.StopAttack();
+            
         }
 
         protected override void OnKeyUp()
         {
-            Game.hero.StopAttack();
+            
         }
 
         protected override void OnKeyDown()

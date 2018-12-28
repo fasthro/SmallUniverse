@@ -35,25 +35,26 @@ namespace SmallUniverse
             if(m_isDamage)
                 return;
 
-            // 生成子弹效果
-            Game.gamePool.Spawn(impactAssetPath, null, collision.contacts[0].point, transform.rotation);
-
             if (GameLayer.Compare(m_attackData.layer, GameLayer.HERO))
             {
                 if (GameLayer.Compare(collision.gameObject.layer, GameLayer.MONSTER))
                 {
+                    // 生成子弹效果
+                    Game.gamePool.Spawn(impactAssetPath, null, collision.contacts[0].point, transform.rotation);
                     CreateDamage(collision.gameObject.GetComponent<ActorGameObject>().GetActor());
+                    Despawn();
                 }
             }
-            else if (GameLayer.Compare(collision.gameObject.layer, GameLayer.MONSTER))
+            else if (GameLayer.Compare(m_attackData.layer, GameLayer.MONSTER))
             {
                 if (GameLayer.Compare(collision.gameObject.layer, GameLayer.HERO))
                 {
+                    // 生成子弹效果
+                    Game.gamePool.Spawn(impactAssetPath, null, collision.contacts[0].point, transform.rotation);
                     CreateDamage(collision.gameObject.GetComponent<ActorGameObject>().GetActor());
+                    Despawn();
                 }
             }
-
-            Despawn();
         }
     }
 }

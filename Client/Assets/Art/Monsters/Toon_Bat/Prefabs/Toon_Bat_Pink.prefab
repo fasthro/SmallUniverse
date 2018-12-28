@@ -44,7 +44,9 @@ GameObject:
   - component: {fileID: 195861512245838120}
   - component: {fileID: 114206639195760364}
   - component: {fileID: 114918381010405438}
-  - component: {fileID: 136903393213773030}
+  - component: {fileID: 114694421894163966}
+  - component: {fileID: 114772492512489502}
+  - component: {fileID: 65346280918887252}
   m_Layer: 15
   m_Name: Toon_Bat_Pink
   m_TagString: Untagged
@@ -431,6 +433,7 @@ Transform:
   - {fileID: 485924}
   - {fileID: 494848}
   - {fileID: 464772}
+  - {fileID: 4817854890769418}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -583,6 +586,21 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 112992}
   m_IsPrefabAsset: 1
+--- !u!1 &1162481348285634
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4817854890769418}
+  m_Layer: 15
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1315100076319342
 GameObject:
   m_ObjectHideFlags: 1
@@ -611,6 +629,19 @@ Transform:
   m_Father: {fileID: 484052}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4817854890769418
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1162481348285634}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.73, z: 0.085}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 471314}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &54875571466774198
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -626,6 +657,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!65 &65346280918887252
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 112992}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!114 &114206639195760364
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -639,6 +682,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPoint: {fileID: 0}
   headPoint: {fileID: 4064235941038792}
+--- !u!114 &114694421894163966
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 112992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5694ddb8220974479cb8997c67ca491, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 5
+--- !u!114 &114772492512489502
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 112992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ab6c0a795fd7cb43893047f24f81566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  firePoint: {fileID: 4817854890769418}
+  bulletAssetPath: Bullets/Laser/Laser_bullet
 --- !u!114 &114918381010405438
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -650,19 +719,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78c2e2745008dc7479b9a713858bd478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!136 &136903393213773030
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 112992}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2.62
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!195 &195861512245838120
 NavMeshAgent:
   m_ObjectHideFlags: 1
