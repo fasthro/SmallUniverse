@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+ * @Author: fasthro
+ * @Date: 2018-12-27 18:03:13
+ * @Description: 子弹基类
+ */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,9 +11,9 @@ namespace SmallUniverse
 {
     public enum BulletType
     {
-        Normal,          // 普通子弹
-        Spray,           // 喷射子弹
-        Line,            // 线子弹
+        General,          // 普通子弹
+        Fuel,           // 燃料子弹
+        Line,            // 线形子弹
     }
 
     public abstract class BulletBase : MonoBehaviour

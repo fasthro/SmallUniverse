@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1258643694
+CRC: 2191552578
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -66,32 +66,29 @@ AssetBundleManifest:
       Name: weapons/rifle
       Dependencies: {}
     Info_21:
-      Name: bullets/flame
-      Dependencies: {}
-    Info_22:
-      Name: bullets/laser
-      Dependencies: {}
-    Info_23:
-      Name: bullets/plasma
-      Dependencies: {}
-    Info_24:
-      Name: bullets/pulse
-      Dependencies: {}
-    Info_25:
       Name: levels/prefabs/monster
       Dependencies: {}
-    Info_26:
+    Info_22:
       Name: levels/prefabs/player
       Dependencies: {}
-    Info_27:
+    Info_23:
       Name: csv/level
       Dependencies: {}
-    Info_28:
+    Info_24:
       Name: csv/hero
       Dependencies: {}
-    Info_29:
+    Info_25:
       Name: csv/monster
       Dependencies: {}
-    Info_30:
+    Info_26:
       Name: uiprefabs/hud_scene_hp
+      Dependencies: {}
+    Info_27:
+      Name: bullets/fuel
+      Dependencies: {}
+    Info_28:
+      Name: bullets/general
+      Dependencies: {}
+    Info_29:
+      Name: bullets/line
       Dependencies: {}

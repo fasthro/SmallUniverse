@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+ * @Author: fasthro
+ * @Date: 2018-12-27 18:03:13
+ * @Description: 英雄
+ */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SmallUniverse.Behaviour;

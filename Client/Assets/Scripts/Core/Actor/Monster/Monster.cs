@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+ * @Author: fasthro
+ * @Date: 2018-12-27 18:03:13
+ * @Description: 怪
+ */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -73,7 +78,6 @@ namespace SmallUniverse
                 {
                     m_weapon.StopAttack();
                 }
-
             }
             else if (actorState == ActorState.Death)
             {

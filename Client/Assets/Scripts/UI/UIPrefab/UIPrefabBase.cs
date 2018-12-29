@@ -25,6 +25,8 @@ namespace SmallUniverse
         public UIPanel panel;
         public GComponent ui;
 
+        // 是否在缓存池中获取
+        protected bool m_pool;
         // 跟随目标
         private Transform m_followTarget;
 
@@ -61,6 +63,8 @@ namespace SmallUniverse
         {
             Game.mainGame.OnUpdate -= OnUpdate;
             Game.mainGame.OnLateUpdate -= OnLateUpdate;
+
+            GameObject.Destroy(gameObject);
 
             gameObject = null;
             transform = null;

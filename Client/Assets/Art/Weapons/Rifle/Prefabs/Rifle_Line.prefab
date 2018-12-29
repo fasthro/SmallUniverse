@@ -127,4 +127,4 @@ MonoBehaviour:
   weaponType: 0
   firePoint: {fileID: 4761486828937822}
   bulletType: 2
-  bulletAssetPath: Bullets/Pulse/Pulse_blue_bullet
+  bulletAssetPath: Bullets/Line/Line_blue_bullet

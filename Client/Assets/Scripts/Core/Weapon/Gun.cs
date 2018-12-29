@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+ * @Author: fasthro
+ * @Date: 2018-12-27 18:03:13
+ * @Description: 武器-> 枪
+ */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +19,7 @@ namespace SmallUniverse
         public BulletType bulletType;
         // 子弹资源资源路径
         public string bulletAssetPath;
+
         #endregion
 
         // 子弹
@@ -33,18 +39,16 @@ namespace SmallUniverse
 
             switch (bulletType)
             {
-                case BulletType.Normal:
-                    FireNormalBullet(attackData, target);
+                case BulletType.General:
+                    FireGeneralBullet(attackData, target);
                     break;
-                case BulletType.Spray:
-                    FireBulletSpray(attackData, target);
+                case BulletType.Fuel:
+                    FireFuelBullet(attackData, target);
                     break;
                 case BulletType.Line:
-                    FireBulletLine(attackData, target);
+                    FireLineBullet(attackData, target);
                     break;
             }
-
-            SetMuzzleEffect();
         }
 
         public override void StopAttack()
@@ -58,7 +62,7 @@ namespace SmallUniverse
 
         protected override void OnUpdate()
         {
-            if (bulletType == BulletType.Spray || bulletType == BulletType.Line)
+            if (bulletType == BulletType.Fuel || bulletType == BulletType.Line)
             {
                 if (m_bullet != null)
                 {
@@ -72,51 +76,55 @@ namespace SmallUniverse
         /// <summary>
         /// 发射普通子弹
         /// </summary>
-        private void FireNormalBullet(AttackData attackData, ActorBase target)
+        private void FireGeneralBullet(AttackData attackData, ActorBase target)
         {
-            m_bullet = Game.gamePool.Spawn<Bullet>(bulletAssetPath);
-            m_bullet.Initialize();
-            m_bullet.firePosition = firePoint.position;
-            m_bullet.fireRotation = m_bulletRotation;
-            m_bullet.Spawn(attackData, target);
+            var bullet = Game.gamePool.Spawn<GeneralBullet>(bulletAssetPath);
+            bullet.Initialize();
+            bullet.firePosition = firePoint.position;
+            bullet.fireRotation = m_bulletRotation;
+            bullet.Spawn(attackData, target);
+
+            // 设置枪口效果
+            if (!string.IsNullOrEmpty(bullet.muzzleAssetPath))
+                Game.gamePool.Spawn(bullet.muzzleAssetPath, firePoint, firePoint.position, m_bulletRotation);
         }
 
         /// <summary>
-        /// 发射 Spray 子弹
+        /// 发射燃料子弹
         /// </summary>
-        private void FireBulletSpray(AttackData attackData, ActorBase target)
+        private void FireFuelBullet(AttackData attackData, ActorBase target)
         {
             if (m_bullet == null)
             {
-                m_bullet = Game.gamePool.Spawn<BulletSpray>(bulletAssetPath);
+                m_bullet = Game.gamePool.Spawn<FuelBullet>(bulletAssetPath);
                 m_bullet.Initialize();
                 m_bullet.firePosition = firePoint.position;
                 m_bullet.fireRotation = m_bulletRotation;
                 m_bullet.Spawn(attackData, target);
+
+                // 设置枪口效果
+                if (!string.IsNullOrEmpty(m_bullet.muzzleAssetPath))
+                    Game.gamePool.Spawn(m_bullet.muzzleAssetPath, firePoint, firePoint.position, m_bulletRotation);
             }
         }
 
         /// <summary>
-        /// 发射 Line 子弹
+        /// 发射线型子弹
         /// </summary>
-        private void FireBulletLine(AttackData attackData, ActorBase target)
+        private void FireLineBullet(AttackData attackData, ActorBase target)
         {
             if (m_bullet == null)
             {
-                m_bullet = Game.gamePool.Spawn<BulletLine>(bulletAssetPath);
+                m_bullet = Game.gamePool.Spawn<LineBullet>(bulletAssetPath);
                 m_bullet.Initialize();
                 m_bullet.firePosition = firePoint.position;
                 m_bullet.fireRotation = m_bulletRotation;
                 m_bullet.Spawn(attackData, target);
+
+                // 设置枪口效果
+                if (!string.IsNullOrEmpty(m_bullet.muzzleAssetPath))
+                    Game.gamePool.Spawn(m_bullet.muzzleAssetPath, firePoint, firePoint.position, m_bulletRotation);
             }
-        }
-
-        private void SetMuzzleEffect()
-        {
-            if (string.IsNullOrEmpty(m_bullet.muzzleAssetPath))
-                return;
-
-            Game.gamePool.Spawn(m_bullet.muzzleAssetPath, firePoint, firePoint.position, m_bulletRotation);
         }
     }
 }

@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+ * @Author: fasthro
+ * @Date: 2018-12-27 18:03:13
+ * @Description: 角色基类
+ */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -111,7 +116,7 @@ namespace SmallUniverse
             // weapon
             if (haveWeapon)
             {
-                GameObject prefab = LevelAsset.GetGameObject("Weapons/Rifle/Rifle");
+                GameObject prefab = LevelAsset.GetGameObject("Weapons/Rifle/Rifle_General");
                 var weaponGo = GameObject.Instantiate<GameObject>(prefab);
                 weaponGo.transform.parent = actorGameObject.weaponPoint;
                 weaponGo.transform.localPosition = Vector3.zero;
@@ -192,6 +197,12 @@ namespace SmallUniverse
         protected virtual void DestroySelf()
         {
             Destroy(gameObject);
+
+            if(m_HPBar != null)
+            {
+                m_HPBar.Dispose();
+                m_HPBar = null;
+            }
         }
 
         protected virtual void OnUpdate()

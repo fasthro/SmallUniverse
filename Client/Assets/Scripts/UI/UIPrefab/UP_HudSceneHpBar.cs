@@ -11,6 +11,7 @@ namespace SmallUniverse
 
         public UP_HudSceneHpBar()
         {
+            m_pool = true;
             Create("hud_scene_hp");
         }
 

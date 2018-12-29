@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+ * @Author: fasthro
+ * @Date: 2018-12-27 18:03:05
+ * @Description: 子弹编辑器工具
+ */
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;

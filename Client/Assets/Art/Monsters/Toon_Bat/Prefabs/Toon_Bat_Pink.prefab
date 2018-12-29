@@ -40,13 +40,13 @@ GameObject:
   m_Component:
   - component: {fileID: 471314}
   - component: {fileID: 9595778}
+  - component: {fileID: 65346280918887252}
   - component: {fileID: 54875571466774198}
   - component: {fileID: 195861512245838120}
   - component: {fileID: 114206639195760364}
   - component: {fileID: 114918381010405438}
+  - component: {fileID: 114530354379768442}
   - component: {fileID: 114694421894163966}
-  - component: {fileID: 114772492512489502}
-  - component: {fileID: 65346280918887252}
   m_Layer: 15
   m_Name: Toon_Bat_Pink
   m_TagString: Untagged
@@ -513,7 +513,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: cae08b2a8dd381e41b32ff4f43feaab9, type: 3}
   m_Controller: {fileID: 9100000, guid: 349b03341dbb34b41afefd2cc03d696a, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -680,8 +680,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2980838b86c36d043b96ed4350058523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponPoint: {fileID: 0}
+  weaponPoint: {fileID: 4817854890769418}
   headPoint: {fileID: 4064235941038792}
+--- !u!114 &114530354379768442
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 112992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 826e4d8e0297b104aaf7a3ccf04d5e45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  bulletGroup:
+    bulletAssetPath: Bullets/General/General_bullet
+    speed: 10
+    lifeTime: 5
+    count: 11
+    delay: 0
+    angles:
+    - {x: 0, y: 25, z: 0}
+    - {x: 0, y: 20, z: 0}
+    - {x: 0, y: 15, z: 0}
+    - {x: 0, y: 10, z: 0}
+    - {x: 0, y: 5, z: 0}
+    - {x: 0, y: 0, z: 0}
+    - {x: 0, y: -5, z: 0}
+    - {x: 0, y: -10, z: 0}
+    - {x: 0, y: -15, z: 0}
+    - {x: 0, y: -20, z: 0}
+    - {x: 0, y: -25, z: 0}
 --- !u!114 &114694421894163966
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -693,21 +723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5694ddb8220974479cb8997c67ca491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 5
---- !u!114 &114772492512489502
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 112992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ab6c0a795fd7cb43893047f24f81566, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  firePoint: {fileID: 4817854890769418}
-  bulletAssetPath: Bullets/Laser/Laser_bullet
+  delay: 3
 --- !u!114 &114918381010405438
 MonoBehaviour:
   m_ObjectHideFlags: 1
