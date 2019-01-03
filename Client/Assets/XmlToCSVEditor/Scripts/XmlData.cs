@@ -20,7 +20,7 @@ namespace SmallUniverse.GameEditor.XmlEditor
                 }
                 else
                 {
-                    csv = string.Format("{0},{1}", csv, values[i]);
+                    csv = string.Format("{0},{1}", csv, values[i].TrimEnd('\r'));
                 }
             }
             return csv + "\n";
