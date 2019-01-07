@@ -9,7 +9,7 @@
   <Author>fasthro</Author>
   <LastAuthor>HaoXiTong</LastAuthor>
   <Created>2018-12-19T04:10:50Z</Created>
-  <LastSaved>2018-12-19T07:40:09Z</LastSaved>
+  <LastSaved>2019-01-04T08:43:41Z</LastSaved>
   <Version>15.00</Version>
  </DocumentProperties>
  <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
@@ -43,13 +43,14 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="data">
-  <Table ss:ExpandedColumnCount="13" ss:ExpandedRowCount="4" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="14" ss:ExpandedRowCount="4" x:FullColumns="1"
    x:FullRows="1" ss:StyleID="s62" ss:DefaultColumnWidth="183.75"
    ss:DefaultRowHeight="13.5">
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">怪id</Data></Cell>
     <Cell><Data ss:Type="String">怪名称</Data></Cell>
     <Cell><Data ss:Type="String">怪模型</Data></Cell>
+    <Cell><Data ss:Type="String">怪行为</Data></Cell>
     <Cell><Data ss:Type="String">移动速度</Data></Cell>
     <Cell><Data ss:Type="String">攻击速度</Data></Cell>
     <Cell><Data ss:Type="String">旋转速度</Data></Cell>
@@ -63,6 +64,7 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">int</Data></Cell>
+    <Cell><Data ss:Type="String">string</Data></Cell>
     <Cell><Data ss:Type="String">string</Data></Cell>
     <Cell><Data ss:Type="String">string</Data></Cell>
     <Cell><Data ss:Type="String">float</Data></Cell>
@@ -80,6 +82,7 @@
     <Cell><Data ss:Type="String">id</Data></Cell>
     <Cell><Data ss:Type="String">name</Data></Cell>
     <Cell><Data ss:Type="String">art</Data></Cell>
+    <Cell><Data ss:Type="String">behavior</Data></Cell>
     <Cell><Data ss:Type="String">moveSpeed</Data></Cell>
     <Cell><Data ss:Type="String">attackSpeed</Data></Cell>
     <Cell><Data ss:Type="String">rotationSpeed</Data></Cell>
@@ -95,6 +98,7 @@
     <Cell ss:StyleID="s63"><Data ss:Type="String">100001</Data></Cell>
     <Cell ss:StyleID="s63"><Data ss:Type="String">Monster</Data></Cell>
     <Cell><Data ss:Type="String">Monsters/Toon_Bat/Toon_Bat_Pink</Data></Cell>
+    <Cell><Data ss:Type="String">Behavior</Data></Cell>
     <Cell><Data ss:Type="String">2</Data></Cell>
     <Cell><Data ss:Type="String">1</Data></Cell>
     <Cell><Data ss:Type="String">1</Data></Cell>
@@ -124,8 +128,9 @@
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>18</ActiveRow>
-     <ActiveCol>2</ActiveCol>
+     <ActiveRow>5</ActiveRow>
+     <ActiveCol>3</ActiveCol>
+     <RangeSelection>R6C4:R7C4</RangeSelection>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>

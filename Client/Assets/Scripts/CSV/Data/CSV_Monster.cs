@@ -14,6 +14,9 @@ namespace SmallUniverse
         // 怪模型
         public string art;
 
+        // 怪行为
+        public string behavior;
+
         // 移动速度
         public float moveSpeed;
 

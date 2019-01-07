@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: 6ca678ca6273d99489e62f49b375efaa
-NativeFormatImporter:
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 0
   userData: 
   assetBundleName: bullets/line
   assetBundleVariant: 

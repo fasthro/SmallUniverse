@@ -1,94 +1,97 @@
 ManifestFileVersion: 0
-CRC: 3547478682
+CRC: 2054108100
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: levels/prefabs/ground
+      Name: heros/soldier
       Dependencies: {}
     Info_1:
-      Name: monsters/toon_rock_golem
+      Name: monsters/toon_bat
       Dependencies: {}
     Info_2:
       Name: monsters/toon_cactus_monster
       Dependencies: {}
     Info_3:
-      Name: monsters/toon_plant_monster
-      Dependencies: {}
-    Info_4:
-      Name: bullets/line
-      Dependencies: {}
-    Info_5:
-      Name: monsters/toon_dragon
-      Dependencies: {}
-    Info_6:
-      Name: skyboxs/space_nebula_orangeblue
-      Dependencies: {}
-    Info_7:
-      Name: monsters/toon_bat
-      Dependencies: {}
-    Info_8:
-      Name: monsters/toon_ghost
-      Dependencies: {}
-    Info_9:
-      Name: monsters/toon_skeleton_archer
-      Dependencies: {}
-    Info_10:
-      Name: bullets/general
-      Dependencies: {}
-    Info_11:
-      Name: bullets/fuel
-      Dependencies: {}
-    Info_12:
-      Name: skyboxs/space_nebula_numinousglow
-      Dependencies: {}
-    Info_13:
-      Name: monsters/toon_skeleton_knight
-      Dependencies: {}
-    Info_14:
-      Name: heros/soldier
-      Dependencies: {}
-    Info_15:
       Name: monsters/toon_death_knight
       Dependencies: {}
-    Info_16:
-      Name: levels/prefabs/player
+    Info_4:
+      Name: monsters/toon_dragon
       Dependencies: {}
-    Info_17:
-      Name: levels/prefabs/monster
+    Info_5:
+      Name: monsters/toon_ghost
       Dependencies: {}
-    Info_18:
-      Name: weapons/rifle
+    Info_6:
+      Name: monsters/toon_plant_monster
       Dependencies: {}
-    Info_19:
-      Name: skyboxs/space_nebula_green
+    Info_7:
+      Name: monsters/toon_rock_golem
       Dependencies: {}
-    Info_20:
-      Name: skyboxs/space_nebula_bluered
+    Info_8:
+      Name: monsters/toon_skeleton_archer
       Dependencies: {}
-    Info_21:
-      Name: uiprefabs/hud_scene_hp
+    Info_9:
+      Name: monsters/toon_skeleton_knight
       Dependencies: {}
-    Info_22:
+    Info_10:
       Name: monsters/toon_skeleton_mage
       Dependencies: {}
-    Info_23:
-      Name: levels/prefabs/door
+    Info_11:
+      Name: weapons/rifle
       Dependencies: {}
-    Info_24:
-      Name: skyboxs/space_nebula_red
+    Info_12:
+      Name: bullets/fuel
       Dependencies: {}
-    Info_25:
-      Name: skyboxs/space_nebula_deepblack
+    Info_13:
+      Name: bullets/general
       Dependencies: {}
-    Info_26:
-      Name: levels/scenes/level_001
+    Info_14:
+      Name: bullets/line
       Dependencies: {}
-    Info_27:
-      Name: csv/monster
+    Info_15:
+      Name: csv/hero
       Dependencies: {}
-    Info_28:
+    Info_16:
       Name: csv/level
       Dependencies: {}
+    Info_17:
+      Name: csv/monster
+      Dependencies: {}
+    Info_18:
+      Name: behavior/behavior
+      Dependencies: {}
+    Info_19:
+      Name: uiprefabs/hud_scene_hp
+      Dependencies: {}
+    Info_20:
+      Name: levels/prefabs/door
+      Dependencies: {}
+    Info_21:
+      Name: levels/prefabs/ground
+      Dependencies: {}
+    Info_22:
+      Name: levels/prefabs/monster
+      Dependencies: {}
+    Info_23:
+      Name: levels/prefabs/player
+      Dependencies: {}
+    Info_24:
+      Name: levels/scenes/level_001
+      Dependencies: {}
+    Info_25:
+      Name: skyboxs/space_nebula_bluered
+      Dependencies: {}
+    Info_26:
+      Name: skyboxs/space_nebula_deepblack
+      Dependencies: {}
+    Info_27:
+      Name: skyboxs/space_nebula_green
+      Dependencies: {}
+    Info_28:
+      Name: skyboxs/space_nebula_numinousglow
+      Dependencies: {}
     Info_29:
-      Name: csv/hero
+      Name: skyboxs/space_nebula_orangeblue
+      Dependencies: {}
+    Info_30:
+      Name: skyboxs/space_nebula_red
       Dependencies: {}

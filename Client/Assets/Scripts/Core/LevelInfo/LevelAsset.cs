@@ -1,4 +1,5 @@
-﻿using SmallUniverse.Manager;
+﻿using BehaviorDesigner.Runtime;
+using SmallUniverse.Manager;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,10 +18,22 @@ namespace SmallUniverse
 
         public static GameObject GetGameObject(string bundleName, string assetName)
         {
+           return Get<GameObject>(bundleName, assetName);
+        }
+
+        public static ExternalBehaviorTree GetExternalBehaviorTree(string behavior)
+        {
+            string bundleName = "behavior/" + behavior;
+            string assetName = behavior + ".asset";
+           return Get<ExternalBehaviorTree>(bundleName, assetName);
+        }
+
+        public static T Get<T>(string bundleName, string assetName) where T : class
+        {
             LevelAssetBundle bundle = null;
             if (bundles.TryGetValue(bundleName, out bundle))
             {
-                return bundle.GetAsset(assetName) as GameObject;
+                return bundle.GetAsset(assetName) as T;
             }
 
             bundle = new LevelAssetBundle();
@@ -28,7 +41,7 @@ namespace SmallUniverse
 
             bundles.Add(bundleName, bundle);
 
-            return bundle.GetAsset(assetName) as GameObject;
+            return bundle.GetAsset(assetName) as T;
         }
 
         public void UnloadBundle(string bundleName)

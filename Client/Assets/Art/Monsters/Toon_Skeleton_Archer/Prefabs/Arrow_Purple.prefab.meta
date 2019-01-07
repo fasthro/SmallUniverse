@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: ee0bb40e7b8d51047953f1314caacd7b
-NativeFormatImporter:
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 0
   userData: 
   assetBundleName: monsters/toon_skeleton_archer
   assetBundleVariant: 

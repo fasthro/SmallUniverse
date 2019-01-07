@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: 8506526e871445f4e980d004809657cd
-NativeFormatImporter:
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 0
   userData: 
   assetBundleName: monsters/toon_plant_monster
   assetBundleVariant: 

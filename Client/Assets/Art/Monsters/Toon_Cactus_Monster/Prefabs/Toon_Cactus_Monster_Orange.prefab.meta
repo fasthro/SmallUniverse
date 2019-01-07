@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: e17d60bf3d346414fb392090ace11068
-NativeFormatImporter:
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 0
   userData: 
   assetBundleName: monsters/toon_cactus_monster
   assetBundleVariant: 

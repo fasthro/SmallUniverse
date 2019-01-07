@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: d579ea64daa747e499cc41bee3b75bd0
-NativeFormatImporter:
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 100100000
   userData: 
   assetBundleName: weapons/rifle
   assetBundleVariant: 

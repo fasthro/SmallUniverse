@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: 7d11b335aafc6394c88a7aaf97ff8a57
-NativeFormatImporter:
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 100100000
   userData: 
   assetBundleName: levels/prefabs/ground
   assetBundleVariant: 

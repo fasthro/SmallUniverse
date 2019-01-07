@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: c4d24b02c33eb76469890bc56335c044
-NativeFormatImporter:
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 100100000
   userData: 
   assetBundleName: levels/prefabs/door
   assetBundleVariant: 

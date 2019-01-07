@@ -5,14 +5,20 @@
  */
 using System.Collections;
 using System.Collections.Generic;
+using BehaviorDesigner.Runtime;
 using UnityEngine;
 
 namespace SmallUniverse
 {
     public class Monster : ActorBase
     {
+        // 数据
         private CSV_Monster m_dataCSV;
 
+        // AI 行为
+        private BehaviorTree m_behaviorTree;
+
+        // 技能
         private SkillBase m_skill;
 
         public static Monster Create(int monsterId)
@@ -53,6 +59,15 @@ namespace SmallUniverse
         {
             base.Born(point, true, false);
 
+            // 怪行为设置
+            m_behaviorTree = actorGameObject.gameObject.AddComponent<BehaviorTree>();
+            m_behaviorTree.StartWhenEnabled = false;
+            m_behaviorTree.RestartWhenComplete = true;
+            m_behaviorTree.ExternalBehavior = LevelAsset.GetExternalBehaviorTree(m_dataCSV.behavior);
+            m_behaviorTree.SetVariableValue("target", Game.hero.actorGameObject.gameObject.transform);
+            m_behaviorTree.EnableBehavior();
+
+            // 技能
             m_skill = actorGameObject.GetComponent<SkillBase>();
             m_skill.Initialize(this);
         }

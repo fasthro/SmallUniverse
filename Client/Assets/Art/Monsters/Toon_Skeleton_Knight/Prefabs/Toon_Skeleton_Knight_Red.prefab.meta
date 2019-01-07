@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: 39650552b74cc38499a2032584bb6778
-NativeFormatImporter:
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 0
   userData: 
   assetBundleName: monsters/toon_skeleton_knight
   assetBundleVariant: 

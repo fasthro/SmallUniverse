@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: aac6976748b5cd447a4278b5ddf34bf9
-NativeFormatImporter:
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 0
   userData: 
   assetBundleName: monsters/toon_dragon
   assetBundleVariant: 

@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: 0d03760ff490bed4ca7b640acf8d53f1
-NativeFormatImporter:
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 0
   userData: 
   assetBundleName: monsters/toon_ghost
   assetBundleVariant: 

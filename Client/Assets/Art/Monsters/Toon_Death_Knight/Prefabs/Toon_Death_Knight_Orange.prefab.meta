@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: 6d9f9d761f007be4e9080ace59513ce8
-NativeFormatImporter:
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 0
   userData: 
   assetBundleName: monsters/toon_death_knight
   assetBundleVariant: 

@@ -13,11 +13,19 @@ namespace SmallUniverse.GameEditor
         {
             public string assetPath;
             public string bundlePath;
+            public string searchPattern;
 
             public BundleName(string assetPath, string bundlePath)
             {
                 this.assetPath = assetPath;
                 this.bundlePath = bundlePath + "/";
+            }
+
+            public BundleName(string assetPath, string bundlePath, string searchPattern)
+            {
+                this.assetPath = assetPath;
+                this.bundlePath = bundlePath + "/";
+                this.searchPattern = searchPattern;
             }
         }
 
@@ -41,18 +49,21 @@ namespace SmallUniverse.GameEditor
             };
             SetAssetBundleNameToStandard(standards);
 
+            // 设置单一资源
+            BundleName[] singles = new BundleName[]
+            {
+                new BundleName("Data/CSV", "csv", "*.csv"),
+                new BundleName("Art/Behavior", "behavior", "*.asset"),
+                new BundleName("Art/UIPrefabs", "uiprefabs", "*.prefab"),
+            };
+            SetAssetBundleNameToSingle(singles);
+
             // level
             SetAssetBundleNameToLevelPrefab();
             SetAssetBundleNameToLevelScene();
 
             // skybox
             SetAssetBundleNameToSkybox();
-
-            // csv
-            SetAssetBundleNameToCSV();
-
-            // ui prefabs
-            SetAssetBundleNameToUIPrefabs();
 
             Debug.Log("设置资源 assetBundleName 完成!");
         }
@@ -113,10 +124,10 @@ namespace SmallUniverse.GameEditor
                 string rootDir = Path.Combine(Application.dataPath, standards[i].assetPath);
                 if (Directory.Exists(rootDir))
                 {
-                    string[] heroDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
-                    for (int k = 0; k < heroDirs.Length; k++)
+                    string[] dirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
+                    for (int k = 0; k < dirs.Length; k++)
                     {
-                        var dir = heroDirs[k];
+                        var dir = dirs[k];
                         var prefabDir = Path.Combine(dir, "Prefabs");
                         if (Directory.Exists(prefabDir))
                         {
@@ -131,6 +142,26 @@ namespace SmallUniverse.GameEditor
                 }
             }
         }
+
+        /// <summary>
+        /// 设置单一资源 bundle name
+        /// </summary>
+        private static void SetAssetBundleNameToSingle(BundleName[] singles)
+        {
+            for (int i = 0; i < singles.Length; i++)
+            {
+                string rootDir = Path.Combine(Application.dataPath, singles[i].assetPath);
+                if (Directory.Exists(rootDir))
+                {
+                    string[] filePaths = Directory.GetFiles(rootDir, singles[i].searchPattern, SearchOption.TopDirectoryOnly);
+                    for (int k = 0; k < filePaths.Length; k++)
+                    {
+                        SetAssetBundleName(filePaths[k], singles[i].bundlePath + Path.GetFileNameWithoutExtension(filePaths[k]));
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
         /// 设置 天空盒 bundle name
@@ -153,39 +184,6 @@ namespace SmallUniverse.GameEditor
                 }
             }
         }
-
-        /// <summary>
-        /// 设置 csv bundle name
-        /// </summary>
-        private static void SetAssetBundleNameToCSV()
-        {
-            string rootDir = Path.Combine(Application.dataPath, "Data/CSV");
-            if (!Directory.Exists(rootDir))
-                return;
-
-            string[] filePaths = Directory.GetFiles(rootDir, "*.csv", SearchOption.TopDirectoryOnly);
-            for (int k = 0; k < filePaths.Length; k++)
-            {   
-                SetAssetBundleName(filePaths[k], "csv/" + Path.GetFileNameWithoutExtension(filePaths[k]));
-            }
-        }
-
-        /// <summary>
-        /// 设置 ui prefabs
-        /// </summary>
-        private static void SetAssetBundleNameToUIPrefabs()
-        {
-            string rootDir = Path.Combine(Application.dataPath, "Art/UIPrefabs");
-            if (!Directory.Exists(rootDir))
-                return;
-
-            string[] filePaths = Directory.GetFiles(rootDir, "*.prefab", SearchOption.TopDirectoryOnly);
-            for (int k = 0; k < filePaths.Length; k++)
-            {   
-                SetAssetBundleName(filePaths[k], "uiprefabs/" + Path.GetFileNameWithoutExtension(filePaths[k]));
-            }
-        }
-        
 
         /// <summary>
         /// 设置资源文件 bundle name

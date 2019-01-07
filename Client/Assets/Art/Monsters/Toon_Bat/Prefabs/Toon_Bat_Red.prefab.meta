@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: 0c3c6035237fffd49aa7fc71e64f4bd8
-NativeFormatImporter:
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 0
   userData: 
   assetBundleName: monsters/toon_bat
   assetBundleVariant: 

@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: b7ee4c9a825cb034eb1cb5565c721fbb
-NativeFormatImporter:
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 0
   userData: 
   assetBundleName: monsters/toon_skeleton_mage
   assetBundleVariant: 

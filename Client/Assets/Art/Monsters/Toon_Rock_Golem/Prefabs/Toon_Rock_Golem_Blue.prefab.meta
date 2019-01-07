@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: 232443df10196e14b8148ba7021c8fd2
-NativeFormatImporter:
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 0
   userData: 
   assetBundleName: monsters/toon_rock_golem
   assetBundleVariant: 
