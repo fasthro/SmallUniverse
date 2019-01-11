@@ -59,12 +59,15 @@ namespace SmallUniverse
         {
             base.Born(point, true, false);
 
+            // 设置属性
+            m_navMeshAgent.speed = attribute.GetAttribute(ActorAttributeType.MoveSpeed);
+
             // 怪行为设置
             m_behaviorTree = actorGameObject.gameObject.AddComponent<BehaviorTree>();
             m_behaviorTree.StartWhenEnabled = false;
             m_behaviorTree.RestartWhenComplete = true;
             m_behaviorTree.ExternalBehavior = LevelAsset.GetExternalBehaviorTree(m_dataCSV.behavior);
-            m_behaviorTree.SetVariableValue("target", Game.hero.actorGameObject.gameObject.transform);
+            m_behaviorTree.SetVariableValue("Target", Game.hero.actorGameObject.gameObject.transform);
             m_behaviorTree.EnableBehavior();
 
             // 技能
@@ -72,21 +75,21 @@ namespace SmallUniverse
             m_skill.Initialize(this);
         }
 
-        public override void Attack()
+        public override void Attack(Transform target)
         {
-            if (actorState == ActorState.Attack || actorState == ActorState.Death)
+            if (m_isAttack || m_isDeath)
                 return;
 
-            actorState = ActorState.Attack;
+            m_isAttack = true;
             m_animator.SetFloat(ActorAnimatorParameters.AttackSpeed.ToString(), attribute.GetAttribute(ActorAttributeType.AttackSpeed));
             m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), true);
         }
 
         protected override void OnEndHandler()
         {
-            if (actorState == ActorState.Attack)
+            if (m_isAttack)
             {
-                actorState = ActorState.Idle;
+                m_isAttack = false;
                 m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), false);
 
                 if (m_weapon != null)
@@ -94,7 +97,7 @@ namespace SmallUniverse
                     m_weapon.StopAttack();
                 }
             }
-            else if (actorState == ActorState.Death)
+            else if (m_isDeath)
             {
                 DestroySelf();
             }
@@ -102,7 +105,7 @@ namespace SmallUniverse
 
         protected override void OnAttackHandler()
         {
-            if (actorState == ActorState.Attack)
+            if (m_isAttack)
             {
                 var attackData = new AttackData();
                 attackData.layer = GameLayer.NameToLayer(GameLayer.MONSTER);

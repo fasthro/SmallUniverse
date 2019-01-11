@@ -13,10 +13,7 @@ namespace SmallUniverse
     public class Hero : ActorBase
     {
         private CSV_Hero m_dataCSV;
-        
-        // 是否连续攻击
-        private bool continuouAttack;
-        
+
         public static Hero Create(int heroId)
         {
             GameObject go = new GameObject();
@@ -56,42 +53,55 @@ namespace SmallUniverse
             base.Born(point, true, true);
         }
 
-        public override void Attack()
+        public override void Move(Vector3 move, float delta)
         {
-            if (actorState == ActorState.Attack)
-            {
-                continuouAttack = true;
-            }
-
-            if (actorState == ActorState.Attack || actorState == ActorState.Death)
+            if (m_isDeath)
                 return;
 
-            actorState = ActorState.Attack;
+            base.Move(move, delta);
+
+            Vector3 vector = move * attribute.GetAttribute(ActorAttributeType.MoveSpeed);
+            actorGameObject.transform.position = actorGameObject.transform.position + vector * delta;
+
+            m_animator.SetFloat(ActorAnimatorParameters.Speed.ToString(), vector.magnitude);
+
+            if (vector.magnitude > 0)
+            {
+                vector.Normalize();
+                vector.y = 0;
+
+                if (!m_isAttack)
+                {
+                    RotationTo(vector);
+                }
+            }
+        }
+
+        public override void Attack(Transform target)
+        {
+            if (m_isDeath || m_isAttack)
+                return;
+
+            m_target = target;
+
+            m_isAttack = true;
             m_animator.SetFloat(ActorAnimatorParameters.AttackSpeed.ToString(), attribute.GetAttribute(ActorAttributeType.AttackSpeed));
             m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), true);
         }
 
         protected override void OnEndHandler()
         {
-            if (actorState == ActorState.Attack)
+            if (m_isAttack)
             {
-                actorState = ActorState.Idle;
-                if (continuouAttack)
-                {
-                    Attack();
-                }
-                else
-                {
-                    m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), false);
-                    m_weapon.StopAttack();
-                }
-                continuouAttack = false;
+                m_isAttack = false;
+                m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), false);
+                m_weapon.StopAttack();
             }
         }
 
         protected override void OnAttackHandler()
         {
-            if (actorState == ActorState.Attack)
+            if (m_isAttack)
             {
                 var attackData = new AttackData();
                 attackData.layer = GameLayer.NameToLayer(GameLayer.HERO);

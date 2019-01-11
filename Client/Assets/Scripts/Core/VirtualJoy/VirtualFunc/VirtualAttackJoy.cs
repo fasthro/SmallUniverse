@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using FairyGUI;
 using UnityEngine;
+using SmallUniverse.Manager;
 
 namespace SmallUniverse
 {
@@ -29,7 +30,7 @@ namespace SmallUniverse
 
         protected override void OnTouchStart(JoyGesture gesture)
         {
-            Game.hero.Attack();
+            Game.hero.Attack(Game.GetManager<GLevelManager>().HeroFindAttackTarget().Transform);
         }
 
         protected override void OnTouchUp(JoyGesture gesture)
@@ -44,7 +45,7 @@ namespace SmallUniverse
 
         protected override void OnKeyDown()
         {
-            Game.hero.Attack();
+            Game.hero.Attack(Game.GetManager<GLevelManager>().HeroFindAttackTarget().Transform);
         }
     }
 }

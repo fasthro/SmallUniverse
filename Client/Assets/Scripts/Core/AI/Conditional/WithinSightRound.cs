@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
-using BehaviorDesigner.Runtime;
 using SmallUniverse.Utils;
 
 namespace SmallUniverse.AI
@@ -12,12 +9,14 @@ namespace SmallUniverse.AI
     [TaskDescription("判断目标是否在视野范围内-视野范围以自身为中心点的圆形范围内")]
     public class WithinSightRound : Conditional
     {
+        [Tooltip("目标 Transform")]
         public SharedTransform target;
+        [Tooltip("攻击范围半径")]
         public SharedFloat radius;
 
         public override TaskStatus OnUpdate()
         {
-            if(WithinUtils.WithinRound(transform.position, target.Value.position, radius.Value))
+            if(ShapeUtils.WithinRound(transform.position, target.Value.position, radius.Value))
             {
                 return TaskStatus.Success;
             }

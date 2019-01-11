@@ -23,7 +23,10 @@ namespace SmallUniverse
     {
         None,
         Idle,
+        Move,
+        MoveTo,
         Attack,
+        MoveAttack,
         Death,
     }
 
@@ -39,34 +42,107 @@ namespace SmallUniverse
         protected WeaponBase m_weapon;
         // 生命条
         protected UP_HudSceneHpBar m_HPBar;
+        
+        // 目标
+        protected Transform m_target;
+        public Transform target
+        {
+            get
+            {
+                return m_target;
+            }
+        }
 
-        // 当前状态
-        public ActorState actorState;
+        // transform
+        public Transform Transform
+        {
+            get
+            {
+                return actorGameObject.transform;
+            }
+        }
 
-        // 目标方向
-        protected Vector3 m_targetDir;
-        // 移动方向
-        protected Vector3 m_moveDir;
-        // 当前朝向
-        protected Vector3 m_lookDir;
+        // position
+        public Vector3 Position
+        {
+            get
+            {
+                return actorGameObject.transform.position;
+            }
+        }
+
+        // 出生标识
+        protected bool m_isBorn;
+        public bool IsBorn
+        {
+            get
+            {
+                return m_isBorn;
+            }
+        }
+
+        // 死亡标识
+        protected bool m_isDeath;
+        public bool IsDeath
+        {
+            get
+            {
+                return m_isDeath;
+            }
+        }
+
+        // 移动标识
+        protected bool m_isMove;
+        public bool IsMove
+        {
+            get
+            {
+                return m_isMove;
+            }
+        }
+
+        // 移动到目标标识
+        protected bool m_isMoveTo;
+        public bool IsMoveTo
+        {
+            get
+            {
+                return m_isMoveTo;
+            }
+        }
+
+        // 攻击标识
+        protected bool m_isAttack;
+        public bool IsAttack
+        {
+            get
+            {
+                return m_isAttack;
+            }
+        }
 
         /// <summary>
         /// 初始化数据
         /// </summary>
         public void InitActorData()
         {
-            actorState = ActorState.None;
+            m_isBorn = false;
+            m_isDeath = false;
+            m_isMove = false;
+            m_isMoveTo = false;
+            m_isAttack = false;
+
             attribute = ActorAttribute.Create();
         }
 
         protected virtual void OnEndHandler()
         {
-        
+
         }
 
         protected virtual void OnAttackHandler()
         {
-        
+
         }
 
         /// <summary>
@@ -74,7 +150,7 @@ namespace SmallUniverse
         /// </summary>
         public virtual void Born(LevelPoint point)
         {
-        
+            m_isBorn = true;
         }
 
         /// <summary>
@@ -84,7 +160,7 @@ namespace SmallUniverse
         /// <param name="haveWeapon"></param>
         protected void Born(LevelPoint point, bool haveHPBar, bool haveWeapon)
         {
-            actorState = ActorState.Idle;
+            m_isBorn = true;
 
             m_animator = actorGameObject.GetComponent<Animator>();
             m_animationEvent = actorGameObject.GetComponent<ActorAnimationEvent>();
@@ -101,8 +177,6 @@ namespace SmallUniverse
             actorGameObject.transform.localEulerAngles = point.rotationAngle;
             actorGameObject.gameObject.SetActive(true);
 
-            m_moveDir = actorGameObject.transform.forward;
- 
             // HP Bar
             if (haveHPBar)
             {
@@ -135,11 +209,11 @@ namespace SmallUniverse
         /// </summary>
         public virtual void Death()
         {
-            if(actorState == ActorState.Death)
-                return;
-
-            actorState = ActorState.Death;
-            m_animator.SetBool(ActorAnimatorParameters.Death.ToString(), true);
+            if (m_isBorn && !m_isDeath)
+            {
+                m_isDeath = true;
+                m_animator.SetBool(ActorAnimatorParameters.Death.ToString(), true);
+            }
         }
 
         /// <summary>
@@ -147,23 +221,64 @@ namespace SmallUniverse
         /// </summary>
         public virtual void Move(Vector3 move, float delta)
         {
-            Vector3 vector = move * attribute.GetAttribute(ActorAttributeType.MoveSpeed);
-            actorGameObject.transform.position = actorGameObject.transform.position + vector * delta;
+            m_isMove = true;
+            m_isMoveTo = false;
+        }
 
-            if (vector.magnitude > 0)
-            {
-                m_moveDir = vector;
-                m_moveDir.y = 0;
-                m_moveDir.Normalize();
-            }
+        /// <summary>
+        /// 移动到指定位置
+        /// </summary>
+        /// <param name="target">目标位置</param>
+        /// <param name="stoppingDistance">当距离目标位置这个距离的时候停止</param>
+        public virtual void MoveTo(Vector3 target, float stoppingDistance)
+        {
+            m_isMove = true;
+            m_isMoveTo = true;
+            m_navMeshAgent.updatePosition = false;
+            m_navMeshAgent.updateRotation = false;
+            m_navMeshAgent.isStopped = false;
+            m_navMeshAgent.stoppingDistance = stoppingDistance;
+            m_navMeshAgent.SetDestination(target);
+        }
 
-            m_animator.SetFloat(ActorAnimatorParameters.Speed.ToString(), vector.magnitude);
+        /// <summary>
+        /// 停止移动到指定位置
+        /// </summary>
+        public void StopMoveTo()
+        {
+            m_isMove = false;
+            m_isMoveTo = false;
+            m_navMeshAgent.isStopped = true;
+            m_navMeshAgent.stoppingDistance = 0;
+            m_navMeshAgent.updateRotation = false;
+            m_navMeshAgent.updatePosition = false;
+        }
+
+        /// <summary>
+        /// 旋转到指定方向
+        /// </summary>
+        /// <param name="direction">方向</param>
+        public virtual void RotationTo(Vector3 direction)
+        {
+            actorGameObject.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+        }
+
+        /// <summary>
+        /// 转向目标
+        /// </summary>
+        /// <param name="target">目标 transform</param>
+        public virtual void RotationTo(Transform target)
+        {
+            Vector3 direction = target.position - actorGameObject.gameObject.transform.position;
+            direction.Normalize();
+            direction.y = 0;
+            RotationTo(direction);
         }
 
         /// <summary>
         /// 攻击
         /// </summary>
-        public virtual void Attack()
+        public virtual void Attack(Transform target)
         {
 
         }
@@ -198,7 +313,7 @@ namespace SmallUniverse
         {
             Destroy(gameObject);
 
-            if(m_HPBar != null)
+            if (m_HPBar != null)
             {
                 m_HPBar.Dispose();
                 m_HPBar = null;
@@ -207,27 +322,44 @@ namespace SmallUniverse
 
         protected virtual void OnUpdate()
         {
-            if (actorState == ActorState.None)
-                return;
+            // move to update
+            if (m_isMove && m_isMoveTo)
+            {
+                if (m_navMeshAgent.remainingDistance <= m_navMeshAgent.stoppingDistance)
+                {
+                    StopMoveTo();
+                }
+                else
+                {
+                    Vector3 direction = m_navMeshAgent.nextPosition - actorGameObject.gameObject.transform.position;
+                    direction.Normalize();
+                    direction.y = 0;
+                    RotationTo(direction);
 
-            actorGameObject.transform.rotation = Quaternion.LookRotation(m_moveDir, Vector3.up);
+                    actorGameObject.gameObject.transform.position = m_navMeshAgent.nextPosition;
+                }
+            }
         }
 
         protected virtual void OnLateUpdate()
         {
-            if (actorState == ActorState.None)
-                return;
 
         }
 
         void Update()
         {
-            OnUpdate();
+            if (m_isBorn)
+            {
+                OnUpdate();
+            }
         }
 
         void LateUpdate()
         {
-            OnLateUpdate();
+            if (m_isBorn)
+            {
+                OnLateUpdate();
+            }
         }
     }
 }

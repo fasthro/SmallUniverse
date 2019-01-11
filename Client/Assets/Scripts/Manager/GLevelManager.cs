@@ -11,8 +11,8 @@ namespace SmallUniverse.Manager
         public LevelInfo levelInfo;
         // 英雄
         public Hero hero;
-         // 怪
-        public Monster monster;
+        // 怪
+        public List<Monster> monsters;
         // 英雄相机
         public VirtualCamera heroCamera;
         // 关卡环境
@@ -38,16 +38,17 @@ namespace SmallUniverse.Manager
 
         public override void OnDispose()
         {
-            
+
         }
 
         public void InitLevel(int levelId, int heroId)
         {
             // 关卡数据配置
             m_levelCSV = Game.gameCSV.GetData<CSV_Level>(levelId);
-            
+
             levelInfo = LevelInfo.Create(m_levelCSV.scene);
             hero = Hero.Create(heroId);
+            monsters = new List<Monster>();
             heroCamera = Game.gameCamera.heroCamera;
 
             // 默认区域索引
@@ -60,7 +61,7 @@ namespace SmallUniverse.Manager
             environment = new LevelEnvironment();
             // 天空盒
             Game.gameCamera.SetSkybox(m_levelCSV.skybox);
-            
+
             // event
             levelInfo.OnLoadedAreaHandler += OnLoadedAreaHandler;
             levelInfo.OnEnterAreaHandler += OnEnterAreaHandler;
@@ -84,7 +85,7 @@ namespace SmallUniverse.Manager
                 var points = levelInfo.GetHeroPoints(areaIndex);
                 // 玩家出生
                 hero.Born(points[0]);
-                
+
                 // 关卡设置hero transform
                 levelInfo.SetHeroTransform(hero.actorGameObject.transform);
 
@@ -127,9 +128,53 @@ namespace SmallUniverse.Manager
         #region moster
         private void CreateMonster(int monsterId)
         {
-            monster = Monster.Create(monsterId);
+            List<Monster> deaths = new List<Monster>();
+            for (int i = 0; i < monsters.Count; i++)
+            {
+                if (monsters[i].IsDeath)
+                {
+                    deaths.Add(monsters[i]);
+                }
+            }
+
+            for (int i = 0; i < deaths.Count; i++)
+            {
+                monsters.Remove(deaths[i]);
+            }
+
+            var monster = Monster.Create(monsterId);
             var points = levelInfo.GetMonsterPoints(areaIndex);
             monster.Born(points[0]);
+
+            monsters.Add(monster);
+        }
+
+        /// <summary>
+        /// hero 寻找距离自己最近的攻击目标
+        /// </summary>
+        public ActorBase HeroFindAttackTarget()
+        {
+            float distance = -1;
+            Monster monster = null;
+            for (int i = 0; i < monsters.Count; i++)
+            {
+                var dis = Vector3.Distance(hero.Position, monsters[i].Position);
+                if (distance == -1)
+                {
+                    monster = monsters[i];
+                    distance = dis;
+                }
+                else
+                {
+                    if (distance > dis)
+                    {
+                        monster = monsters[i];
+                        distance = dis;
+                    }
+                }
+
+            }
+            return monster;
         }
         #endregion
     }
