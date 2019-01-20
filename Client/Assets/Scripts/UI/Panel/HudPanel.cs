@@ -68,15 +68,15 @@ namespace SmallUniverse.UI
             m_skillJoy3.Initialize(Game.virtualJoy.joys[2]);
         }
 
-        private void MoveJoyHandler(Vector2 move)
+        private void MoveJoyHandler(Vector2 move, bool isMove)
         {
-            if (Game.hero != null)
+            if(Game.hero != null)
             {
                 m_move.x = move.x;
                 m_move.y = 0;
                 m_move.z = move.y;
 
-                Game.hero.Move(m_move, Time.deltaTime);
+                Game.hero.Move(m_move, isMove);
             }
         }
 

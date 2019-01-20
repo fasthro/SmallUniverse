@@ -10,24 +10,28 @@ using UnityEngine.AI;
 
 namespace SmallUniverse
 {
-
-    public enum ActorAnimatorParameters
+    public class ActorAnimatorParameters
     {
-        Speed,
-        Attack,
-        AttackSpeed,
-        Death,
-    }
-
-    public enum ActorState
-    {
-        None,
-        Idle,
-        Move,
-        MoveTo,
-        Attack,
-        MoveAttack,
-        Death,
+        // 出生
+        public static string Born = "Born";
+        // 死亡
+        public static string Death = "Death";
+        // 移动
+        public static string Move = "Move";
+        // 1 - 普通攻击
+        // 2 - 技能攻击
+        // 3 - 技能攻击
+        // 4 - 技能攻击
+        // 5 - 技能攻击
+        public static string Attack = "Attack";
+        // 被击中
+        public static string Hit = "Hit";
+        // 眩晕
+        public static string Dizzy = "Dizzy";
+        // 冰冻
+        public static string Freeze = "Freeze";
+        // 移动速度
+        public static string MoveSpeed = "MoveSpeed";
     }
 
     public abstract class ActorBase : MonoBehaviour
@@ -35,194 +39,92 @@ namespace SmallUniverse
         public ActorGameObject actorGameObject;
         public ActorAttribute attribute;
         protected Animator m_animator;
-        protected ActorAnimationEvent m_animationEvent;
         protected Rigidbody m_rigidbody;
         protected NavMeshAgent m_navMeshAgent;
-        // 武器
-        protected WeaponBase m_weapon;
-        // 生命条
         protected UP_HudSceneHpBar m_HPBar;
-        
-        // 目标
-        protected Transform m_target;
-        public Transform target
-        {
-            get
-            {
-                return m_target;
-            }
-        }
 
-        // transform
-        public Transform Transform
-        {
-            get
-            {
-                return actorGameObject.transform;
-            }
-        }
+        // 移动量
+        protected Vector3 m_moveVt;
+        // 方向量
+        protected Vector3 m_dirVt;
+        protected Quaternion m_targetRotation;
 
-        // position
-        public Vector3 Position
-        {
-            get
-            {
-                return actorGameObject.transform.position;
-            }
-        }
-
-        // 出生标识
-        protected bool m_isBorn;
-        public bool IsBorn
-        {
-            get
-            {
-                return m_isBorn;
-            }
-        }
-
-        // 死亡标识
-        protected bool m_isDeath;
-        public bool IsDeath
-        {
-            get
-            {
-                return m_isDeath;
-            }
-        }
-
-        // 移动标识
-        protected bool m_isMove;
-        public bool IsMove
-        {
-            get
-            {
-                return m_isMove;
-            }
-        }
-
-        // 移动到目标标识
-        protected bool m_isMoveTo;
-        public bool IsMoveTo
-        {
-            get
-            {
-                return m_isMoveTo;
-            }
-        }
-
-        // 攻击标识
-        protected bool m_isAttack;
-        public bool IsAttack
-        {
-            get
-            {
-                return m_isAttack;
-            }
-        }
+        // 是否能移动
+        public bool canMove;
+        // 是否能攻击
+        public bool canAttack;
+        // 正在攻击
+        public bool attack;
 
         /// <summary>
         /// 初始化数据
         /// </summary>
         public void InitActorData()
         {
-            m_isBorn = false;
-            m_isDeath = false;
-            m_isMove = false;
-            m_isMoveTo = false;
-            m_isAttack = false;
-
             attribute = ActorAttribute.Create();
         }
 
-        protected virtual void OnEndHandler()
-        {
-
-        }
-
-        protected virtual void OnAttackHandler()
-        {
-
-        }
-
         /// <summary>
-        /// 出生
+        /// Actor 出生
         /// </summary>
+        /// <param name="point"></param>
         public virtual void Born(LevelPoint point)
         {
-            m_isBorn = true;
+        
         }
 
         /// <summary>
-        /// 出生
+        /// Actor 出生
         /// </summary>
-        /// <param name="haveHPBar"></param>
-        /// <param name="haveWeapon"></param>
-        protected void Born(LevelPoint point, bool haveHPBar, bool haveWeapon)
+        /// <param name="point"></param>
+        /// <param name="actorArt"></param>
+        protected virtual void Born(LevelPoint point, string actorArt)
         {
-            m_isBorn = true;
+            // 创建角色
+            GameObject prefab = LevelAsset.GetGameObject(actorArt);
+            var actorGo = GameObject.Instantiate<GameObject>(prefab);
+            actorGo.transform.parent = transform;
+            actorGameObject = actorGo.GetComponent<ActorGameObject>();
 
+            // 组件获取
             m_animator = actorGameObject.GetComponent<Animator>();
-            m_animationEvent = actorGameObject.GetComponent<ActorAnimationEvent>();
             m_rigidbody = actorGameObject.GetComponent<Rigidbody>();
             m_navMeshAgent = actorGameObject.GetComponent<NavMeshAgent>();
 
-            // 注册事件
-            m_animationEvent.OnEndHandler -= OnEndHandler;
-            m_animationEvent.OnEndHandler += OnEndHandler;
-            m_animationEvent.OnAttackHandler -= OnAttackHandler;
-            m_animationEvent.OnAttackHandler += OnAttackHandler;
-
+            // 基础设置
+            actorGameObject.actor = this;
             actorGameObject.transform.position = point.position;
             actorGameObject.transform.localEulerAngles = point.rotationAngle;
-            actorGameObject.gameObject.SetActive(true);
 
-            // HP Bar
-            if (haveHPBar)
-            {
-                m_HPBar = new UP_HudSceneHpBar();
-                m_HPBar.SetAlign(UIPrefabAlign.CENTER);
-                m_HPBar.SetFollow(actorGameObject.headPoint);
-                m_HPBar.SetLookAt(Game.gameCamera.heroCamera.virtualCamera.transform);
-                m_HPBar.SetValue(attribute.GetAttribute(ActorAttributeType.Hp), attribute.GetAttribute(ActorAttributeType.HpMax));
-            }
-
-            // weapon
-            if (haveWeapon)
-            {
-                GameObject prefab = LevelAsset.GetGameObject("Weapons/Rifle/Rifle_General");
-                var weaponGo = GameObject.Instantiate<GameObject>(prefab);
-                weaponGo.transform.parent = actorGameObject.weaponPoint;
-                weaponGo.transform.localPosition = Vector3.zero;
-                weaponGo.transform.localRotation = Quaternion.Euler(90, 0, 0);
-
-                m_weapon = weaponGo.GetComponent<WeaponBase>();
-                m_weapon.Initialize(this);
-            }
-
-            // 出生动画
-            m_animator.SetFloat(ActorAnimatorParameters.Speed.ToString(), 0);
+            // 寻路设置
+            m_navMeshAgent.speed = attribute.GetAttribute(ActorAttributeType.MoveSpeed);
+            
+            m_moveVt = Vector3.zero;
+            m_dirVt = actorGameObject.transform.forward;
         }
 
         /// <summary>
-        /// 死亡
+        /// Actor 死亡
         /// </summary>
         public virtual void Death()
         {
-            if (m_isBorn && !m_isDeath)
-            {
-                m_isDeath = true;
-                m_animator.SetBool(ActorAnimatorParameters.Death.ToString(), true);
-            }
+            
         }
 
         /// <summary>
         /// 移动
         /// </summary>
-        public virtual void Move(Vector3 move, float delta)
+        public virtual void Move(Vector3 move, bool stop)
         {
-            m_isMove = true;
-            m_isMoveTo = false;
+
+        }
+
+        /// <summary>
+        /// 设置是否能移动
+        /// </summary>
+        public virtual void SetCanMove(bool can)
+        {
+
         }
 
         /// <summary>
@@ -232,53 +134,31 @@ namespace SmallUniverse
         /// <param name="stoppingDistance">当距离目标位置这个距离的时候停止</param>
         public virtual void MoveTo(Vector3 target, float stoppingDistance)
         {
-            m_isMove = true;
-            m_isMoveTo = true;
-            m_navMeshAgent.updatePosition = false;
-            m_navMeshAgent.updateRotation = false;
-            m_navMeshAgent.isStopped = false;
-            m_navMeshAgent.stoppingDistance = stoppingDistance;
-            m_navMeshAgent.SetDestination(target);
+            
         }
 
         /// <summary>
-        /// 停止移动到指定位置
-        /// </summary>
-        public void StopMoveTo()
-        {
-            m_isMove = false;
-            m_isMoveTo = false;
-            m_navMeshAgent.isStopped = true;
-            m_navMeshAgent.stoppingDistance = 0;
-            m_navMeshAgent.updateRotation = false;
-            m_navMeshAgent.updatePosition = false;
-        }
-
-        /// <summary>
-        /// 旋转到指定方向
+        /// 看向目标方向
         /// </summary>
         /// <param name="direction">方向</param>
-        public virtual void RotationTo(Vector3 direction)
+        public virtual void LookRotation(Vector3 direction)
         {
             actorGameObject.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
 
         /// <summary>
-        /// 转向目标
+        /// Actor 攻击
         /// </summary>
-        /// <param name="target">目标 transform</param>
-        public virtual void RotationTo(Transform target)
+        /// <param name="attackIndex">攻击索引</param>
+        public virtual void Attack(int attackIndex)
         {
-            Vector3 direction = target.position - actorGameObject.gameObject.transform.position;
-            direction.Normalize();
-            direction.y = 0;
-            RotationTo(direction);
+
         }
 
         /// <summary>
-        /// 攻击
+        /// 移动
         /// </summary>
-        public virtual void Attack(Transform target)
+        public virtual void SetCanAttack(bool can)
         {
 
         }
@@ -286,80 +166,36 @@ namespace SmallUniverse
         /// <summary>
         /// 被攻击受伤
         /// </summary>
-        public virtual void BeAttack(AttackData attackData)
+        public virtual void Hit()
         {
-            float defense = attribute.GetAttribute(ActorAttributeType.Defense);
-            float damage = ((defense * 0.06f) / (1 + 0.06f * defense)) * attackData.attack;
-            float sub = attribute.GetAttribute(ActorAttributeType.Hp) - damage;
-            attribute.SetAttribute(ActorAttributeType.Hp, sub > 0 ? sub : 0);
-
-            // 死亡判断
-            if (sub <= 0)
-            {
-                Death();
-            }
-
-            // 设置血条显示
-            if (m_HPBar != null)
-            {
-                m_HPBar.SetValue(attribute.GetAttribute(ActorAttributeType.Hp), attribute.GetAttribute(ActorAttributeType.HpMax));
-            }
+            
         }
 
         /// <summary>
-        /// 摧毁自己
+        /// 创建生命条
         /// </summary>
-        protected virtual void DestroySelf()
+        public virtual void CreateHpBar()
         {
-            Destroy(gameObject);
-
-            if (m_HPBar != null)
-            {
-                m_HPBar.Dispose();
-                m_HPBar = null;
-            }
+            m_HPBar = new UP_HudSceneHpBar();
+            m_HPBar.SetAlign(UIPrefabAlign.CENTER);
+            //m_HPBar.SetFollow(actorGameObject.headPoint);
+            m_HPBar.SetLookAt(Game.gameCamera.heroCamera.virtualCamera.transform);
+            m_HPBar.SetValue(attribute.GetAttribute(ActorAttributeType.Hp), attribute.GetAttribute(ActorAttributeType.HpMax));
         }
 
-        protected virtual void OnUpdate()
-        {
-            // move to update
-            if (m_isMove && m_isMoveTo)
-            {
-                if (m_navMeshAgent.remainingDistance <= m_navMeshAgent.stoppingDistance)
-                {
-                    StopMoveTo();
-                }
-                else
-                {
-                    Vector3 direction = m_navMeshAgent.nextPosition - actorGameObject.gameObject.transform.position;
-                    direction.Normalize();
-                    direction.y = 0;
-                    RotationTo(direction);
-
-                    actorGameObject.gameObject.transform.position = m_navMeshAgent.nextPosition;
-                }
-            }
-        }
-
-        protected virtual void OnLateUpdate()
+        public virtual void OnUpdate()
         {
 
         }
 
-        void Update()
+        public virtual void OnLateUpdate()
         {
-            if (m_isBorn)
-            {
-                OnUpdate();
-            }
+
         }
 
-        void LateUpdate()
+        public virtual void OnFixedUpdate()
         {
-            if (m_isBorn)
-            {
-                OnLateUpdate();
-            }
+
         }
     }
 }

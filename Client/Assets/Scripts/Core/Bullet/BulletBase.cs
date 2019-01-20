@@ -99,7 +99,7 @@ namespace SmallUniverse
         protected virtual void CreateDamage(ActorBase actor)
         {
             m_isDamage = true;
-            actor.BeAttack(m_attackData);
+            // actor.BeAttack(m_attackData);
         }
         
         /// <summary>

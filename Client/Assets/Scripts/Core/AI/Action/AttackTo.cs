@@ -25,21 +25,21 @@ namespace SmallUniverse.AI
 
         public override TaskStatus OnUpdate()
         {
-            if (!m_ownerActor.IsAttack)
-            {
-                if (!m_attacked)
-                {
-                    m_attacked = true;
-                    m_ownerActor.Attack(Game.hero.Transform);
-                }
-            }
-            if (m_attacked)
-            {
-                if (!m_ownerActor.IsAttack)
-                {
-                    return TaskStatus.Success;
-                }
-            }
+            // if (!m_ownerActor.IsAttack)
+            // {
+            //     if (!m_attacked)
+            //     {
+            //         m_attacked = true;
+            //         m_ownerActor.Attack(Game.hero.Transform);
+            //     }
+            // }
+            // if (m_attacked)
+            // {
+            //     if (!m_ownerActor.IsAttack)
+            //     {
+            //         return TaskStatus.Success;
+            //     }
+            // }
             return TaskStatus.Running;
         }
     }

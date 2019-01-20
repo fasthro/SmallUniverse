@@ -23,10 +23,10 @@ namespace SmallUniverse.AI
 
         public override TaskStatus OnUpdate()
         {
-            m_direction = target.Value.position - transform.position;
-            m_direction.Normalize();
-            m_direction.y = 0;
-            m_ownerActor.RotationTo(m_direction);
+            // m_direction = target.Value.position - transform.position;
+            // m_direction.Normalize();
+            // m_direction.y = 0;
+            // m_ownerActor.RotationTo(m_direction);
             return TaskStatus.Success;
         }
     }

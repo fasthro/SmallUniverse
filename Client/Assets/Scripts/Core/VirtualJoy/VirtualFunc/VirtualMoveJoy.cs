@@ -8,7 +8,7 @@ namespace SmallUniverse
 
     public class VirtualMoveJoy : VirtualFuncJoyBase
     {
-        public delegate void MoveJoyHandler(Vector2 move);
+        public delegate void MoveJoyHandler(Vector2 move, bool isMove);
 
         public event MoveJoyHandler moveJoyHandler;
 
@@ -38,6 +38,12 @@ namespace SmallUniverse
         // slider 半径
         private float m_sliderRadius;
 
+        // 是否开始移动
+        private bool m_startMove;
+
+        // 是否已经停止移动
+        private bool m_stopMove;
+
         public override void Initialize(Joy joy)
         {
             base.Initialize(joy);
@@ -48,6 +54,9 @@ namespace SmallUniverse
 
             m_sliderInitPoint.x = m_uiRadius - m_sliderRadius;
             m_sliderInitPoint.y = m_uiRadius - m_sliderRadius;
+
+            m_startMove = false;
+            m_stopMove = false;
         }
 
         protected override void OnTouchInit(JoyGesture gesture)
@@ -87,6 +96,9 @@ namespace SmallUniverse
             m_sliderPoint = m_sliderInitPoint + (m_touchPosition - m_starPosition);
 
             startTransition.Play();
+
+            m_startMove = true;
+            m_stopMove = false;
         }
 
         protected override void OnTouchMove(JoyGesture gesture)
@@ -116,6 +128,8 @@ namespace SmallUniverse
             m_sliderPoint = m_sliderInitPoint;
 
             endTransition.Play();
+
+            m_stopMove = true;
         }
 
         protected override void OnUpdate()
@@ -128,7 +142,17 @@ namespace SmallUniverse
                 var move = (m_starPosition - m_touchPosition).normalized;
                 move.x *= -1;
 
-                moveJoyHandler(move);
+                if (m_startMove)
+                {
+                    if(m_stopMove)
+                    {
+                        m_startMove = false;
+                        moveJoyHandler(move, false);
+                    }
+                    else{
+                        moveJoyHandler(move, true);
+                    }
+                }
             }
         }
     }

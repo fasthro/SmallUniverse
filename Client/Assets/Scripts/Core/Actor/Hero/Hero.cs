@@ -28,7 +28,6 @@ namespace SmallUniverse
             base.InitActorData();
 
             m_dataCSV = Game.gameCSV.GetData<CSV_Hero>(heroId);
-
             // 设置属性
             attribute.SetAttribute(ActorAttributeType.MoveSpeed, m_dataCSV.moveSpeed);
             attribute.SetAttribute(ActorAttributeType.AttackSpeed, m_dataCSV.attackSpeed);
@@ -40,75 +39,87 @@ namespace SmallUniverse
             attribute.SetAttribute(ActorAttributeType.MagicDefense, m_dataCSV.magicDefense);
             attribute.SetAttribute(ActorAttributeType.Hp, m_dataCSV.hp);
             attribute.SetAttribute(ActorAttributeType.HpMax, m_dataCSV.hpMax);
-
-            GameObject prefab = LevelAsset.GetGameObject(m_dataCSV.art);
-            var heroGo = GameObject.Instantiate<GameObject>(prefab);
-            heroGo.transform.parent = transform;
-            heroGo.SetActive(false);
-            actorGameObject = heroGo.GetComponent<ActorGameObject>();
         }
 
         public override void Born(LevelPoint point)
         {
-            base.Born(point, true, true);
+            base.Born(point, m_dataCSV.art);
+            canMove = true;
+            canAttack = true;
+            attack = false;
         }
 
-        public override void Move(Vector3 move, float delta)
+        #region  move
+        public override void Move(Vector3 move, bool isMove)
         {
-            if (m_isDeath)
-                return;
-
-            base.Move(move, delta);
-
-            Vector3 vector = move * attribute.GetAttribute(ActorAttributeType.MoveSpeed);
-            actorGameObject.transform.position = actorGameObject.transform.position + vector * delta;
-
-            m_animator.SetFloat(ActorAnimatorParameters.Speed.ToString(), vector.magnitude);
-
-            if (vector.magnitude > 0)
+            if (isMove)
             {
-                vector.Normalize();
-                vector.y = 0;
-
-                if (!m_isAttack)
+                if (canMove)
                 {
-                    RotationTo(vector);
+                    m_moveVt = move;
+
+                    m_animator.SetFloat(ActorAnimatorParameters.MoveSpeed, m_moveVt.magnitude);
+                    m_animator.SetBool(ActorAnimatorParameters.Move, true);
+
+                    if (move.magnitude > 0)
+                    {
+                        m_dirVt = move.normalized;
+                        m_dirVt.y = 0;
+                    }
+                }
+                else
+                {
+                    SetCanMove(canMove);
                 }
             }
-        }
-
-        public override void Attack(Transform target)
-        {
-            if (m_isDeath || m_isAttack)
-                return;
-
-            m_target = target;
-
-            m_isAttack = true;
-            m_animator.SetFloat(ActorAnimatorParameters.AttackSpeed.ToString(), attribute.GetAttribute(ActorAttributeType.AttackSpeed));
-            m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), true);
-        }
-
-        protected override void OnEndHandler()
-        {
-            if (m_isAttack)
+            else
             {
-                m_isAttack = false;
-                m_animator.SetBool(ActorAnimatorParameters.Attack.ToString(), false);
-                m_weapon.StopAttack();
+                SetCanMove(canMove);
             }
         }
 
-        protected override void OnAttackHandler()
+        public override void SetCanMove(bool can)
         {
-            if (m_isAttack)
+            canMove = can;
+            m_moveVt = Vector3.zero;
+            m_animator.SetBool(ActorAnimatorParameters.Move, false);
+        }
+        #endregion
+
+        #region  attack
+        public override void Attack(int attackIndex)
+        {
+            if(canAttack && !attack)
             {
-                var attackData = new AttackData();
-                attackData.layer = GameLayer.NameToLayer(GameLayer.HERO);
-                attackData.attack = attribute.GetAttribute(ActorAttributeType.Attack);
-                attackData.magicAttack = attribute.GetAttribute(ActorAttributeType.MagicAttack);
-                m_weapon.Attack(attackData, null);
+                m_animator.SetTrigger(ActorAnimatorParameters.Attack + attackIndex.ToString());
             }
+        }
+
+        public override void SetCanAttack(bool can)
+        {
+            canAttack = can;
+        }
+        #endregion
+
+        public override void OnUpdate()
+        {
+            // position
+            actorGameObject.transform.position = actorGameObject.transform.position + m_moveVt * attribute.GetAttribute(ActorAttributeType.MoveSpeed) * Time.deltaTime;
+
+            // rotation
+            m_targetRotation = Quaternion.LookRotation(m_dirVt, Vector3.up);
+            float rotationSpeed = attribute.GetAttribute(ActorAttributeType.RotationSpeed);
+            actorGameObject.transform.eulerAngles = Vector3.up * Mathf.MoveTowardsAngle(actorGameObject.transform.eulerAngles.y, m_targetRotation.eulerAngles.y, (rotationSpeed * Time.deltaTime) * rotationSpeed);
+        }
+
+        public override void OnLateUpdate()
+        {
+
+        }
+
+        public override void OnFixedUpdate()
+        {
+
         }
     }
 }

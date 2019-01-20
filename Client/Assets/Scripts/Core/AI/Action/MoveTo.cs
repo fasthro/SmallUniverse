@@ -39,10 +39,10 @@ namespace SmallUniverse.AI
         public override TaskStatus OnUpdate()
         {
             stopMoveTime -= Time.deltaTime;
-            if(!m_ownerActor.IsMove || stopMoveTime <= 0)
-            {
-                return TaskStatus.Success;
-            }
+            // if(!m_ownerActor.IsMove || stopMoveTime <= 0)
+            // {
+            //     return TaskStatus.Success;
+            // }
             return TaskStatus.Running;
         }
     }

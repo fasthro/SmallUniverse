@@ -43,7 +43,7 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="data">
-  <Table ss:ExpandedColumnCount="13" ss:ExpandedRowCount="4" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="13" ss:ExpandedRowCount="5" x:FullColumns="1"
    x:FullRows="1" ss:StyleID="s62" ss:DefaultColumnWidth="183.75"
    ss:DefaultRowHeight="13.5">
    <Row ss:AutoFitHeight="0">
@@ -93,13 +93,28 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">10001</Data></Cell>
-    <Cell ss:StyleID="s63"><Data ss:Type="String">Hero</Data></Cell>
-    <Cell><Data ss:Type="String">Heros/Soldier/Soldier</Data></Cell>
-    <Cell><Data ss:Type="String">3</Data></Cell>
-    <Cell><Data ss:Type="String">1</Data></Cell>
-    <Cell><Data ss:Type="String">1</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">外星人-战士</Data></Cell>
+    <Cell><Data ss:Type="String">Heros/AlienFighter/AlienFighter</Data></Cell>
+    <Cell><Data ss:Type="String">5</Data></Cell>
+    <Cell><Data ss:Type="String">10</Data></Cell>
+    <Cell><Data ss:Type="String">20</Data></Cell>
     <Cell><Data ss:Type="String">1</Data></Cell>
     <Cell><Data ss:Type="String">100</Data></Cell>
+    <Cell><Data ss:Type="String">5</Data></Cell>
+    <Cell><Data ss:Type="String">3</Data></Cell>
+    <Cell><Data ss:Type="String">3</Data></Cell>
+    <Cell><Data ss:Type="String">100</Data></Cell>
+    <Cell><Data ss:Type="String">100</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">10002</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">外星人-射手</Data></Cell>
+    <Cell><Data ss:Type="String">Heros/AlienShooter/AlienShooter</Data></Cell>
+    <Cell><Data ss:Type="String">8</Data></Cell>
+    <Cell><Data ss:Type="String">30</Data></Cell>
+    <Cell><Data ss:Type="String">30</Data></Cell>
+    <Cell><Data ss:Type="String">5</Data></Cell>
+    <Cell><Data ss:Type="String">30</Data></Cell>
     <Cell><Data ss:Type="String">5</Data></Cell>
     <Cell><Data ss:Type="String">3</Data></Cell>
     <Cell><Data ss:Type="String">3</Data></Cell>
@@ -121,12 +136,12 @@
     <VerticalResolution>600</VerticalResolution>
    </Print>
    <Selected/>
-   <LeftColumnVisible>3</LeftColumnVisible>
+   <LeftColumnVisible>2</LeftColumnVisible>
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>11</ActiveRow>
-     <ActiveCol>8</ActiveCol>
+     <ActiveRow>10</ActiveRow>
+     <ActiveCol>5</ActiveCol>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>

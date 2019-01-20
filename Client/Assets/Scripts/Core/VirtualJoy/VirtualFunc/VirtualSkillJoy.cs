@@ -30,6 +30,18 @@ namespace SmallUniverse
 
         protected override void OnTouchStart(JoyGesture gesture)
         {
+            if (m_joy.joyFunc == JoyFunc.SkillJoy_1)
+            {
+                Game.hero.Attack(2);
+            }
+            else if (m_joy.joyFunc == JoyFunc.SkillJoy_2)
+            {
+                Game.hero.Attack(3);
+            }
+            else if (m_joy.joyFunc == JoyFunc.SkillJoy_3)
+            {
+                Game.hero.Attack(4);
+            }
         }
 
         protected override void OnTouchUp(JoyGesture gesture)
@@ -39,15 +51,22 @@ namespace SmallUniverse
 
         protected override void OnKeyUp()
         {
-            
+
         }
 
         protected override void OnKeyDown()
         {
-            var go = Game.gamePool.Spawn("weapon/scifirifle/SciFiRifle");
-            if(go.GetComponent<PoolExample>() == null)
+            if (m_joy.joyFunc == JoyFunc.SkillJoy_1)
             {
-                go.AddComponent<PoolExample>();
+                Game.hero.Attack(2);
+            }
+            else if (m_joy.joyFunc == JoyFunc.SkillJoy_2)
+            {
+                Game.hero.Attack(3);
+            }
+            else if (m_joy.joyFunc == JoyFunc.SkillJoy_3)
+            {
+                Game.hero.Attack(4);
             }
         }
     }

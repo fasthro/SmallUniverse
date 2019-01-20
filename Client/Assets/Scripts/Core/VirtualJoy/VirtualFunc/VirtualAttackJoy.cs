@@ -30,7 +30,10 @@ namespace SmallUniverse
 
         protected override void OnTouchStart(JoyGesture gesture)
         {
-            Game.hero.Attack(Game.GetManager<GLevelManager>().HeroFindAttackTarget().Transform);
+            if(m_joy.joyFunc == JoyFunc.AttackJoy)
+            {
+                Game.hero.Attack(1);
+            }
         }
 
         protected override void OnTouchUp(JoyGesture gesture)
@@ -45,7 +48,10 @@ namespace SmallUniverse
 
         protected override void OnKeyDown()
         {
-            Game.hero.Attack(Game.GetManager<GLevelManager>().HeroFindAttackTarget().Transform);
+            if(m_joy.joyFunc == JoyFunc.AttackJoy)
+            {
+                Game.hero.Attack(1);
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace SmallUniverse
 
         public override void Attack(AttackData attackData, ActorBase target)
         {
-            bulletGroup.Attack(m_actor.actorGameObject.weaponPoint.position, m_actor.actorGameObject.transform.rotation, attackData, null);
+            //bulletGroup.Attack(m_actor.actorGameObject.weaponPoint.position, m_actor.actorGameObject.transform.rotation, attackData, null);
         }
     }
 }

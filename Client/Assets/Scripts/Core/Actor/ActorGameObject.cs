@@ -11,22 +11,25 @@ namespace SmallUniverse
 {
     public class ActorGameObject : MonoBehaviour
     {
-        // 武器挂点
-        public Transform weaponPoint;
-        // 头上血条挂点
-        public Transform headPoint;
-        
-        // 角色实例
-        private ActorBase m_actor;
+        [HideInInspector]
+        public ActorBase actor;
 
-        // 获取角色实例
-        public ActorBase GetActor()
+        void Update()
         {
-            if(m_actor == null)
-            {
-                m_actor = gameObject.GetComponentInParent<ActorBase>();
-            }
-            return m_actor;
+            if(actor != null)
+                actor.OnUpdate();
+        }
+
+        void LateUpdate()
+        {
+            if(actor != null)
+                actor.OnLateUpdate();
+        }
+
+        void FixedUpdate()
+        {
+            if(actor != null)
+                actor.OnFixedUpdate();
         }
     }
 }

@@ -46,7 +46,7 @@ namespace SmallUniverse
                 {
                     // 生成子弹效果
                     Game.gamePool.Spawn(impactAssetPath, null, collision.contacts[0].point, transform.rotation);
-                    CreateDamage(collision.gameObject.GetComponent<ActorGameObject>().GetActor());
+                    CreateDamage(collision.gameObject.GetComponent<ActorGameObject>().actor);
                     Despawn();
                 }
             }
@@ -56,7 +56,7 @@ namespace SmallUniverse
                 {
                     // 生成子弹效果
                     Game.gamePool.Spawn(impactAssetPath, null, collision.contacts[0].point, transform.rotation);
-                    CreateDamage(collision.gameObject.GetComponent<ActorGameObject>().GetActor());
+                    CreateDamage(collision.gameObject.GetComponent<ActorGameObject>().actor);
                     Despawn();
                 }
             }

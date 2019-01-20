@@ -70,7 +70,7 @@ namespace SmallUniverse.UI
         }
 
 
-        private void MoveJoyHandler(Vector2 move)
+        private void MoveJoyHandler(Vector2 move, bool isMove)
         {
             if(Game.hero != null)
             {
@@ -78,7 +78,7 @@ namespace SmallUniverse.UI
                 m_move.y = 0;
                 m_move.z = move.y;
 
-                Game.hero.Move(m_move, Time.deltaTime);
+                Game.hero.Move(m_move, isMove);
             }
         }
 

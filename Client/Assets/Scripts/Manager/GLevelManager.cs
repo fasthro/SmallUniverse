@@ -128,25 +128,9 @@ namespace SmallUniverse.Manager
         #region moster
         private void CreateMonster(int monsterId)
         {
-            List<Monster> deaths = new List<Monster>();
-            for (int i = 0; i < monsters.Count; i++)
-            {
-                if (monsters[i].IsDeath)
-                {
-                    deaths.Add(monsters[i]);
-                }
-            }
-
-            for (int i = 0; i < deaths.Count; i++)
-            {
-                monsters.Remove(deaths[i]);
-            }
-
             var monster = Monster.Create(monsterId);
             var points = levelInfo.GetMonsterPoints(areaIndex);
             monster.Born(points[0]);
-
-            monsters.Add(monster);
         }
 
         /// <summary>
@@ -154,27 +138,7 @@ namespace SmallUniverse.Manager
         /// </summary>
         public ActorBase HeroFindAttackTarget()
         {
-            float distance = -1;
-            Monster monster = null;
-            for (int i = 0; i < monsters.Count; i++)
-            {
-                var dis = Vector3.Distance(hero.Position, monsters[i].Position);
-                if (distance == -1)
-                {
-                    monster = monsters[i];
-                    distance = dis;
-                }
-                else
-                {
-                    if (distance > dis)
-                    {
-                        monster = monsters[i];
-                        distance = dis;
-                    }
-                }
-
-            }
-            return monster;
+            return null;
         }
         #endregion
     }
