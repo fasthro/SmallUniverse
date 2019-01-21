@@ -16,8 +16,8 @@
   <AllowPNG/>
  </OfficeDocumentSettings>
  <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
-  <WindowHeight>12450</WindowHeight>
-  <WindowWidth>28800</WindowWidth>
+  <WindowHeight>7755</WindowHeight>
+  <WindowWidth>20490</WindowWidth>
   <WindowTopX>0</WindowTopX>
   <WindowTopY>0</WindowTopY>
   <ProtectStructure>False</ProtectStructure>
@@ -43,9 +43,10 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="data">
-  <Table ss:ExpandedColumnCount="13" ss:ExpandedRowCount="5" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="13" ss:ExpandedRowCount="8" x:FullColumns="1"
    x:FullRows="1" ss:StyleID="s62" ss:DefaultColumnWidth="183.75"
    ss:DefaultRowHeight="13.5">
+   <Column ss:Index="3" ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="240"/>
    <Row ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">英雄id</Data></Cell>
     <Cell><Data ss:Type="String">英雄名称</Data></Cell>
@@ -95,7 +96,7 @@
     <Cell ss:StyleID="s63"><Data ss:Type="String">10001</Data></Cell>
     <Cell ss:StyleID="s63"><Data ss:Type="String">外星人-战士</Data></Cell>
     <Cell><Data ss:Type="String">Heros/AlienFighter/AlienFighter</Data></Cell>
-    <Cell><Data ss:Type="String">5</Data></Cell>
+    <Cell><Data ss:Type="String">6</Data></Cell>
     <Cell><Data ss:Type="String">10</Data></Cell>
     <Cell><Data ss:Type="String">20</Data></Cell>
     <Cell><Data ss:Type="String">1</Data></Cell>
@@ -121,6 +122,54 @@
     <Cell><Data ss:Type="String">100</Data></Cell>
     <Cell><Data ss:Type="String">100</Data></Cell>
    </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">10003</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">方块人-弓箭手</Data></Cell>
+    <Cell><Data ss:Type="String">Heros/CubemenBow/CubemenBow</Data></Cell>
+    <Cell><Data ss:Type="String">8</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">30</Data></Cell>
+    <Cell ss:StyleID="s63"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><Font html:Color="#000000">35</Font></ss:Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">5</Data></Cell>
+    <Cell><Data ss:Type="String">100</Data></Cell>
+    <Cell><Data ss:Type="String">5</Data></Cell>
+    <Cell><Data ss:Type="String">3</Data></Cell>
+    <Cell><Data ss:Type="String">3</Data></Cell>
+    <Cell><Data ss:Type="String">100</Data></Cell>
+    <Cell><Data ss:Type="String">100</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">10004</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">方块人-战士</Data></Cell>
+    <Cell><Data ss:Type="String">Heros/CubemenFighter/CubemenFighter</Data></Cell>
+    <Cell><Data ss:Type="String">9</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">20</Data></Cell>
+    <Cell ss:StyleID="s63"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><Font html:Color="#000000">35</Font></ss:Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">2</Data></Cell>
+    <Cell><Data ss:Type="String">100</Data></Cell>
+    <Cell><Data ss:Type="String">5</Data></Cell>
+    <Cell><Data ss:Type="String">3</Data></Cell>
+    <Cell><Data ss:Type="String">3</Data></Cell>
+    <Cell><Data ss:Type="String">100</Data></Cell>
+    <Cell><Data ss:Type="String">100</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">10005</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">方块人-剑士</Data></Cell>
+    <Cell><Data ss:Type="String">Heros/CubemenSword/CubemenSword</Data></Cell>
+    <Cell><Data ss:Type="String">7</Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">15</Data></Cell>
+    <Cell ss:StyleID="s63"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><Font html:Color="#000000">35</Font></ss:Data></Cell>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">4</Data></Cell>
+    <Cell><Data ss:Type="String">100</Data></Cell>
+    <Cell><Data ss:Type="String">5</Data></Cell>
+    <Cell><Data ss:Type="String">3</Data></Cell>
+    <Cell><Data ss:Type="String">3</Data></Cell>
+    <Cell><Data ss:Type="String">100</Data></Cell>
+    <Cell><Data ss:Type="String">100</Data></Cell>
+   </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
    <PageSetup>
@@ -136,12 +185,12 @@
     <VerticalResolution>600</VerticalResolution>
    </Print>
    <Selected/>
-   <LeftColumnVisible>2</LeftColumnVisible>
+   <LeftColumnVisible>5</LeftColumnVisible>
    <Panes>
     <Pane>
      <Number>3</Number>
      <ActiveRow>10</ActiveRow>
-     <ActiveCol>5</ActiveCol>
+     <ActiveCol>9</ActiveCol>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>

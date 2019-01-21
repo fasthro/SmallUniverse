@@ -1,4 +1,7 @@
 ﻿id,name,art,moveSpeed,attackSpeed,rotationSpeed,range,attack,magicAttack,defense,magicDefense,hp,hpMax
 int,string,string,float,float,float,float,float,float,float,float,float,float
-10001,外星人-战士,Heros/AlienFighter/AlienFighter,5,10,20,1,100,5,3,3,100,100
+10001,外星人-战士,Heros/AlienFighter/AlienFighter,6,10,20,1,100,5,3,3,100,100
 10002,外星人-射手,Heros/AlienShooter/AlienShooter,8,30,30,5,30,5,3,3,100,100
+10003,方块人-弓箭手,Heros/CubemenBow/CubemenBow,8,30,35,5,100,5,3,3,100,100
+10004,方块人-战士,Heros/CubemenFighter/CubemenFighter,9,20,35,2,100,5,3,3,100,100
+10005,方块人-剑士,Heros/CubemenSword/CubemenSword,7,15,35,4,100,5,3,3,100,100

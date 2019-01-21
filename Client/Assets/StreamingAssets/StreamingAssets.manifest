@@ -1,97 +1,106 @@
 ManifestFileVersion: 0
-CRC: 2384570317
+CRC: 3438769881
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: monsters/toon_bat
-      Dependencies: {}
-    Info_1:
-      Name: monsters/toon_cactus_monster
-      Dependencies: {}
-    Info_2:
-      Name: monsters/toon_death_knight
-      Dependencies: {}
-    Info_3:
-      Name: monsters/toon_dragon
-      Dependencies: {}
-    Info_4:
-      Name: monsters/toon_ghost
-      Dependencies: {}
-    Info_5:
-      Name: monsters/toon_plant_monster
-      Dependencies: {}
-    Info_6:
-      Name: monsters/toon_rock_golem
-      Dependencies: {}
-    Info_7:
-      Name: monsters/toon_skeleton_archer
-      Dependencies: {}
-    Info_8:
-      Name: monsters/toon_skeleton_knight
-      Dependencies: {}
-    Info_9:
-      Name: monsters/toon_skeleton_mage
-      Dependencies: {}
-    Info_10:
-      Name: bullets/fuel
-      Dependencies: {}
-    Info_11:
-      Name: bullets/general
-      Dependencies: {}
-    Info_12:
-      Name: bullets/line
-      Dependencies: {}
-    Info_13:
-      Name: csv/hero
-      Dependencies: {}
-    Info_14:
-      Name: csv/level
-      Dependencies: {}
-    Info_15:
-      Name: csv/monster
-      Dependencies: {}
-    Info_16:
-      Name: behavior/behavior
-      Dependencies: {}
-    Info_17:
-      Name: uiprefabs/hud_scene_hp
-      Dependencies: {}
-    Info_18:
-      Name: levels/prefabs/door
-      Dependencies: {}
-    Info_19:
-      Name: levels/prefabs/ground
-      Dependencies: {}
-    Info_20:
-      Name: levels/prefabs/monster
-      Dependencies: {}
-    Info_21:
-      Name: levels/prefabs/player
-      Dependencies: {}
-    Info_22:
-      Name: levels/scenes/level_001
-      Dependencies: {}
-    Info_23:
-      Name: skyboxs/space_nebula_bluered
-      Dependencies: {}
-    Info_24:
-      Name: skyboxs/space_nebula_deepblack
-      Dependencies: {}
-    Info_25:
-      Name: skyboxs/space_nebula_green
-      Dependencies: {}
-    Info_26:
-      Name: skyboxs/space_nebula_numinousglow
-      Dependencies: {}
-    Info_27:
       Name: skyboxs/space_nebula_orangeblue
       Dependencies: {}
-    Info_28:
+    Info_1:
+      Name: skyboxs/space_nebula_numinousglow
+      Dependencies: {}
+    Info_2:
+      Name: skyboxs/space_nebula_green
+      Dependencies: {}
+    Info_3:
+      Name: skyboxs/space_nebula_bluered
+      Dependencies: {}
+    Info_4:
       Name: skyboxs/space_nebula_red
       Dependencies: {}
+    Info_5:
+      Name: skyboxs/space_nebula_deepblack
+      Dependencies: {}
+    Info_6:
+      Name: behavior/behavior
+      Dependencies: {}
+    Info_7:
+      Name: csv/monster
+      Dependencies: {}
+    Info_8:
+      Name: csv/level
+      Dependencies: {}
+    Info_9:
+      Name: levels/scenes/level_001
+      Dependencies: {}
+    Info_10:
+      Name: csv/hero
+      Dependencies: {}
+    Info_11:
+      Name: levels/prefabs/ground
+      Dependencies: {}
+    Info_12:
+      Name: monsters/toon_rock_golem
+      Dependencies: {}
+    Info_13:
+      Name: monsters/toon_cactus_monster
+      Dependencies: {}
+    Info_14:
+      Name: monsters/toon_plant_monster
+      Dependencies: {}
+    Info_15:
+      Name: bullets/line
+      Dependencies: {}
+    Info_16:
+      Name: monsters/toon_dragon
+      Dependencies: {}
+    Info_17:
+      Name: monsters/toon_bat
+      Dependencies: {}
+    Info_18:
+      Name: monsters/toon_ghost
+      Dependencies: {}
+    Info_19:
+      Name: monsters/toon_skeleton_archer
+      Dependencies: {}
+    Info_20:
+      Name: bullets/general
+      Dependencies: {}
+    Info_21:
+      Name: bullets/fuel
+      Dependencies: {}
+    Info_22:
+      Name: monsters/toon_skeleton_knight
+      Dependencies: {}
+    Info_23:
+      Name: monsters/toon_death_knight
+      Dependencies: {}
+    Info_24:
+      Name: levels/prefabs/player
+      Dependencies: {}
+    Info_25:
+      Name: levels/prefabs/monster
+      Dependencies: {}
+    Info_26:
+      Name: uiprefabs/hud_scene_hp
+      Dependencies: {}
+    Info_27:
+      Name: monsters/toon_skeleton_mage
+      Dependencies: {}
+    Info_28:
+      Name: levels/prefabs/door
+      Dependencies: {}
     Info_29:
-      Name: heros/alienfighter
+      Name: heros/alienshooter
       Dependencies: {}
     Info_30:
-      Name: heros/alienshooter
+      Name: heros/alienfighter
+      Dependencies: {}
+    Info_31:
+      Name: heros/cubemensword
+      Dependencies: {}
+    Info_32:
+      Name: heros/cubemenfighter
+      Dependencies: {}
+    Info_33:
+      Name: heros/cubemenbow
       Dependencies: {}
