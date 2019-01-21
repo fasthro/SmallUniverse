@@ -16,7 +16,7 @@ namespace SmallUniverse.Scene
 
             panelMgr.CreatePanel(UI.PanelName.HudPanel);
 
-            levelMgr.InitLevel(100001, 10002);
+            levelMgr.InitLevel(100001, 10003);
         }
 
         public override void OnLeaveScenel(SceneType level, Action action = null)
